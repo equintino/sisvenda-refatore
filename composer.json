@@ -1,0 +1,28 @@
+{
+    "name": "edmquintino/sisvenda",
+    "description": "Sistema Estruturado de Venda",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "equintino",
+            "email": "edmquintino@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+
+    },
+    "autoload": {
+        "files": [
+            "source/Support/Helpers.php"
+        ],
+        "psr-4": {
+            "Test\\": "test",
+            "Config\\": "source/config",
+            "Core\\": "source/Core",
+            "Models\\": "source/Models",
+            "Controllers\\": "source/Controllers"
+        }
+    }
+}

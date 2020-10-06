@@ -1,0 +1,53 @@
+/** seguranca */
+body {
+    background: #EBECDF;
+}
+
+/** security */
+.group, .screen {
+    /* border: 1px solid gray; */
+    width: 50px;
+    height: 200px;
+    padding-right: 5px;
+    flex: 3;
+    font-size: .7rem;
+}
+
+.group legend, .screen legend {
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.middle {
+    flex: 1;
+}
+
+.container > div
+{
+    display: flex;
+    padding: 30px 200px;
+}
+
+/* .window
+{
+    position: relative;
+    width: 60%;
+    height: 200px;
+    display: none;
+    margin: -280px auto;
+    background: #ECF2E6;
+    box-shadow: 1px 1px 2px gray;    
+    z-index: 2;
+    text-align: center;
+    padding-top: 80px;
+} */
+
+fieldset {
+    background: #ECF2E6;
+    box-shadow: 1px 1px 2px gray;
+    padding: 0 30px;
+}
+
+.fa-times, .fa-check {
+    cursor: pointer;
+}

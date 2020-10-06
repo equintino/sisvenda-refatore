@@ -1,0 +1,68 @@
+- possibilitar a configuração do servidor via tela de configuração
+	- salvar as alterações - ok
+	- ajustar janela de confirmação - ok
+	- possibilitar a escolha do servidor e banco de dados no login - ok
+	- centralizar inicialmente a janela - ok
+
+
+
+- Estrutura de tabelas
+	-tb_group
+	-tb_seguranca
+	-tb_usuario
+
+	-Usuário
+	-Vendedor
+	-Funcionario
+
+- Migration
+	- criação de tabelas:
+		- construção da query:
+			- definição do servidor
+				sqlsrv
+			- CREATE TABLE database.tablename(
+				visit_id INT PRIMARY KEY IDENTITY (1, 1),
+    				first_name VARCHAR (50) NOT NULL,
+    				last_name VARCHAR (50) NOT NULL,
+    				visited_at DATETIME,
+    				phone VARCHAR(20),
+    				store_id INT NOT NULL,
+    				FOREIGN KEY (store_id) REFERENCES sales.stores (store_id)
+			);
+
+_____________________
+stap by stap
+ - leitura: sqlsrv(ok), mysql(ok)
+ - update: sqlsrv(ok), mysql(ok)
+ - gravação: sqlsrv(ok), mysql(ok)
+ - exclusão: sqlsrv(ok), mysql(ok)
+ - criar tabela: sqlsrv(ok), mysql(ok)
+
+- possibilitar outros tipos de servidores - ok
+
+- configurar a tela de autenticação - ok
+
+
+- montar uma estrutura de criação de tabelas para varios tipos de servidores
+	-Schema::create - ok
+	-Schema::drop - ok
+
+-create->up()
+	-nome da tabela - ok
+	-typo do servidor - ok
+	-saber se ja existe a tabela - ok
+	-obter os parametros para as colunas - ok
+	-criar as colunas padrões(id,created_at,updated_at) - ok
+
+- criar a tabela de acessos
+	- nome da table(tb_group) - ok
+	- campos:  - id int not null auto_increment - ok
+		   - name varchar(255) not null unique - ok
+		   - access varchar(255) not null - ok
+		   - active(bit) not null default(1) - ok
+	- criar a model - ok
+		
+- remover seleção de texto
+
+
+
