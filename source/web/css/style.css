@@ -1,13 +1,17 @@
 :root {
     --cor-primary: #0B3A60;
+    --cor-primary-light: #0b3a600b;
     --cor-secondary: #6C757D;
+    --cor-secondary-light: #6c757dce;
     --cor-success: #28A745;
     --cor-warning: #FFC107;
     --cor-danger: #DC3545;
     --cor-info: #17A2B8;
 
+    --cor-body: #EBECDF;
+
     --text-primary: #7c7c7c;
-    --text-secondary: #828282;
+    --text-secondary: rgb(84, 84, 84);//#828282;
 
     --box-top: 15%;
     --box-shadow: 2px 2px 4px rgb(75, 75, 75);
@@ -63,20 +67,26 @@
     text-transform: uppercase;
     font-weight: bolder;
     text-align: center;
+    z-index: 5;
 }
 
 #flashes {
-    top: 10%;
+    top: 13%;
 }
 
 /** messages */
+.success {
+    background: var(--cor-success);
+    color: white;
+}
+
 .warning {
-    background: #FFC107;
+    background: var(--cor-warning);
     color: white;
 }
 
 .error {
-    background: #DC3545;
+    background: var(--cor-danger);
     color: white;
 }
 
@@ -156,9 +166,11 @@
 .form-input {
     width: 88%;
     border: 1px solid #ccc;
-    border-radius: 0 4px 4px 0;
-    height: 35px;
-    padding-left: 4px;
+    //border-radius: 0 4px 4px 0;
+    border-radius: 5px;
+    height: 25px;
+    padding-left: 10px;
+    color: var(--text-secondary);
 }
 
 .form-input:focus {
@@ -200,7 +212,7 @@
 
 /** form */
 .label {
-    color: #648198;
+    color: var(--cor-primary);//#648198;
 }
 
 /** icon menu */
@@ -229,7 +241,7 @@
     color: var(--cor-primary);
     float: right;
     margin-right: 10px;
-    font-weight: 500;
+    font-weight: 700;
     font-size: .9em;
 }
 
@@ -246,6 +258,15 @@
 .my-table td {
     color: var(--text-secondary);
     font-size: .8rem;
+}
+
+.my-table i {
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.my-table i:hover {
+    color: black;
 }
 
 .my-table tr:nth-child(even) {
@@ -441,8 +462,7 @@
     text-shadow: 0px 1px 0px white;
 }
 
-.btnAction
-{
+.btnAction {
     position: relative;
     background-color: #fcfcfc;
     background: linear-gradient(to bottom, #fcfcfc 5%, #eaeaea 70%);
@@ -457,8 +477,7 @@
     box-shadow: 1px 2px 0px 0px #899599;
 }
 
-.btnAction:hover
-{
+.btnAction:hover {
     color: #333 !important;
     border: 1px solid #979797;
     background-color: white;

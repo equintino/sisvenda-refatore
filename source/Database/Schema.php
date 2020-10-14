@@ -11,7 +11,7 @@ class Schema
         $this->blueprint = new Blueprint();
     }
 
-    public static function create(string $entity, string $type, object $table)
+    public static function create(string $entity, string $type, object $table): string
     {
         return $table(new Blueprint($entity, $type));
     }

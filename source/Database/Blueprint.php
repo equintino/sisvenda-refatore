@@ -9,6 +9,7 @@ class Blueprint
     private $entity;
     private $type;
     private $sql;
+    private $array;
 
     public function __construct(string $entity, string $type)
     {
@@ -59,7 +60,17 @@ class Blueprint
     /** @var string name, @var string $null, @var string $default, */
     public function int(string $name): object
     {
-        $this->sql .= ", {$name} INT NOT NULL";
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} INT NOT NULL";
+            }
+        }
+        else {
+            $this->array = null;
+            $this->sql .= ", {$name} INT NOT NULL";
+        }
 
         return $this;
     }
@@ -67,7 +78,17 @@ class Blueprint
     /** @var string $name, @var int $length, @var string $null, @var string $default */
     public function string(string $name, int $length = 255): object
     {
-        $this->sql .= ", {$name} VARCHAR({$length}) NOT NULL";
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} VARCHAR({$length}) NOT NULL";
+            }
+        }
+        else {
+            $this->array = null;
+            $this->sql .= ", {$name} VARCHAR({$length}) NOT NULL";
+        }
 
         return $this;
     }
@@ -89,11 +110,30 @@ class Blueprint
 
     public function nullable(): object
     {
-        $end = strripos($this->sql, "NOT NULL");
-        $partOne = substr($this->sql, 0, $end);
-        $partTwo = substr($this->sql, $end + 4, strlen($this->sql));
+        if($this->array !== null) {
+            $names = explode(",", $this->array);
+            foreach($names as $name) {
+                $start = strpos($this->sql, $name);
+                $end = strpos(substr($this->sql, $start), ",");
+                if($end) {
+                    $param = substr($this->sql, $start, $end);
+                }
+                else {
+                    $param = substr($this->sql, $start);
+                }
+                $newParam = str_replace("NOT ", "", $param);
 
-        $this->sql = $partOne . $partTwo;
+                $partOne = substr($this->sql, 0, $start);
+                $partTwo = substr($this->sql, $start + strlen($param));
+                $this->sql = $partOne . $newParam . $partTwo;
+            }
+        }
+        else {
+            $end = strripos($this->sql, "NOT NULL");
+            $partOne = substr($this->sql, 0, $end);
+            $partTwo = substr($this->sql, $end + 4, strlen($this->sql));
+            $this->sql = $partOne . $partTwo;
+        }       
 
         return $this;
     }

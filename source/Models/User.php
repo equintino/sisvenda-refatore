@@ -4,14 +4,18 @@ namespace Models;
 
 use Core\Model;
 use Database\Migrations\CreateUsersTable;
+use Models\Group;
 
 class User extends Model implements Models
 {
+    /** @var Models\Group */
+    private $group;
+
     /** @var string $entity database table */
     protected static $entity = "tb_usuario";
 
     /** @var array filds required */
-    private $required = [ "Logon", "Senha", "IDEmpresa", "Visivel", "USUARIO", "Nome", "Email" ];
+    private $required = [ "Logon", "Senha", "IDEmpresa", "USUARIO", "Nome", "Email" ];
 
     public function setPasswd(string $passwd)
     {
@@ -30,10 +34,18 @@ class User extends Model implements Models
         return $load->fetchObject(__CLASS__);
     }
 
-    public function find(string $busca, string $columns = "*"): ?User
+    /** @var $busca array|string */
+    public function find($busca, string $columns = "*")
     {
         $login = &$busca;
-        if(filter_var($busca, FILTER_VALIDATE_EMAIL)) {
+        if(is_array($busca)) {
+            foreach($busca as $columnName => $value) {
+                $params = "{$columnName}=:{$columnName}";
+                $terms = "{$columnName}={$value}";
+            }
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params}", $terms);
+        }
+        elseif(filter_var($busca, FILTER_VALIDATE_EMAIL)) {
             $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Email=:Email", "Email={$busca}");
         }
         elseif(filter_var($login, FILTER_SANITIZE_STRIPPED)) {
@@ -48,7 +60,7 @@ class User extends Model implements Models
             return null;
         }
         
-        return $find->fetchObject(__CLASS__);
+        return (is_array($busca) ? $find->fetchAll(\PDO::FETCH_CLASS, __CLASS__) : $find->fetchObject(__CLASS__));
     }
 
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
@@ -78,31 +90,31 @@ class User extends Model implements Models
             $email = $this->read("SELECT id FROM " . self::$entity . " WHERE Email = :Email AND id != :id", 
                 "Email={$this->Email}&id={$userId}");
             if($email->rowCount()) {
-                $this->message = "O e-mail informado já está cadastrado.";
+                $this->message = "<span class='warning'>O e-mail informado já está cadastrado</span>";
                 return null;
             }
             
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$userId}");
             if($this->fail()) {
-                $this->message = "Erro ao atualizar, verifique os dados.";
+                $this->message = "<span class='error'>Erro ao atualizar, verifique os dados</span>";
                 return null;
             }
-
-            $this->message = "Dados atualizados com sucesso.";
+            
+            $this->message = "<span class='success'>Dados atualizados com sucesso</span>";
         }
 
         /** Create */
         if(empty($this->id)) {
             if($this->find($this->Email) || $this->find($this->Logon)) {
-                $this->message = "O e-mail ou login informado já está cadastrado.";
+                $this->message = "<span class='warning'>O e-mail ou login informado já está cadastrado</span>";
                 return null;
             }
             $userId = $this->create(self::$entity, $this->safe());
             if($this->fail()) {
-                $this->message = "Erro ao cadastrar, verifique os dados.";
+                $this->message = "<span class='error'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
-            $this->message = "Cadastro realizado com sucesso.";
+            $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
         }
         $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE id=:id", "id={$userId}")->fetch();
 
@@ -116,10 +128,10 @@ class User extends Model implements Models
         }
 
         if($this->fail()) {
-            $this->message = "Não foi possível remover o usuário";
+            $this->message = "<span class='error'>Não foi possível remover o usuário</span>";
             return null;
         }
-        $this->message = "Usuário foi removido com sucesso";
+        $this->message = "<span class='success'>Usuário foi removido com sucesso</span>";
         $this->data = null;
         
         return $this;
@@ -129,13 +141,13 @@ class User extends Model implements Models
     {
         foreach($this->required as $field) {
             if(empty(trim($this->$field))) {
-                $this->message = "O campo {$field} é obrigatório.";
+                $this->message = "<span class='warning'>O campo {$field} é obrigatório</span>";
                 return false;
             }
         }
 
         if(!filter_var($this->Email, FILTER_VALIDATE_EMAIL)) {
-            $this->message = "O formato do e-mail não parece válido.";
+            $this->message = "<span class='warning'>O formato do e-mail não parece válido</span>";
             return false;
         }
         
@@ -152,6 +164,14 @@ class User extends Model implements Models
     {
         $sql = (new CreateUsersTable())->down(self::$entity);
         return $this->dropTable($sql);
+    }
+
+    public function getGroup(): ?Group
+    {
+        if(!empty($this->Group_id)) {
+            return $this->group = (new Group())->load($this->Group_id);
+        }
+        return $this->group = null;
     }
 
     protected function crypt($passwd)

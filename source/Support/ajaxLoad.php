@@ -5,6 +5,6 @@ require __DIR__ . "/../../vendor/autoload.php";
 $groupName = filter_input(INPUT_POST, "groupName", FILTER_SANITIZE_STRIPPED);
 
 $group = new Models\Group();
-$dGroup = $group->find("Suporte");
+$dGroup = $group->find($groupName);
 $security["access"] = explode(",",$dGroup->access);
 return print(json_encode($security));

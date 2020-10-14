@@ -43,7 +43,7 @@ var modal = {
         this.show(params);
 
         var that = this;
-        this.content.find("button").on("button click", function() {
+        return this.content.find("button").on("button click", function() {
             if($(this).val() == 0) {
                 $("#boxe_main .close").trigger("click");
             }
@@ -116,10 +116,144 @@ var configuration = function(connectionName) {
     });
 };
 
+/**
+ * Read screen access
+ */
+var security = function(groupName) {
+    var resp;
+    $.ajax({
+        url: "../Support/ajaxLoad.php",
+        type: "POST",
+        dataType: "JSON",
+        data: { groupName: groupName },
+        async: false,
+        success: function(response) {
+            response.success = true;
+            resp = response;
+        },
+        error: function(error) {
+            error.seccces = false;
+            resp = error;
+        }
+    });
+    return resp;
+};
+
+/**
+* @params array screens(access), element, icon One, icon two
+*/
+var insertCheck = function(screens, element, optionGreen, optionRed) {
+    element.find("i").removeClass();
+    element.each(function() {           
+        if(screens.indexOf($(this).text()) !== -1) {
+            $(this).find("i").addClass(optionGreen)
+                .css("color","green");
+        } 
+        else {
+            $(this).find("i").addClass(optionRed)
+                .css("color","red");
+        }
+    });
+};
+
+/** @return object */
+var getScreenAccess = function(element, check) {
+    var access = []; 
+    element.each(function() {
+        if($(this).find("i").hasClass(check)) {
+            access.push($(this).text());
+        }
+    });
+    var groupName = element.parent().find("span").text().replace("Grupo: ","");
+    var security = {
+        access: access,
+        name: groupName
+    }; 
+    return security;
+};
+
+/** 
+* @return bool
+* @params element, icon One, icon Two  
+*/
+var changeCheck = function(element, optionGreen, optionRed) {
+    var currentOption = element.attr("class");
+    element.removeClass();
+    if(currentOption === optionRed) {
+        element.addClass(optionGreen)
+            .css("color","green");
+    } 
+    else {
+        element.addClass(optionRed)
+            .css("color","red");                
+    }
+    return true;
+};
+
+var saveData = function(link, data, msg = "Salvando") {
+    var success;
+    $.ajax({
+        url: link,
+        type: "POST",
+        dataType: "JSON",
+        context: msg,
+        async: false,
+        data: data,
+        beforeSend: function() {
+            loading.show({
+                text: msg
+            });
+        },
+        success: function(response) {
+            var background = "var(--cor-warning)";
+            if(response.indexOf("success") !== -1) {
+                background = "var(--cor-success)";
+                success = true;
+            }
+            else {
+                success = false;
+            }           
+            $("#flashes")
+                .html(response)
+                .css("background", background)
+                .slideDown();
+            setTimeout(function() {
+                $("#flashes").slideUp();
+                loading.hide();
+            }, setTime);
+        },
+        error: function(error) {                             
+            $("#flashes")
+                .html(error)
+                .css("background", "var(--cor-error)")
+                .slideDown();
+            setTimeout(function() {
+                $("#flashes").slideUp();
+                loading.hide();
+            }, setTime);   
+        },
+        complete: function(data) {
+            return success;
+        }
+    });
+};
+
+/**
+ * variables
+ */
+var setTime = 2000;
+
 $(function($) {
-    /**
-     * authentication
-     */
+    /** menu behavior */
+    $("#topHeader ul li a").each(function() {
+        if($(this).attr("id") === page) {
+            $(this).css({
+                color: "white"
+            });
+        }
+    });
+
+    /** authentication */
     $("form").submit(function(e) {
         e.preventDefault();
         $(".login button").html("<i class='fa fa-sync-alt schedule'></i>");
@@ -141,7 +275,7 @@ $(function($) {
                         .slideDown();
                     setTimeout(function() {
                         $(".flash").slideUp();
-                    }, 3000);
+                    }, setTime);
                 }
             },
             error: function(error) {
@@ -151,7 +285,7 @@ $(function($) {
                     .slideDown();
                 setTimeout(function() {
                     $(".flash").slideUp();
-                }, 4000);
+                }, setTime);
             },
             complete: function(response) {
                 setTimeout(function(){
@@ -240,10 +374,8 @@ $(function($) {
         }
         configuration(connectionName); 
     });  
-
     $(document).on("keyup", function(e) {
         e.preventDefault();
-
         if(e.keyCode === 27) {
             $("#boxe_main, #mask_main").hide();
         }

@@ -4,7 +4,7 @@ namespace Models;
 
 interface Models
 {
-    public function bootstrap(array $data);
+    //public function bootstrap(array $data);
     public function load(int $id, string $columns = "*");
     public function find(string $busca, string $columns = "*");
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array;

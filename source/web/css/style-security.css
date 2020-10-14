@@ -1,6 +1,6 @@
 /** seguranca */
 body {
-    background: #EBECDF;
+    background: var(--cor-body);
 }
 
 /** security */

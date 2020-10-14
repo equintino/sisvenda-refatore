@@ -52,11 +52,56 @@ elseif($act === "delete") {
     echo json_encode((new Config\Config())->delete($params["connectionName"]));
 }
 elseif($act === "group") {
-    $groupName = $group["name"];
-    $access = $group["access"];
+    $groupName = (array_key_exists("name", $group) ? $group["name"] : null);
+    $access = (array_key_exists("access", $group) ? $group["access"] : ["home"]);
     
-    $group = (new Models\Group())->find($groupName);
-    $group->access = implode(",",$access);
-    $group->save();
-    return print(json_encode($group->message()));
+    if($group["action"] === "add") {
+        $group = new Models\Group();
+        $group->bootstrap([
+            "name" => $groupName,
+            "access" => "home",
+            "active" => 1
+        ]);
+        $group->save();
+        return print(json_encode($group->message(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    elseif($group["action"] === "delete") {
+        $group = (new Models\Group())->find($groupName);
+        $group->destroy();
+        return print(json_encode($group->message(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    else {
+        $dGroup = (new Models\Group())->find($groupName);
+        $dGroup->access = implode(",",$access);
+        $dGroup->save();
+        return print(json_encode($dGroup->message(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+}
+elseif($act === "login") {
+    if($params["action"] === "add") {
+        $user = new Models\User();
+        unset($params["act"], $params["action"]);
+        $params["USUARIO"] = &$params["Logon"];
+        $user->bootstrap($params);
+        $user->save();
+        return print(json_encode($user->message(), 
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    elseif($params["action"] === "edit") {
+        $user = (new Models\User())->find($params["Logon"]);
+        $user->Nome = $params["Nome"];
+        $user->Email = $params["Email"];
+        $user->Cargo = $params["Cargo"];
+        $user->Group_id = $params["Group_id"];
+        $user->Visivel = $params["Visivel"];
+        $user->save();
+        return print(json_encode($user->message(), 
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    elseif($params["action"] === "delete") {
+        $user = (new Models\User())->find($params["Logon"]);
+        $user->destroy();
+        return print(json_encode($user->message(), 
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
 }

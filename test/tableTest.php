@@ -38,3 +38,20 @@ $busca = [
 ];
 echo "<p>Teste tabela grupos</p>";
 $creation->testTable($table, $data, $busca);
+
+//////// -------/////////
+
+/** table test_Dados_Empresa */
+$table = new Models\Company();
+$data = [
+    //"ID" => "Administrador",
+    //"RasãoSocial" => "Minha Empresa",
+    "NomeFantasia" => "Nome Fantasia",
+    "CNPJ" => "12.123.255/1231-54",
+    "ATIVO" => true
+];
+$busca = [
+    "CNPJ"
+];
+echo "<p>Teste tabela Dados_Empresa</p>";
+$creation->testTable($table, $data, $busca);

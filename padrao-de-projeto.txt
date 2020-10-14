@@ -4,8 +4,6 @@
 	- possibilitar a escolha do servidor e banco de dados no login - ok
 	- centralizar inicialmente a janela - ok
 
-
-
 - Estrutura de tabelas
 	-tb_group
 	-tb_seguranca
@@ -21,12 +19,6 @@
 			- definição do servidor
 				sqlsrv
 			- CREATE TABLE database.tablename(
-				visit_id INT PRIMARY KEY IDENTITY (1, 1),
-    				first_name VARCHAR (50) NOT NULL,
-    				last_name VARCHAR (50) NOT NULL,
-    				visited_at DATETIME,
-    				phone VARCHAR(20),
-    				store_id INT NOT NULL,
     				FOREIGN KEY (store_id) REFERENCES sales.stores (store_id)
 			);
 
@@ -63,6 +55,12 @@ stap by stap
 	- criar a model - ok
 		
 - remover seleção de texto
+- ativar o icone de configuração no menu - ok
+- esqueci a senha
+- amarrar o grupo ao usuario por classe - ok
+- editar(ok), excluir(ok), resetar senha
+- alterar o foco nos botões btnAction
+- adicionar usuario - ok
 
 
 

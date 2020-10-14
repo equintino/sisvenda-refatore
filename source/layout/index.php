@@ -8,9 +8,7 @@
         <link href="../web/css/style.css" rel="stylesheet"/>
         <link href="../web/css/datatables.css" rel="stylesheet">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <script type="text/javascript" src="../web/js/datatables.js"></script>
-
-        
+        <script type="text/javascript" src="../web/js/datatables.js"></script>   
         <script type="text/javascript" src="../web/js/bootbox.js"></script>
 
 
@@ -32,7 +30,7 @@
         <!-- Modal -->
         <!--<script src="../web/js/jquery.modal.min.js"></script>-->
         
-        <?php $pagina = array_key_exists("pagina",$_GET) ? $_GET['pagina'] : "home"; ?>
+        <?php $page = array_key_exists("pagina",$_GET) ? $_GET['pagina'] : "home"; ?>
     </head>
     <?php
         // include __DIR__ . "/../includes/aguarde.php";
@@ -59,13 +57,13 @@
             </section>
             <div id="flashes">aqui vai sua mensagem...</div>
             <?php if(!empty($access)): ?>
-                <?php if(in_array($pagina, $paginas) || $pagina === 'home' ):
-                    include __DIR__ . "/../pages/" . $pagina . ".php"; ?>
+                <?php if(in_array($page, $pages) || $page === 'home' ):
+                    include __DIR__ . "/../pages/" . $page . ".php"; ?>
                 <?php else:?>
                     <h3 style="text-align:center;color:#196430;"><i class="fa fa-ban" style="color:red"></i> Acesso não Permitido.</h3>
                 <?php endif; ?>
             <?php else:?>
-                <?php require __DIR__ . "/../pages/" . $pagina . ".php"; ?>
+                <?php require __DIR__ . "/../pages/" . $page . ".php"; ?>
             <?php endif; ?>
             <!-- Janelas -->
             <div id="boxe_main" >
@@ -89,7 +87,7 @@
             </div>
             
         </div><!-- content -->
-        <script>var page = "<?= $pagina ?>";</script>
+        <script>var page = "<?= $page ?>";</script>
         <!--<script src="../web/js/jquery.mask.min.js"></script>-->
         <script type="text/javascript" src="../web/js/script.js"></script>
         <script type="text/javascript" src="../web/js/jquery.js"></script>

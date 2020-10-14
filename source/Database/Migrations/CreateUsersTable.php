@@ -23,14 +23,12 @@ class CreateUsersTable implements CreateTable
             $table->string("Nome");
             $table->string("Email",100)->unique();
             $table->string("Logon",50)->unique();
-            $table->string("Senha");
-            $table->string("USUARIO");
+            $table->string("Senha,USUARIO");
             $table->int("IDEmpresa");
-            $table->bool("Visivel")->default(1);
+            $table->bool("Visivel")->nullable()->default(1);
             $table->int("PRINCIPAL")->nullable();
             $table->string("Cargo",255)->nullable();
-            $table->int("Usuario_id")->nullable();
-            $table->int("Group_id")->nullable();
+            $table->int("Usuario_id,Group_id")->nullable();
             $table->timestamps();
             return $table->run();
         });
