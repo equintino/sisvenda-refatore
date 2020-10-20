@@ -12,10 +12,15 @@ class User extends Model implements Models
     private $group;
 
     /** @var string $entity database table */
-    protected static $entity = "tb_usuario";
+    public static $entity = "tb_usuario";
 
     /** @var array filds required */
     private $required = [ "Logon", "Senha", "IDEmpresa", "USUARIO", "Nome", "Email" ];
+    
+    public function getEntity()
+    {
+        return self::$entity;
+    }
 
     public function setPasswd(string $passwd)
     {
@@ -27,7 +32,7 @@ class User extends Model implements Models
         $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE id=:id", "id={$id}");
 
         if($this->fail || !$load->rowCount()) {
-            $this->message = "Usuario não encontrado do id informado.";
+            $this->message = "<span class='warning'>Usuario não encontrado do id informado</span>";
             return null;
         }
         
@@ -56,7 +61,7 @@ class User extends Model implements Models
         }
 
         if($this->fail || !$find->rowCount()) {
-            $this->message = "Usuario não encontrado do email informado.";
+            $this->message = "<span class='warning'>Usuario não encontrado do email informado</span>";
             return null;
         }
         
@@ -71,7 +76,7 @@ class User extends Model implements Models
             . $this->limit(), "limit={$limit}&offset={$offset}");
 
         if($this->fail || !$all->rowCount()) {
-            $this->message = "Sua consulta não retornou usuários.";
+            $this->message = "<span class='warning'>Sua consulta não retornou usuários</span>";
             return null;
         }
         
@@ -174,18 +179,32 @@ class User extends Model implements Models
         return $this->group = null;
     }
 
-    protected function crypt($passwd)
+    public function crypt($passwd)
     {
         return base64_encode($passwd);
         /** new project */
         //return crypt($passwd, "rl");
     }
 
-    public function validate($passwd, $hash): bool
+    public function validate($passwd, $hash)
     {
-        return $passwd === base64_decode($hash);
+        return $passwd === base64_decode($hash->Senha);
         /** new project */
         //return crypt($passwd, $hash) == $hash;
+    }
+
+    public function token()
+    {
+        $userId = $this->id;
+        if(!empty($userId)) {
+            $this->token = crypt("Gera Token", "rl");        
+            $this->update(self::$entity, $this->safe(), "id = :id", "id={$userId}");
+        }
+        if($this->fail()) {
+            $this->message = "<span class='error'>Erro ao resetar senha, tente novamente</span>";
+            return null;
+        }
+        $this->message = "<span class='warning'>Nova senha será cadastrada no próximo login</span>";
     }
 
 }

@@ -11,6 +11,8 @@
 
         <?php 
             require __DIR__ . "/vendor/autoload.php";
+            
+            $version = new Classes\Version();
             $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
             $connectionName = filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
             $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
@@ -23,7 +25,7 @@
         <div class="logo"></div>
         <div class="container">
             <div class="login">
-                <form class="form-signin" action="main.php" method="post" >
+                <form class="form-signin" action="#" method="post" >
                     <div class="input-group mt-2">
                         <i class="fa fa-user icon-input" ></i>
                         <input type="text" id="login" class="form-input" name="login" placeholder="login ou e-mail" required="" autofocus="" value="<?= (!empty($login) ? $login : null) ?>" />
@@ -46,10 +48,12 @@
                         <label><input type="checkbox" name="remember" value="1" <?= ($checked == 1 ? "checked" : null) ?> > Lembre-me</label>
                     </div>
                     <button class="button-style" type="submit">Entrar</button>
-                    <p class="mt-1 text-muted">© 2020 <?= (!empty($version) ? "({$version})" : null) ?></p>
+                    <p class="mt-1 text-muted">© 2020 <?= (!empty($version) ? "({$version}v)" : null) ?></p>
                 </form>
             </div>
         </div>
+        <div id="boxe_main"></div>
+        <div id="mask_main"></div>
         <script src="source/web/js/datatables.js" type="text/javascript"></script>
         <script src="source/web/js/script.js" type="text/javascript"></script>
     </body>

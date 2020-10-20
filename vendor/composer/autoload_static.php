@@ -15,6 +15,10 @@ class ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a
         array (
             'Test\\' => 5,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'M' => 
         array (
             'Models\\' => 7,
@@ -24,6 +28,7 @@ class ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a
             'Core\\' => 5,
             'Controllers\\' => 12,
             'Config\\' => 7,
+            'Classes\\' => 8,
         ),
     );
 
@@ -31,6 +36,10 @@ class ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a
         'Test\\' => 
         array (
             0 => __DIR__ . '/../..' . '/test',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Models\\' => 
         array (
@@ -46,25 +55,12 @@ class ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a
         ),
         'Config\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/source/config',
+            0 => __DIR__ . '/../..' . '/source/Config',
         ),
-    );
-
-    public static $classMap = array (
-        'Config\\Config' => __DIR__ . '/../..' . '/source/config/Config.php',
-        'Config\\GlobalEnv' => __DIR__ . '/../..' . '/source/config/GlobalEnv.php',
-        'Controllers\\Config' => __DIR__ . '/../..' . '/source/Controllers/Config_old.php',
-        'Controllers\\Controller' => __DIR__ . '/../..' . '/source/Controllers/Controller.php',
-        'Controllers\\User' => __DIR__ . '/../..' . '/source/Controllers/User.php',
-        'Core\\Connect' => __DIR__ . '/../..' . '/source/Core/Connect.php',
-        'Core\\Model' => __DIR__ . '/../..' . '/source/Core/Model.php',
-        'Core\\Safety' => __DIR__ . '/../..' . '/source/Core/Safety.php',
-        'Core\\Session' => __DIR__ . '/../..' . '/source/Core/Session.php',
-        'Core\\SqlParams' => __DIR__ . '/../..' . '/source/Core/SqlParams.php',
-        'Models\\Group' => __DIR__ . '/../..' . '/source/Models/Group.php',
-        'Models\\Models' => __DIR__ . '/../..' . '/source/Models/Models.php',
-        'Models\\User' => __DIR__ . '/../..' . '/source/Models/User.php',
-        'Test\\CreationTableTest' => __DIR__ . '/../..' . '/test/CreationTableTest.php',
+        'Classes\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/source/Classes',
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -72,7 +68,6 @@ class ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit2521f4e4f503248d2ef3a7c970ff672a::$classMap;
 
         }, null, ClassLoader::class);
     }

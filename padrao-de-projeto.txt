@@ -58,9 +58,15 @@ stap by stap
 - ativar o icone de configuração no menu - ok
 - esqueci a senha
 - amarrar o grupo ao usuario por classe - ok
-- editar(ok), excluir(ok), resetar senha
-- alterar o foco nos botões btnAction
+- editar(ok), excluir(ok), resetar senha(ok)
+- alterar o foco nos botões btnAction - ok
 - adicionar usuario - ok
+- acertar cor de fundo das mensagens - ok
+- resetar senha:
+	- gravar um token para resetar senha - ok
+	- enviar um link no e-mail para resetar senha - ?
+- adicionar nova configuração de servidor
+	- impedir salvar nome de conexão repetido
 
 
 

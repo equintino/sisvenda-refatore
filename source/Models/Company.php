@@ -7,7 +7,7 @@ use Database\Migrations\CreateCompanysTable;
 
 class Company extends Model implements Models
 {
-    protected static $entity = "Dados_Empresa";
+    public static $entity = "Dados_Empresa";
 
     /** @var array */
     private $required = [];

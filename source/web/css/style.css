@@ -15,6 +15,9 @@
 
     --box-top: 15%;
     --box-shadow: 2px 2px 4px rgb(75, 75, 75);
+    --box-shadow-focus: 0 0 10px #9ecaed;
+    --box-outline: 1px solid #9ecaed;
+
     --title-height: 30px;
     --title-size: .9rem;
     --title-weight: 600;
@@ -23,6 +26,10 @@
 * {
     margin: 0;
     padding: 0;
+}
+
+.body {
+    background: var(--cor-body);
 }
 
 .gradient {
@@ -166,7 +173,6 @@
 .form-input {
     width: 88%;
     border: 1px solid #ccc;
-    //border-radius: 0 4px 4px 0;
     border-radius: 5px;
     height: 25px;
     padding-left: 10px;
@@ -176,7 +182,7 @@
 .form-input:focus {
     outline: none;
     border-color: #9ecaed;
-    box-shadow: 0 0 10px #9ecaed;
+    box-shadow: var(--box-shadow-focus);
 }
 
 .icon-input {
@@ -304,6 +310,29 @@
     /*text-transform: uppercase;*/
 }
 
+/** fieldset */
+.fieldset {
+    box-shadow: 2px 2px 2px gray;
+    border-radius: 5px;
+    background: var(--cor-primary-light);
+    padding: 20px;
+}
+
+.fieldset legend {
+    color: var(--cor-primary);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.fieldset table thead th {
+    font-size: .7rem;
+    border-bottom: 1px solid black;
+}
+
+.fieldset table tr:last-child {
+    border-bottom: 1px solid black;
+}
+
 /** bootbox */
 .modal-content {
     box-shadow: var(--box-shadow);
@@ -364,8 +393,8 @@
     pointer-events: auto;
     background-clip: padding-box;
     outline: 0;
-    margin: -150px auto;
-    max-height: 400px;
+    margin: -250px auto;
+    //max-height: 90%;
     background: #ffffff;
     box-shadow: var(--box-shadow);
     z-index: 3;
@@ -460,6 +489,11 @@
     color: #333 !important;
     background-color: white;
     text-shadow: 0px 1px 0px white;
+}
+
+.button:focus {
+    box-shadow: var(--box-shadow-focus);
+    outline: var(--box-outline);
 }
 
 .btnAction {
@@ -569,80 +603,8 @@
     box-shadow: 1px 2px 0px 0px #404040;
 }
 
-/* .save {
-    font-weight: 900;
-    letter-spacing: .8px;
-    cursor: pointer;
-    color: white;
-    background-color: black;
-    background: linear-gradient(to bottom, white 0%, red 30%);
-    text-shadow: 0px 1px 0px red;
-    border: 1px solid rgba(060, 060, 060, 0.3);
-    box-shadow: 1px 2px 0px 0px #404040;
+/** config */
+#config .buttons {
+    text-align: right;
+    margin: -30px 100px 10px 0;
 }
-
-.save:hover {
-    color: #333 !important;
-    background-color: white;
-    background: linear-gradient(to bottom, white 0%, red 30%);
-    text-shadow: 0px 1px 0px white;
-    border: 1px solid rgba(060, 060, 060, 0.3);
-    box-shadow: 1px 2px 0px 0px #404040;
-}
-
-.save:focus {
-    outline: 1px solid red;
-    border-radius: .25rem;
-    box-shadow: 2px 2px 0px 1px var(--cor-info);
-}
-
-.save:active {
-    border: 1px;
-    outline: 1px solid gray;
-    box-shadow: 1px 2px 0px 0px #404040;
-} */
-
-/* .cancel {
-    cursor: pointer;
-    font-weight: 900;
-    letter-spacing: .8px;
-    color: white;
-    background-color: gray;
-    background: linear-gradient(to bottom, white 0%, gray 30%);
-    text-shadow: 0px 1px 0px black;
-    border: 1px solid rgba(060, 060, 060, 0.3);
-    box-shadow: 1px 2px 0px 0px #404040;
-}
-
-.cancel:hover
-{
-    color: #333 !important;
-    background-color: gray;
-    background: linear-gradient(to bottom, white 0%, gray 30%);
-    text-shadow: 0px 1px 0px gray;
-    border: 1px solid rgba(060, 060, 060, 0.3);
-    box-shadow: 1px 2px 0px 0px #404040;
-} */
-/* 
-.info
-{
-    background: linear-gradient(to bottom, white 0%, var(--cor-info) 30%);
-    text-shadow: 0px 1px 0px var(--cor-danger);
-}
-
-.info:hover
-{
-    background: linear-gradient(to bottom, white 0%, var(--cor-info) 30%);
-    text-shadow: 0px 1px 0px gray;
-} */
-
-/* .error {
-    background: linear-gradient(to bottom, white 0%, var(--cor-danger) 30%);
-    text-shadow: 0px 1px 0px var(--cor-danger);
-}
-
-.error:hover
-{
-    background: linear-gradient(to bottom, white 0%, var(--cor-danger) 30%);
-    text-shadow: 0px 1px 0px gray;
-} */

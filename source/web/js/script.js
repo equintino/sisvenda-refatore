@@ -33,6 +33,7 @@ var modal = {
         if(params.content && params.content !== null) this.content.load(params.content);
         this.mask.show();
         this.nameModal.show();
+        return this;
     },
     hide: function() {
         $("#boxe_main, #mask_main").hide();
@@ -51,6 +52,9 @@ var modal = {
                 return $(this).val();
             }
         });
+    },
+    on: function() {
+        return this;
     }
 };
 
@@ -61,8 +65,9 @@ var loading = {
     width: "100%",
     show: function(params) {
         var text = (params.text ? params.text : null) ;
+        var source = (params.source ? params.source : this.source);
         $("body")
-            .append("<section id='loading'><img class='schedule ml-3' src='" + this.source + "' alt='loading' height='50' /><p align='center'>" + text + "...</p></section>");
+            .append("<section id='loading'><img class='schedule ml-3' src='" + source + "' alt='loading' height='50' /><p align='center'>" + text + "...</p></section>");
         $("section#loading").css({
                 position: "fixed",
                 top: "25%",
@@ -86,9 +91,10 @@ var loading = {
 };
 
 /** save configuration */
-var configuration = function(connectionName) {
-    $("#boxe_main").on("change", function() {
-        var data = $("#boxe_main form#config").serialize();
+var saveForm = function(connectionName = null) {
+    $("#boxe_main").on("submit", function(e) {
+        e.preventDefault();
+        var data = $("#boxe_main form").serialize();
         $.ajax({
             url: "../Support/ajaxSave.php",
             type: "POST",
@@ -103,9 +109,7 @@ var configuration = function(connectionName) {
                     text: "salvando"
                 });
             },
-            success: function(response) {
-                
-            },
+            success: function(response) {},
             error: function(error) {},
             complete: function() {
                 setTimeout(function() {
@@ -190,8 +194,8 @@ var changeCheck = function(element, optionGreen, optionRed) {
     return true;
 };
 
-var saveData = function(link, data, msg = "Salvando") {
-    var success;
+var saveData = function(link, data, msg = "Salvando", img = null) {
+    var success = false;
     $.ajax({
         url: link,
         type: "POST",
@@ -201,6 +205,7 @@ var saveData = function(link, data, msg = "Salvando") {
         data: data,
         beforeSend: function() {
             loading.show({
+                source: img,
                 text: msg
             });
         },
@@ -232,10 +237,9 @@ var saveData = function(link, data, msg = "Salvando") {
                 loading.hide();
             }, setTime);   
         },
-        complete: function(data) {
-            return success;
-        }
+        complete: function(data) {}
     });
+    return success;
 };
 
 /**
@@ -254,11 +258,12 @@ $(function($) {
     });
 
     /** authentication */
-    $("form").submit(function(e) {
+    $(".login form.form-signin").submit(function(e) {
         e.preventDefault();
         $(".login button").html("<i class='fa fa-sync-alt schedule'></i>");
-        var data = $("form").serialize();
+        var data = $("form.form-signin").serialize();
         var url = "source/web/login.php";
+        
         $.ajax({
             url: url,
             type: "POST",
@@ -267,7 +272,55 @@ $(function($) {
             success: function(response) {
                 if(response === 1) {
                     $(location).attr("href","source/web/index.php?pagina=home");
-                } 
+                }
+                else if(response === 2) {
+                    var link = "source/Support/ajaxSave.php";
+                    var login = $(".login form [name=login]").val();
+                    $("#boxe_main, #mask_main").show();
+                    $("#boxe_main")
+                        .load("source/Modals/login.php?act=token&login=" + login)
+                        .on("submit", function(e) {
+                            e.preventDefault();
+                            var dataSet = $("form#form-token").serializeArray();
+                            dataSet.push(
+                                {
+                                    name: "act",
+                                    value: "login"
+                                },
+                                {
+                                    name: "action",
+                                    value: "change"
+                                }
+                            );
+                            if(dataSet[1]["value"] !== dataSet[2]["value"]) {
+                                $(".flash")
+                                    .text("As senhas não conferem")
+                                    .css("background", "var(--cor-warning")
+                                    .slideDown();
+                                setTimeout(function() {
+                                    $(".flash").slideUp();
+                                }, setTime);
+                            }
+                            else {
+                                img = "source/web/img/loading.png";
+                                if(saveData(link, dataSet, "Salvando", img)) {
+                                    $(".flash")
+                                        .text("A senha foi salva com sucesso")
+                                        .css("background", "var(--cor-success")
+                                        .slideDown();
+                                    setTimeout(function() {
+                                        $(".flash").slideUp();
+                                        $("#boxe_main, #mask_main").hide();
+                                    }, setTime);
+                                }
+                            }
+                        });
+                    /*modal.show({
+                        title: "Cadastre uma nova senha",
+                        message: "teste",
+                        content: "source/Modals/login.php"
+                    });*/
+                }
                 else {
                     $(".flash")
                         .text(response)
@@ -298,7 +351,18 @@ $(function($) {
     /**
      * Edition of the configuration
      */
-    $("tbody .edition, tbody .delete").on("click", function() {
+    $("#config .buttons .button").on("click", function(e) {
+        e.preventDefault();
+        if($(this).text() === "Adicionar") {
+            var content = "../Modals/config.php?act=add";
+            modal.show({
+                title: "Preencha os dados abaixo:",
+                content: content
+            });
+            saveForm();
+        }
+    });
+    $("table#tabConf tbody .edition, table#tabConf tbody .delete").on("click", function() {
         var connectionName;
         var title;
         var content;
@@ -319,7 +383,7 @@ $(function($) {
         if($(this).hasClass("edition")) {
             title = "Modo de Edição de (" + connectionName + ")";
             message = null;
-            content = "../Modals/configuracao.php?connectionName=" + connectionName;
+            content = "../Modals/config.php?connectionName=" + connectionName;
             modal.show({
                 title: title,
                 message: message,
@@ -367,12 +431,11 @@ $(function($) {
                     }
                 }
             });
-
         }
         else {
             return false;
         }
-        configuration(connectionName); 
+        saveForm(connectionName); 
     });  
     $(document).on("keyup", function(e) {
         e.preventDefault();

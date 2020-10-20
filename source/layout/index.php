@@ -49,7 +49,7 @@
         //     $paginas = explode(',',$access);
         // }
     ?>
-    <body>
+    <body class="body">
         <div id="topo"><?php require __DIR__ . "/topo.php"; ?></div>
         <div class="content">
             <section class="loading">

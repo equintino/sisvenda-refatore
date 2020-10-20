@@ -29,6 +29,7 @@ class CreateUsersTable implements CreateTable
             $table->int("PRINCIPAL")->nullable();
             $table->string("Cargo",255)->nullable();
             $table->int("Usuario_id,Group_id")->nullable();
+            $table->token();
             $table->timestamps();
             return $table->run();
         });

@@ -10,7 +10,7 @@ abstract class Model
     protected static $safe = [ "id", "created_at", "updated_at" ];
 
     /** @var string $entity */
-    protected static $entity;
+    //public static $entity;
 
     /** @var object|null */
     protected $data;

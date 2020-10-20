@@ -20,30 +20,30 @@ $(function($) {
         change = changeCheck($(this), "fa fa-check", "fa fa-times");
     });  
 
-    $("button.save, button.cancel").click(function() {
+    $("button.save, button.cancel").on("click", function(e) {
+        e.preventDefault();
         var btnName = this["innerText"];   
         if(btnName === "Adicionar Grupo") {
-            modal.show({
+            var formGroup = modal.show({
                 title: "Cadastro de Grupo",
                 message: null,
                 content: "../Modals/grupo.php"
             });
-            $("#boxe_main").on("click", function(e) {
+            $(formGroup.content).on("submit", function(e){
                 e.preventDefault();
-                $("form#group-registration button").on("click", function() {
-                    var groupName = $("[name=group-name]").val();
-                    if(groupName === "") return;
-                    var link = "../Support/ajaxSave.php";
-                    var data = {
-                        name: groupName,
-                        act: "group",
-                        action: "add"
-                    };
-                    saveData(link, data);
+                var groupName = $("[name=group-name]").val();
+                if(groupName === "") return;
+                var link = "../Support/ajaxSave.php";
+                var data = {
+                    name: groupName,
+                    act: "group",
+                    action: "add"
+                };
+                if(saveData(link, data)) {
                     setTimeout(function() {
                         $("#mask_main").trigger("click");
                     }, 1000);
-                });
+                }
             });
         } 
         else if(btnName === "Excluir Grupo") {

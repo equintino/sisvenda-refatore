@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-
+        "phpmailer/phpmailer": "^6.1"
     },
     "autoload": {
         "files": [
@@ -19,7 +19,8 @@
         ],
         "psr-4": {
             "Test\\": "test",
-            "Config\\": "source/config",
+            "Classes\\": "source/Classes",
+            "Config\\": "source/Config",
             "Core\\": "source/Core",
             "Models\\": "source/Models",
             "Controllers\\": "source/Controllers"

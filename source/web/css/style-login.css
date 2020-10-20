@@ -1,7 +1,3 @@
-body {
-    background: var(--cor-body);
-}
-
 .container .header {
     text-align: justify;
     margin: 20px auto;
@@ -43,27 +39,6 @@ body {
 #exhibition {
     width: 70%;
     margin: auto;
-}
-
-#exhibition fieldset, #add fieldset {
-    box-shadow: 2px 2px 2px gray;
-    border-radius: 5px;
-    background: var(--cor-primary-light);
-}
-
-#exhibition fieldset legend, #add fieldset legend {
-    color: var(--cor-primary);
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-#exhibition fieldset table thead th {
-    font-size: .7rem;
-    border-bottom: 1px solid black;
-}
-
-#exhibition fieldset table tr:last-child {
-    border-bottom: 1px solid black;
 }
 
 #add, #edit {

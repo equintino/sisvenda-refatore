@@ -42,8 +42,11 @@ $(document).ready(function() {
                         }
                     );
                     var link = "../Support/ajaxSave.php?act=login";
-                    if(saveData(link, dataSet)) {
-                        $("#exhibition").find("button[type=reset]").trigger("click");
+                    var result = saveData(link, dataSet);
+                    if(result) {
+                        $("#exhibition form#login-register")
+                            .find("button[type=reset]")
+                            .trigger("click");
                     }
             });
 
@@ -111,7 +114,22 @@ $(document).ready(function() {
             });
         }
         else if(action === "Reseta") {
-            alert(action);
+            var link = "../Support/ajaxSave.php";
+            var data = [
+                {
+                    name: "act",
+                    value: "login"
+                },
+                {
+                    name: "Logon",
+                    value: login
+                },
+                {
+                    name: "action",
+                    value: "reset"
+                }
+            ];
+            saveData(link, data);
         }
     });
 });

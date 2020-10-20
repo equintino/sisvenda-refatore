@@ -39,7 +39,7 @@ if($act === "global") {
     fclose($handle);
 }
 /** save configuration file */
-elseif($act === "connection") {
+elseif($act === "connection" || $act === "add") {
     $connectionName = $params["connectionName"];
     $data = $params["data"];
     $config = new Config\Config();
@@ -102,6 +102,20 @@ elseif($act === "login") {
         $user = (new Models\User())->find($params["Logon"]);
         $user->destroy();
         return print(json_encode($user->message(), 
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    elseif($params["action"] === "reset") {
+        $user = (new Models\User())->find($params["Logon"]);
+        $user->token();
+        return print(json_encode($user->message(),
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+    elseif($params["action"] === "change") {
+        $user = (new Models\User())->find($params["login"]);
+        $user->Senha = $user->crypt($params["senha"]);
+        $user->token = null;
+        $user->save();
+        return print(json_encode($user->message(),
             JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 }

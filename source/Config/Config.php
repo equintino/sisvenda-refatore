@@ -26,7 +26,7 @@ class Config
     public function setConfConnection(string $connectionName, string $data)
     {
         parse_str($data, $data);
-        $this->local = $connectionName;
+        $this->local = (!empty($connectionName) ? $connectionName : $data["connectionName"]);
         $this->data = $data;
         $this->setType($this->data["type"]);
         $this->setAddress($this->data["address"]);
@@ -133,8 +133,8 @@ class Config
 
     public function save(): ?bool
     {
-        $passwd = !empty($this->getPasswd()) ?
-                    base64_encode($this->getPasswd()) : $this->file[$this->local]["passwd"];
+        $passwd = (!empty($this->getPasswd()) ?
+                    base64_encode($this->getPasswd()) : $this->file[$this->local]["passwd"]);
 
         $this->file[$this->local] = [
             "dsn" => $this->getDsn(),
@@ -153,7 +153,7 @@ class Config
 
     private function saveFile(array $data): bool
     {
-        $file = __DIR__ . "/../config/.config.ini";
+        $file = __DIR__ . "/../Config/.config.ini";
         /** saving file */
         $handle = fopen($file, "r+");
         ftruncate($handle, 0);

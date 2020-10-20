@@ -174,4 +174,10 @@ class Blueprint
 
         return $this;
     }
+
+    public function token()
+    {
+        $this->sql .= ", token VARCHAR(255) null";
+        return $this;
+    }
 }

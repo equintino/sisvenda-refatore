@@ -69,8 +69,8 @@ class Connect
 
     public static function getFile()
     {
-        if(file_exists(__DIR__ . "/../config/.config.ini")) {
-            return self::$file = __DIR__ . "/../config/.config.ini";
+        if(file_exists(__DIR__ . "/../Config/.config.ini")) {
+            return self::$file = __DIR__ . "/../Config/.config.ini";
         }
         return "Arquivo de configuração não encontrado!";
     }

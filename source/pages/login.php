@@ -24,7 +24,7 @@
     </div>
     <!-- Edição -->
     <div id="exhibition" >
-        <fieldset class="p-3" >
+        <fieldset class="fieldset p-3" >
             <legend>LISTA DE USUÁRIOS</legend>
             <table id="tabList" class="my-table" width="100%" >
                 <thead>

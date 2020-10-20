@@ -7,7 +7,7 @@ use Database\Migrations\CreateGroupsTable;
 
 class Group extends Model implements Models
 {
-    protected static $entity = "tb_group";
+    public static $entity = "tb_group";
 
     /** @var array */
     private $required = [ "name", "access", "active" ];
@@ -17,7 +17,7 @@ class Group extends Model implements Models
         $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE id=:id", "id={$id}");
 
         if($this->fail || !$load->rowCount()) {
-            $this->message = "Grupo não encontrado do id informado.";
+            $this->message = "<span class='warning'>Grupo não encontrado do id informado</span>";
             return null;
         }
         
@@ -31,7 +31,7 @@ class Group extends Model implements Models
         }
 
         if($this->fail || !$find->rowCount()) {
-            $this->message = "Grupo não encontrado.";
+            $this->message = "<span class='warning'>Grupo não encontrado</span>";
             return null;
         }
         
@@ -46,14 +46,14 @@ class Group extends Model implements Models
             . $this->limit(), "limit={$limit}&offset={$offset}");
 
         if($this->fail || !$all->rowCount()) {
-            $this->message = "Sua consulta não retornou nenhum grupo.";
+            $this->message = "<span class='warning'>Sua consulta não retornou nenhum grupo</span>";
             return null;
         }
         
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function save()
+    public function save(): ?Group
     {
         if(!$this->required()) {
             return null;
@@ -65,31 +65,31 @@ class Group extends Model implements Models
             $group = $this->read("SELECT id FROM " . self::$entity . " WHERE name = :name AND id != :id", 
                 "name={$this->name}&id={$groupId}");
             if($group->rowCount()) {
-                $this->message = "O Grupo informado já está cadastrado.";
+                $this->message = "<span class='warning'>O Grupo informado já está cadastrado</span>";
                 return null;
             }
             
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$groupId}");
             if($this->fail()) {
-                $this->message = "Erro ao atualizar, verifique os dados.";
+                $this->message = "<span class='error'>Erro ao atualizar, verifique os dados</span>";
                 return null;
             }
 
-            $this->message = "Dados atualizados com sucesso.";
+            $this->message = "<span class='success'>Dados atualizados com sucesso</span>";
         }
 
         /** Create */
         if(empty($this->id)) {
             if($this->find($this->name)) {
-                $this->message = "O grupo informado já está cadastrado.";
+                $this->message = "<span class='warning'>O grupo informado já está cadastrado</span>";
                 return null;
             }
             $groupId = $this->create(self::$entity, $this->safe());
             if($this->fail()) {
-                $this->message = "Erro ao cadastrar, verifique os dados.";
+                $this->message = "<span class='error'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
-            $this->message = "Cadastro realizado com sucesso.";
+            $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
         }
         $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE id=:id", "id={$groupId}")->fetch();
 
@@ -103,10 +103,10 @@ class Group extends Model implements Models
         }
 
         if($this->fail()) {
-            $this->message = "Não foi possível remover o grupo";
+            $this->message = "<span class='error'>Não foi possível remover o grupo</span>";
             return null;
         }
-        $this->message = "Grupo foi removido com sucesso";
+        $this->message = "<span class='success'>Grupo foi removido com sucesso</span>";
         $this->data = null;
 
         return $this;
@@ -116,7 +116,7 @@ class Group extends Model implements Models
     {
         foreach($this->required as $field) {
             if(empty(trim($this->$field))) {
-                $this->message = "O campo {$field} é obrigatório.";
+                $this->message = "<span class='warning'>O campo {$field} é obrigatório</span>";
                 return false;
             }
         }

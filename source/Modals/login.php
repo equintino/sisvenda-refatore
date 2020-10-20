@@ -1,6 +1,6 @@
 <?php
     require __DIR__ . "/../../vendor/autoload.php";
-
+    
     $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
     $companys = (new Models\Company())->all();
     $users = (new Models\User())->find(["IDEmpresa" => $companyId]);
@@ -10,11 +10,21 @@
     $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
     $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
     $user = (new Models\User())->find($login); ?>
+<style>
+    #boxe_main {
+        width: 40%;
+        margin-top: -280px;
+        padding: 30px;
+    }
 
+    form#form-token input {
+        text-align: center;
+    }
+</style>
 <?php if($act === "edit"): ?>
 <div id="edit" >
     <form id="login-register" action="#" method="POST" class="form-horizontal">
-        <fieldset class="p-3">
+        <fieldset class="fieldset">
             <legend>IDENTIFICAÇÃO</legend>
             <div class="form-row mb-2">
                 <div class="col-md">
@@ -101,4 +111,13 @@
         </tbody>
     </table>
 </fieldset>
+<?php elseif($act === "token"): ?>
+<form id="form-token" class="form-signin" action="#" method="POST" >
+    <input type="hidden" name="login" value="<?= $login ?>" />
+    <input class="form-control" type="password" name="senha" autofocus/>
+    <label class="label" for="senha">Digite sua nova senha</label>
+    <input class="form-input" type="password" name="confSenha" />
+    <label class="label" for="confSenha">Confirme</label>
+    <button id="btn-token" class="button-style mt-3" >Enviar</button>
+</form>
 <?php endif; ?>

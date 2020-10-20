@@ -1,9 +1,9 @@
 <style>
     .footer{
-	position: fixed;
-	z-index: 9; 
-	top: 90%;
-	left: 10px;
+		position: fixed;
+		z-index: 9; 
+		top: 90%;
+		left: 10px;
     }
 </style>
 <div class="footer">

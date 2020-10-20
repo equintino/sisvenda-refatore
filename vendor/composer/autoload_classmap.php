@@ -6,18 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Config\\Config' => $baseDir . '/source/config/Config.php',
-    'Config\\GlobalEnv' => $baseDir . '/source/config/GlobalEnv.php',
-    'Controllers\\Config' => $baseDir . '/source/Controllers/Config_old.php',
-    'Controllers\\Controller' => $baseDir . '/source/Controllers/Controller.php',
-    'Controllers\\User' => $baseDir . '/source/Controllers/User.php',
-    'Core\\Connect' => $baseDir . '/source/Core/Connect.php',
-    'Core\\Model' => $baseDir . '/source/Core/Model.php',
-    'Core\\Safety' => $baseDir . '/source/Core/Safety.php',
-    'Core\\Session' => $baseDir . '/source/Core/Session.php',
-    'Core\\SqlParams' => $baseDir . '/source/Core/SqlParams.php',
-    'Models\\Group' => $baseDir . '/source/Models/Group.php',
-    'Models\\Models' => $baseDir . '/source/Models/Models.php',
-    'Models\\User' => $baseDir . '/source/Models/User.php',
-    'Test\\CreationTableTest' => $baseDir . '/test/CreationTableTest.php',
 );
