@@ -45,7 +45,7 @@ if($globalEnv->getLocal()) {
         return print(json_encode("A senha digitada não confere", JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
     else {
-        echo json_encode("Não foi encontrado o login informado ou senha incorreta!", JSON_UNESCAPED_UNICODE);
+        echo json_encode("Não foi encontrado o login informado", JSON_UNESCAPED_UNICODE);
     }
 }
 else {

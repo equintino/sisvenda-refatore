@@ -83,6 +83,7 @@ var loading = {
             "text-shadow": "1px 1px 1px white"
         });
         $("#mask_main").css("z-index","3");
+        return this;
     },
     hide: function() {
         $("body section#loading").remove();
@@ -209,6 +210,7 @@ var saveData = function(link, data, msg = "Salvando", img = null) {
                 source: img,
                 text: msg
             });
+            $("#mask_main").fadeIn();
         },
         success: function(response) {
             var background = "var(--cor-warning)";
@@ -230,6 +232,7 @@ var saveData = function(link, data, msg = "Salvando", img = null) {
             setTimeout(function() {
                  $("#flashes").slideUp();
                  loading.hide();
+                 $("#mask_main").fadeOut();
             }, setTime);
         },
         error: function(error) {   
@@ -244,6 +247,7 @@ var saveData = function(link, data, msg = "Salvando", img = null) {
             setTimeout(function() {
                 $("#flashes").slideUp();
                 loading.hide();
+                $("#mask_main").fadeOut();
             }, setTime);   
         },
         complete: function(data) {}
