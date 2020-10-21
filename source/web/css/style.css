@@ -65,8 +65,8 @@
 
 .flash, #flashes {
     position: fixed;
-    //top: 0px;
-    min-width: 20%;
+    top: 0px;
+    width: 100%;
     background: var(--cor-secondary);
     padding: 10px 30px;
     color: white;
