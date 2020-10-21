@@ -34,10 +34,12 @@ $config->local = ($act !== "add" ? $connectionName : null); ?>
         <label class="label" for="user">Usuário do Banco: </label>
         <input class="form-input" type="text" name="user" value="<?= (isset($connectionName) ? $config->user() : null) ?>" autocomplete="off" />
     </div>
+    <?php if(!isset($connectionName)): ?>
     <div class="form-group">
         <label class="label" for="passwd">Senha: </label>
         <input class="form-input" type="password" name="passwd" autocomplete="off" />
     </div>
+    <?php endif ?>
     <div style="text-align: right">
         <button class="button save" >Save</button>
     </div>

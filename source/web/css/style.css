@@ -39,10 +39,6 @@
     background-image: linear-gradient(to right, #ccc, #F3F3F3); 
 }
 
-#topHeader {
-    background: var(--cor-primary);
-}
-
 .mask {
     display: none;
     position: absolute;
@@ -63,12 +59,16 @@
     z-index: 10;
 }
 
+#top {
+    background: var(--cor-primary);
+}
+
 .flash, #flashes {
     position: fixed;
-    top: 0;
-    width: 100%;
-    background: #222629;
-    padding: 10px;
+    //top: 0px;
+    min-width: 20%;
+    background: var(--cor-secondary);
+    padding: 10px 30px;
     color: white;
     display: none;
     text-transform: uppercase;
@@ -245,8 +245,10 @@
 /** login identification */
 .identification {
     color: var(--cor-primary);
-    float: right;
-    margin-right: 10px;
+    position: absolute;
+    right: 10px;
+    //float: right;
+    //margin-right: 10px;
     font-weight: 700;
     font-size: .9em;
 }

@@ -217,14 +217,19 @@ var saveData = function(link, data, msg = "Salvando", img = null) {
             }
             else {
                 success = false;
-            }           
+            }
+            var top = $("#top").height();     
             $("#flashes")
                 .html(response)
-                .css("background", background)
-                .slideDown();
+                .css({
+                    background: background,
+                    "margin-top": 0
+                })
+                .show(200)
+                .animate({"margin-right": '+=400'});
             setTimeout(function() {
-                $("#flashes").slideUp();
-                loading.hide();
+                 $("#flashes").hide(200).animate({"margin-right": "+=4000"});
+                 loading.hide();
             }, setTime);
         },
         error: function(error) {                             
