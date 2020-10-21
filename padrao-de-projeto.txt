@@ -68,7 +68,7 @@ stap by stap
 - adicionar nova configuração de servidor
 	- impedir salvar nome de conexão repetido
 - não permitir excluir um usuário logado - ok
-- exibir mascará ao salvar
+- exibir mascará ao salvar - ok
 
 
 
