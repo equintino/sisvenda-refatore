@@ -91,7 +91,7 @@ var loading = {
 };
 
 /** save configuration */
-var saveForm = function(connectionName = null) {
+var saveForm = function(connectionName = null, className = null) {
     $("#boxe_main").on("submit", function(e) {
         e.preventDefault();
         var data = $("#boxe_main form").serialize();
@@ -100,6 +100,7 @@ var saveForm = function(connectionName = null) {
             type: "POST",
             dataType: "JSON",
             data: {
+                class: className, 
                 act: "connection",
                 connectionName: connectionName,
                 data: data
@@ -367,6 +368,7 @@ $(function($) {
                 title: "Preencha os dados abaixo:",
                 content: content
             });
+            
             saveForm();
         }
     });
@@ -443,7 +445,7 @@ $(function($) {
         else {
             return false;
         }
-        saveForm(connectionName); 
+        saveForm(connectionName, "Config"); 
     });  
     $(document).on("keyup", function(e) {
         e.preventDefault();
