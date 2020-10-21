@@ -67,6 +67,7 @@ stap by stap
 	- enviar um link no e-mail para resetar senha - ?
 - adicionar nova configuração de servidor
 	- impedir salvar nome de conexão repetido
+- não permitir excluir um usuário logado - ok
 
 
 

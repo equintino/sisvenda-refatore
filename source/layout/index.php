@@ -50,7 +50,7 @@
         // }
     ?>
     <body class="body">
-        <div id="topo"><?php require __DIR__ . "/topo.php"; ?></div>
+        <div id="top"><?php require __DIR__ . "/top.php"; ?></div>
         <div class="content">
             <section class="loading">
                 <img src="../web/img/loading.gif" alt="reading" height="150px"/>

@@ -91,7 +91,7 @@ var loading = {
 };
 
 /** save configuration */
-var saveForm = function(connectionName = null) {
+var saveForm = function(connectionName = null, className = null) {
     $("#boxe_main").on("submit", function(e) {
         e.preventDefault();
         var data = $("#boxe_main form").serialize();
@@ -100,6 +100,7 @@ var saveForm = function(connectionName = null) {
             type: "POST",
             dataType: "JSON",
             data: {
+                class: className, 
                 act: "connection",
                 connectionName: connectionName,
                 data: data
@@ -217,20 +218,28 @@ var saveData = function(link, data, msg = "Salvando", img = null) {
             }
             else {
                 success = false;
-            }           
+            }
+            var top = $("#top").height();
             $("#flashes")
                 .html(response)
-                .css("background", background)
+                .css({
+                    background: background,
+                    top: top
+                })
                 .slideDown();
             setTimeout(function() {
-                $("#flashes").slideUp();
-                loading.hide();
+                 $("#flashes").slideUp();
+                 loading.hide();
             }, setTime);
         },
-        error: function(error) {                             
+        error: function(error) {   
+            var top = $("#top").height();                          
             $("#flashes")
                 .html(error)
-                .css("background", "var(--cor-error)")
+                .css({
+                    background: "var(--cor-error)",
+                    top: top
+                })
                 .slideDown();
             setTimeout(function() {
                 $("#flashes").slideUp();
@@ -359,6 +368,7 @@ $(function($) {
                 title: "Preencha os dados abaixo:",
                 content: content
             });
+            
             saveForm();
         }
     });
@@ -435,7 +445,7 @@ $(function($) {
         else {
             return false;
         }
-        saveForm(connectionName); 
+        saveForm(connectionName, "Config"); 
     });  
     $(document).on("keyup", function(e) {
         e.preventDefault();

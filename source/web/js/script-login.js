@@ -85,11 +85,22 @@ $(document).ready(function() {
             });
         }
         else if(action === "Exclui") {
-            var conf = modal.confirm({
+            var logged = $(".identification").text().split(":")[1].trim().toLowerCase();
+            if(logged === login) {
+                bootbox.alert({
+                    message: "Usuário logado, não é permitido excluí-lo",
+                    buttons: {
+                        ok: {
+                            className: "button info"
+                        }
+                    }
+                });
+                return null;
+            }
+            modal.confirm({
                 title: "Você deseja realmente excluir o usuário <span style='color:red; margin-left: 5px'><strong>" + login + "</strong></span>"
 
-            });
-            conf.on("click", function() {
+            }).on("click", function() {
                 var dataSet = [
                     {
                         name: "act",
