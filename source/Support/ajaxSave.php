@@ -39,13 +39,24 @@ if($act === "global") {
     fclose($handle);
 }
 /** save configuration file */
-elseif($act === "connection" || $act === "add") {
+elseif($act === "add") {
+    $data = $params["data"];
+    $config = new Config\Config();
+    parse_str($data, $connectionName);
+    
+    $config->setConfConnection($connectionName["connectionName"], $data);
+    $config->confirmSave();
+    //$config->save();
+    echo json_encode($config->message());
+}
+elseif($act === "edit" ) {
     $connectionName = $params["connectionName"];
     $data = $params["data"];
     $config = new Config\Config();
 
     $config->setConfConnection($connectionName, $data);
-    echo json_encode($config->save());
+    $config->save();
+    echo json_encode($config->message());
 }
 /** delete configuration */
 elseif($act === "delete") {

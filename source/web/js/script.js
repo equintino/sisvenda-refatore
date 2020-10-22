@@ -43,7 +43,6 @@ var modal = {
         this.content.html("<div align='right'><button class='button cancel' value='0'>Cancela</button><button class='button error' style='margin-left: 3px' value='1'>Confirma</button></div>");
         this.show(params);
 
-        var that = this;
         return this.content.find("button").on("button click", function() {
             if($(this).val() == 0) {
                 $("#boxe_main .close").trigger("click");
@@ -92,17 +91,18 @@ var loading = {
 };
 
 /** save configuration */
-var saveForm = function(connectionName = null, className = null) {
+var saveForm = function(act, connectionName = null) {
     $("#boxe_main").on("submit", function(e) {
         e.preventDefault();
         var data = $("#boxe_main form").serialize();
+        var top = $("#top").height();
         $.ajax({
             url: "../Support/ajaxSave.php",
             type: "POST",
             dataType: "JSON",
             data: {
-                class: className, 
-                act: "connection",
+                //class: className, 
+                act: act,
                 connectionName: connectionName,
                 data: data
             },
@@ -111,8 +111,42 @@ var saveForm = function(connectionName = null, className = null) {
                     text: "salvando"
                 });
             },
-            success: function(response) {},
-            error: function(error) {},
+            success: function(response) {
+                var background = "var(--cor-warning)";
+                if(response.indexOf("success") !== -1) {
+                    background = "var(--cor-success)";
+                    success = true;
+                }
+                else {
+                    success = false;
+                }
+                $("#flashes")
+                    .html(response)
+                    .css({
+                        background: background,
+                        top: top
+                    })
+                    .slideDown();
+                setTimeout(function() {
+                    $("#flashes").slideUp();
+                    loading.hide();
+                    $("#mask_main").fadeOut();
+                }, setTime);
+            },
+            error: function(error) {
+                $("#flashes")
+                    .html(error)
+                    .css({
+                        background: "var(--cor-error)",
+                        top: top
+                    })
+                    .slideDown();
+                setTimeout(function() {
+                    $("#flashes").slideUp();
+                    loading.hide();
+                    $("#mask_main").fadeOut();
+                }, setTime);
+            },
             complete: function() {
                 setTimeout(function() {
                     loading.hide();
@@ -363,20 +397,15 @@ $(function($) {
      * Edition of the configuration
      */
     $("#config .buttons .button").on("click", function(e) {
-        e.preventDefault();alert("entrei");
+        e.preventDefault();
         if($(this).text() === "Adicionar") {
             var content = "../Modals/config.php?act=add";
             modal.show({
                 title: "Preencha os dados abaixo:",
                 content: content
-            }).on("submit", function() {
-                alert("oi");
-                console.log($(this));
             });
-            alert("passei");
             
-            //console.log(saveData(content, dataSet));
-            //saveForm();
+            console.log(saveForm("add"));
         }
     });
     $("table#tabConf tbody .edition, table#tabConf tbody .delete").on("click", function() {
@@ -406,6 +435,7 @@ $(function($) {
                 message: message,
                 content: content
             });
+            saveForm("edit", connectionName);
         }
         else if($(this).hasClass("delete")) {
             title = "Modo de Exclusão de (" + connectionName + ")";
@@ -452,7 +482,6 @@ $(function($) {
         else {
             return false;
         }
-        saveForm(connectionName, "Config"); 
     });  
     $(document).on("keyup", function(e) {
         e.preventDefault();

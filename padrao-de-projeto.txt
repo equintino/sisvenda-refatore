@@ -66,10 +66,11 @@ stap by stap
 	- gravar um token para resetar senha - ok
 	- enviar um link no e-mail para resetar senha - ?
 - adicionar nova configuração de servidor
-	- impedir salvar nome de conexão repetido
+	- impedir salvar nome de conexão repetido - ok
 - não permitir excluir um usuário logado - ok
 - exibir mascará ao salvar - ok
 - na edição de usuario somente no segundo click que aceita salvar - ok
+- advertir antes de resetar a senha
 
 
 
