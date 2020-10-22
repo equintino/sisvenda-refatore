@@ -363,15 +363,20 @@ $(function($) {
      * Edition of the configuration
      */
     $("#config .buttons .button").on("click", function(e) {
-        e.preventDefault();
+        e.preventDefault();alert("entrei");
         if($(this).text() === "Adicionar") {
             var content = "../Modals/config.php?act=add";
             modal.show({
                 title: "Preencha os dados abaixo:",
                 content: content
+            }).on("submit", function() {
+                alert("oi");
+                console.log($(this));
             });
+            alert("passei");
             
-            saveForm();
+            //console.log(saveData(content, dataSet));
+            //saveForm();
         }
     });
     $("table#tabConf tbody .edition, table#tabConf tbody .delete").on("click", function() {

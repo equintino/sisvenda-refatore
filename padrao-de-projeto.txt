@@ -69,7 +69,7 @@ stap by stap
 	- impedir salvar nome de conexão repetido
 - não permitir excluir um usuário logado - ok
 - exibir mascará ao salvar - ok
-- na edição de usuario somente no segundo click que aceita salvar
+- na edição de usuario somente no segundo click que aceita salvar - ok
 
 
 

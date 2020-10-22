@@ -20,7 +20,6 @@
     </head>   
     <body class="text-center gradient">
         <div class="mask"></div>
-        <div class="loading"><img src='source/web/img/loading.gif' alt='lendo' /></div>
         <div class="flash"></div>
         <div class="logo"></div>
         <div class="container">
