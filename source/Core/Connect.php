@@ -37,7 +37,7 @@ class Connect
             } 
             catch (\PDOException $exception) {
                 die("<div>Whoops, houve algum erro ao conectar com o banco!</div>");
-                //;(<i style='font-size: .7em'>" . $exception->getMessage() . "</i>)");
+                //die("<i style='font-size: .7em'>" . $exception->getMessage() . "</i>)");
             }
         }
 

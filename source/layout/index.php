@@ -53,8 +53,9 @@
         <div id="top"><?php require __DIR__ . "/top.php"; ?></div>
         <div class="content">
             <section class="loading">
-                <img src="../web/img/loading.gif" alt="reading" />
+                <img class="schedule" src="../web/img/loading.png" alt="reading" height="50px"/>
             </section>
+            <p class="text-loading">Texto da ação "loading"</p>
             <div id="flashes">aqui vai sua mensagem...</div>
             <?php if(!empty($access)): ?>
                 <?php if(in_array($page, $pages) || $page === 'home' ):

@@ -65,24 +65,22 @@ $(document).ready(function() {
                     e.preventDefault();
                     var buttonName;
                     var dataSet = $(this).find("form").serializeArray();
-                    $(this).find("button").on("click", function() {
-                        buttonName = $(this).text();
-                        if(buttonName !== "Salvar") {
-                            dataSet.push(
-                                {
-                                    name: "act",
-                                    value: "login"    
-                                },
-                                {
-                                    name: "action",
-                                    value: "edit"
-                                }
-                            );
-                            var link = "../Support/ajaxSave.php";
-                            saveData(link, dataSet);
-                        }
-                    });
-            });
+                    buttonName = $(this).text();
+                    if(buttonName !== "Salvar") {
+                        dataSet.push(
+                            {
+                                name: "act",
+                                value: "login"    
+                            },
+                            {
+                                name: "action",
+                                value: "edit"
+                            }
+                        );
+                        var link = "../Support/ajaxSave.php";
+                        saveData(link, dataSet);
+                    }
+                });
         }
         else if(action === "Exclui") {
             var logged = $(".identification").text().split(":")[1].trim().toLowerCase();

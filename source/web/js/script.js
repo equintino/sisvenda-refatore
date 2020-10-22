@@ -66,27 +66,27 @@ var loading = {
     show: function(params) {
         var text = (params.text ? params.text : null) ;
         var source = (params.source ? params.source : this.source);
-        $("body")
-            .append("<section id='loading'><img class='schedule ml-3' src='" + source + "' alt='loading' height='50' /><p align='center'>" + text + "...</p></section>");
-        $("section#loading").css({
-                position: "fixed",
-                top: "25%",
-                left: "45%",
-                "z-index": "9"
-            });
-        $("section#loading > p").css({
-            position: "relative",
-            left: "-2px",
-            "letter-spacing": ".1rem",
-            color: "var(--cor-primary)",
-            "font-size": "1.2rem",
-            "text-shadow": "1px 1px 1px white"
-        });
         $("#mask_main").css("z-index","3");
+        /*$("body")
+            .append("<section class='loading'><img class='schedule' src='" + source + "' alt='loading' height='40' /><p>" + text + "...</p></section>");*/
+        $("section.loading")
+            .css({
+                display: "flex"
+            });
+        $(".text-loading").text(text + "...").css("display","flex");
+        // $("section.loading > p").css({
+        //     //position: "relative",
+        //     //left: "-2px",
+        //     "letter-spacing": ".1rem",
+        //     color: "var(--cor-primary)",
+        //     "font-size": "1.2rem",
+        //     "text-shadow": "1px 1px 1px white"
+        // });
         return this;
     },
     hide: function() {
-        $("body section#loading").remove();
+        $("section.loading, .text-loading").fadeOut();
+        //$("body section.loading").remove();
         $("#mask_main").css("z-index","1");
     }
 };
@@ -196,7 +196,7 @@ var changeCheck = function(element, optionGreen, optionRed) {
     return true;
 };
 
-var saveData = function(link, data, msg = "Salvando", img = null) {
+var saveData = function(link, data, msg = "Salvando") {
     var success = false;
     $.ajax({
         url: link,
@@ -206,11 +206,10 @@ var saveData = function(link, data, msg = "Salvando", img = null) {
         async: false,
         data: data,
         beforeSend: function() {
+            $("#mask_main").show();
             loading.show({
-                source: img,
                 text: msg
             });
-            $("#mask_main").fadeIn();
         },
         success: function(response) {
             var background = "var(--cor-warning)";
@@ -315,8 +314,7 @@ $(function($) {
                                 }, setTime);
                             }
                             else {
-                                img = "source/web/img/loading.png";
-                                if(saveData(link, dataSet, "Salvando", img)) {
+                                if(saveData(link, dataSet, "Salvando")) {
                                     $(".flash")
                                         .text("A senha foi salva com sucesso")
                                         .css("background", "var(--cor-success")
