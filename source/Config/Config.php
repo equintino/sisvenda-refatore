@@ -145,9 +145,6 @@ class Config
 
     public function save(): ?bool
     {
-        //$passwd = (!empty($this->getPasswd()) ?
-                    //base64_encode($this->getPasswd()) : $this->file[$this->local]["passwd"]);
-
         $this->file[$this->local] = [
             "dsn" => $this->getDsn(),
             "user" => $this->getUser(),

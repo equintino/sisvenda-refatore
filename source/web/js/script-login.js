@@ -123,22 +123,30 @@ $(document).ready(function() {
             });
         }
         else if(action === "Reseta") {
-            var link = "../Support/ajaxSave.php";
-            var data = [
-                {
-                    name: "act",
-                    value: "login"
-                },
-                {
-                    name: "Logon",
-                    value: login
-                },
-                {
-                    name: "action",
-                    value: "reset"
+            var conf = modal.confirm({
+                title: "A senha será excluída"
+            })
+            conf.on("click", function() {
+                if($(this).val() == 1) {
+                    var link = "../Support/ajaxSave.php";
+                    var data = [
+                        {
+                            name: "act",
+                            value: "login"
+                        },
+                        {
+                            name: "Logon",
+                            value: login
+                        },
+                        {
+                            name: "action",
+                            value: "reset"
+                        }
+                    ];
+                    modal.hide();
+                    saveData(link, data);
                 }
-            ];
-            saveData(link, data);
+            });            
         }
     });
 });

@@ -46,7 +46,6 @@ elseif($act === "add") {
     
     $config->setConfConnection($connectionName["connectionName"], $data);
     $config->confirmSave();
-    //$config->save();
     echo json_encode($config->message());
 }
 elseif($act === "edit" ) {
