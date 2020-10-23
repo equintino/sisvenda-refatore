@@ -56,11 +56,12 @@ class Config
     public function setType(string $type)
     {
         $dsn = "";
-        if($type === "sqlsrv") {
-            $dsn .= "sqlsrv:Server=";
-        } 
-        else {
-            $dsn .= "mysql:host=";
+        switch($type) {
+            case "sqlsrv":
+                $dsn .= "sqlsrv:Server=";
+                break;
+            case "mysql":
+                $dsn .= "mysql:host=";
         }
         $this->dsn = $dsn;
     }

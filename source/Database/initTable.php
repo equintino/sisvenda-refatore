@@ -4,7 +4,7 @@
 require __DIR__ . "/../autoload.php";
 
 $creation = new Database\CreationProcess();
-$creation->define("local");
+$creation->define("teste2");
 
 /** init table tb_usuario */
 $user = new Models\User();

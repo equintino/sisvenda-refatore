@@ -70,7 +70,7 @@ stap by stap
 - não permitir excluir um usuário logado - ok
 - exibir mascará ao salvar - ok
 - na edição de usuario somente no segundo click que aceita salvar - ok
-- advertir antes de resetar a senha
+- advertir antes de resetar a senha - ok
 
 
 
