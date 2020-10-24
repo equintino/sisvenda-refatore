@@ -10,7 +10,7 @@ class Group extends Model implements Models
     public static $entity = "tb_group";
 
     /** @var array */
-    private $required = [ "name", "access", "active" ];
+    private $required = [ "name" ];
 
     public function load(int $id, string $columns = "*")
     {
@@ -71,7 +71,7 @@ class Group extends Model implements Models
             
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$groupId}");
             if($this->fail()) {
-                $this->message = "<span class='error'>Erro ao atualizar, verifique os dados</span>";
+                $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>";
                 return null;
             }
 
@@ -86,7 +86,7 @@ class Group extends Model implements Models
             }
             $groupId = $this->create(self::$entity, $this->safe());
             if($this->fail()) {
-                $this->message = "<span class='error'>Erro ao cadastrar, verifique os dados</span>";
+                $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
@@ -103,7 +103,7 @@ class Group extends Model implements Models
         }
 
         if($this->fail()) {
-            $this->message = "<span class='error'>Não foi possível remover o grupo</span>";
+            $this->message = "<span class='danger'>Não foi possível remover o grupo</span>";
             return null;
         }
         $this->message = "<span class='success'>Grupo foi removido com sucesso</span>";

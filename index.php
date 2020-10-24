@@ -20,7 +20,7 @@
     </head>   
     <body class="text-center gradient">
         <div class="mask"></div>
-        <div class="flash"></div>
+        <div id="flashes"></div>
         <div class="logo"></div>
         <div class="container">
             <div class="login">
@@ -31,7 +31,7 @@
                     </div>
                     <div class="input-group">
                         <i class="fa fa-key icon-input"></i>
-                        <input id="password" type="password" class="form-input" name="password" placeholder="Senha" required />
+                        <input id="password" type="password" class="form-input" name="password" placeholder="Senha" />
                     </div>
                     <div class="input-group">
                         <i class="fa fa-building icon-input"></i>

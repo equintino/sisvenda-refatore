@@ -135,12 +135,12 @@ $(document).ready(function() {
                             value: "login"
                         },
                         {
-                            name: "Logon",
-                            value: login
-                        },
-                        {
                             name: "action",
                             value: "reset"
+                        },
+                        {
+                            name: "Logon",
+                            value: login
                         }
                     ];
                     modal.hide();

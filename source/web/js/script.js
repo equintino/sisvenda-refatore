@@ -198,10 +198,15 @@ var insertCheck = function(screens, element, optionGreen, optionRed) {
 
 /** @return object */
 var getScreenAccess = function(element, check) {
-    var access = []; 
+    var x = 0;
     element.each(function() {
         if($(this).find("i").hasClass(check)) {
-            access.push($(this).text());
+            if(x++ === 0) {
+                access = $(this).text();
+            }
+            else {
+                access += "," + $(this).text();
+            }
         }
     });
     var groupName = element.parent().find("span").text().replace("Grupo: ","");
@@ -232,6 +237,8 @@ var changeCheck = function(element, optionGreen, optionRed) {
 
 var saveData = function(link, data, msg = "Salvando") {
     var success = false;
+    var top = $("#top").height();
+    top = (typeof(top) !== "undefined" ? top : 0);
     $.ajax({
         url: link,
         type: "POST",
@@ -246,15 +253,17 @@ var saveData = function(link, data, msg = "Salvando") {
             });
         },
         success: function(response) {
-            var background = "var(--cor-warning)";
+            var background;
             if(response.indexOf("success") !== -1) {
                 background = "var(--cor-success)";
                 success = true;
             }
-            else {
-                success = false;
+            else if(response.indexOf("danger") !== -1) {
+                background = "var(--cor-danger)";
             }
-            var top = $("#top").height();
+            else {
+                background = "var(--cor-warning";
+            }
             $("#flashes")
                 .html(response)
                 .css({
@@ -265,7 +274,7 @@ var saveData = function(link, data, msg = "Salvando") {
             setTimeout(function() {
                  $("#flashes").slideUp();
                  loading.hide();
-                 $("#mask_main").fadeOut();
+                 $("#mask_main").hide();
             }, setTime);
         },
         error: function(error) {   
@@ -273,7 +282,7 @@ var saveData = function(link, data, msg = "Salvando") {
             $("#flashes")
                 .html(error)
                 .css({
-                    background: "var(--cor-error)",
+                    background: "var(--cor-danger)",
                     top: top
                 })
                 .slideDown();
@@ -281,7 +290,7 @@ var saveData = function(link, data, msg = "Salvando") {
                 $("#flashes").slideUp();
                 loading.hide();
                 $("#mask_main").fadeOut();
-            }, setTime);   
+            }, setTime);
         },
         complete: function(data) {}
     });
@@ -339,50 +348,49 @@ $(function($) {
                                 }
                             );
                             if(dataSet[1]["value"] !== dataSet[2]["value"]) {
-                                $(".flash")
+                                $("#flashes")
                                     .text("As senhas não conferem")
-                                    .css("background", "var(--cor-warning")
+                                    .css({
+                                        background: "var(--cor-warning",
+                                        top: 0
+                                    })
                                     .slideDown();
                                 setTimeout(function() {
-                                    $(".flash").slideUp();
+                                    $("#flashes").slideUp();
                                 }, setTime);
                             }
                             else {
                                 if(saveData(link, dataSet, "Salvando")) {
-                                    $(".flash")
-                                        .text("A senha foi salva com sucesso")
-                                        .css("background", "var(--cor-success")
-                                        .slideDown();
                                     setTimeout(function() {
-                                        $(".flash").slideUp();
-                                        $("#boxe_main, #mask_main").hide();
+                                        $("#boxe_main, #mask_main").fadeOut();
                                     }, setTime);
                                 }
                             }
                         });
-                    /*modal.show({
-                        title: "Cadastre uma nova senha",
-                        message: "teste",
-                        content: "source/Modals/login.php"
-                    });*/
                 }
                 else {
-                    $(".flash")
+                    $("#flashes")
                         .text(response)
-                        .css("background", "var(--cor-warning)")
+                        .css({
+                            background: "var(--cor-warning)",
+                            top: 0
+                        })
                         .slideDown();
                     setTimeout(function() {
-                        $(".flash").slideUp();
+                        $("#flashes").slideUp();
                     }, setTime);
                 }
             },
             error: function(error) {
-                $(".flash")
+                $("#flashes")
                     .html(error.responseText)
-                    .css("background","var(--cor-danger)")
+                    .css({
+                        background: "var(--cor-danger)",
+                        top: 0
+                    })
                     .slideDown();
                 setTimeout(function() {
-                    $(".flash").slideUp();
+                    $("#flashes").slideUp();
                 }, setTime);
             },
             complete: function(response) {
