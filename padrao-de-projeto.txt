@@ -53,7 +53,7 @@ stap by stap
 		   - access varchar(255) not null - ok
 		   - active(bit) not null default(1) - ok
 	- criar a model - ok
-		
+
 - remover seleção de texto
 - ativar o icone de configuração no menu - ok
 - esqueci a senha
@@ -71,9 +71,4 @@ stap by stap
 - exibir mascará ao salvar - ok
 - na edição de usuario somente no segundo click que aceita salvar - ok
 - advertir antes de resetar a senha - ok
-- criar uma class para salvamento/leitura em ajax
-
-
-
-
-
+- criar uma class para salvamento(ok)/leitura em ajax

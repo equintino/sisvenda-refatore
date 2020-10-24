@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html> 
-    <head>     
-        <title>Sistema Estruturado de Venda</title>      
+<html>
+    <head>
+        <title>Sistema Estruturado de Venda</title>
         <meta charset="UTF-8">
         <link rel="shortcut icon" href="source/web/img/logo.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +9,15 @@
         <link href="source/web/css/datatables.css" rel="stylesheet">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-        <?php 
+        <?php
             require __DIR__ . "/vendor/autoload.php";
-            
+
             $version = new Classes\Version();
             $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
             $connectionName = filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
             $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
             $connectionList = array_keys((new Config\Config())->getFile()); ?>
-    </head>   
+    </head>
     <body class="text-center gradient">
         <div class="mask"></div>
         <div id="flashes"></div>
@@ -37,7 +37,7 @@
                         <i class="fa fa-building icon-input"></i>
                         <select id="connection-name" class="form-input" name="connection-name" placeholder="Conexão" required />
                             <option value=""></option>
-                            <?php foreach($connectionList as $local): 
+                            <?php foreach($connectionList as $local):
                                 $selected = ($local === $connectionName ? "selected" : null)?>
                             <option value="<?= $local ?>" <?= $selected ?>><?= $local ?></option>
                             <?php endforeach; ?>
@@ -53,7 +53,8 @@
         </div>
         <div id="boxe_main"></div>
         <div id="mask_main"></div>
-        <script src="source/web/js/datatables.js" type="text/javascript"></script>
-        <script src="source/web/js/script.js" type="text/javascript"></script>
+        <script type="text/javascript" src="source/web/js/datatables.js" ></script>
+        <script type="text/javascript" src="source/web/js/functions.js"></script>
+        <script type="text/javascript" src="source/web/js/script.js" ></script>
     </body>
 </html>
