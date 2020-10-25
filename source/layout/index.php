@@ -57,6 +57,7 @@
             </section>
             <p class="text-loading">Texto da ação "loading"</p>
             <div id="flashes">aqui vai sua mensagem...</div>
+            <div id="screenPage">Aqui vai a página </div>
             <?php if(!empty($access)): ?>
                 <?php if(in_array($page, $pages) || $page === 'home' ):
                     include __DIR__ . "/../pages/" . $page . ".php"; ?>
