@@ -37,7 +37,7 @@ $(function($) {
             dataType: "json",
             success: function(response) {
                 if(response === 1) {
-                    $(location).attr("href","source/web/index.php?pagina=home");
+                    $(location).attr("href","source/web/index.php");
                 }
                 else if(response === 2) {
                     var link = "source/Support/ajaxSave.php";
