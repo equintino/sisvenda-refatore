@@ -32,7 +32,9 @@ if($params["act"] === "connection") {
         echo json_encode($config->message());
     }
     elseif($params["action"] === "delete") {
-        echo json_encode((new Config\Config())->delete($params["connectionName"]));
+        $config = new Config\Config();
+        $config->delete($params["connectionName"]);
+        echo json_encode($config->message());
     }
 }
 /** modal classes */

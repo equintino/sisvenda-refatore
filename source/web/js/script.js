@@ -158,7 +158,7 @@ $(function($) {
         }
         else if($(this).hasClass("delete")) {
             title = "Modo de Exclusão de (" + connectionName + ")";
-            message = "VOCÊ ESTÁ PRESTE A EXCLUIR A CONFIGURAÇÃO: <b>(" + connectionName + ")</b>";
+            message = "VOCÊ ESTÁ PRESTE A EXCLUIR A CONFIGURAÇÃO: <b style='color: red; margin-left: 5px'>(" + connectionName + ")</b>";
             bootbox.confirm({
                 message: message,
                 buttons: {
@@ -173,28 +173,13 @@ $(function($) {
                 },
                 callback: function(result){
                     if(result) {
-                        $.ajax({
-                            url: "../Support/ajaxSave.php",
-                            type: "POST",
-                            dataType: "JSON",
-                            data: {
-                                connectionName: connectionName,
-                                act: "connection",
-                                action: "delete"
-                            },
-                            bofereSend: function() {
-                                loading.show({
-                                    text: "excluindo"
-                                });
-                            },
-                            success: function(response) {
-                                window.location.reload();
-                            },
-                            error: function(error) {},
-                            complete: function() {
-                                loading.hide();
-                            }
-                        });
+                        var link = "../Support/ajaxSave.php";
+                        var data = {
+                            connectionName: connectionName,
+                            act: "connection",
+                            action: "delete"
+                        };
+                        saveData(link, data, "Excluindo");
                     }
                 }
             });
