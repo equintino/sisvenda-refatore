@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    Options All -Indexes
+
+    RewriteCond %{HTTP_HOST} !^www/. [NC]
+    RewriteRole ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>

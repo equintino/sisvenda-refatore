@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  Options All -Indexes
+  DirectoryIndex index.php
+  RewriteRule ^(.*)\   index.php?p=$1 [L]
+
+  RewriteCond %{SCRIPT_FILENAME} !-f
+  RewriteCond %{SCRIPT_FILENAME} !-d
+  RewriteRule ^([^/]*)$ index.php?pagina=$1
+  RewriteRule ^([^/]*)/$ index.php?pagina=$1
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+
+  RewriteRule ^(.*)$ index.php?uri=$1
+</IfModule>
