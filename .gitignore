@@ -1,4 +1,5 @@
-/nbproject/private/
+/.vscode/
+/nbproject/
 /vendor/
 /source/Config/.config.ini
-/source/ses
+/source/ses/

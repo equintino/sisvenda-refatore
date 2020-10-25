@@ -43,4 +43,4 @@
         </div><!-- navbar rigth-->
     </div><!-- navbar-collapse -->
 </nav>
-<div class="identification"><i>Usuário:</i> <?= ucfirst($_SESSION["login"]->login) ?></div>
+<div class="identification"><i>Usuário:</i> <?= ucfirst($_SESSION["login"]->Logon) ?></div>

@@ -10,6 +10,7 @@ class Config
     private $user;
     private $passwd;
     public $local;
+    public $message;
 
     public function __construct()
     {
@@ -55,11 +56,12 @@ class Config
     public function setType(string $type)
     {
         $dsn = "";
-        if($type === "sqlsrv") {
-            $dsn .= "sqlsrv:Server=";
-        } 
-        else {
-            $dsn .= "mysql:host=";
+        switch($type) {
+            case "sqlsrv":
+                $dsn .= "sqlsrv:Server=";
+                break;
+            case "mysql":
+                $dsn .= "mysql:host=";
         }
         $this->dsn = $dsn;
     }
@@ -123,7 +125,7 @@ class Config
 
     public function setPasswd(string $passwd)
     {
-        $this->passwd = base64_encode($passwd);
+        $this->passwd = (!empty($passwd) ? base64_encode($passwd) : null);
     }
 
     private function decrypt(?string $passwd): ?string
@@ -131,18 +133,28 @@ class Config
         return base64_decode($passwd);
     }
 
+    public function confirmSave(): bool
+    {
+        if(array_key_exists($this->local, $this->file)) {
+            $this->message = "<span class=warning >O nome de conexão já existe</span>";
+            return false;
+        }
+        else {
+            return $this->save();
+        }
+    }
+
     public function save(): ?bool
     {
-        $passwd = (!empty($this->getPasswd()) ?
-                    base64_encode($this->getPasswd()) : $this->file[$this->local]["passwd"]);
-
         $this->file[$this->local] = [
             "dsn" => $this->getDsn(),
             "user" => $this->getUser(),
-            "passwd" => $passwd
+            "passwd" => $this->getPasswd()
         ];
 
-        return $this->saveFile($this->file);
+        $saved = $this->saveFile($this->file);
+        $this->message = ($saved ? "<span class='success'>Dados salvo com sucesso</span>" : "<span class='error'>Erro ao salvar</span>");
+        return $saved;
     }
 
     public function delete(string $connectionName): ?bool
@@ -171,5 +183,10 @@ class Config
         $resp = fwrite($handle, $string);
         fclose($handle);
         return $resp;
+    }
+
+    public function message()
+    {
+        return $this->message;
     }
 }

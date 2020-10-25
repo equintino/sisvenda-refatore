@@ -27,4 +27,4 @@
         </div>
     </div>
 </div><!-- container -->
-<script type="text/javascript" src="../web/js/script-security"></script>
+<script type="text/javascript" src="../web/js/script-security.js"></script>

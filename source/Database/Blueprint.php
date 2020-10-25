@@ -148,7 +148,7 @@ class Blueprint
     public function default(string $default): object
     {
         $default = is_numeric($default) ? (int) $default : $default;
-        $this->sql .= " DEFAULT {$default}";
+        $this->sql .= " DEFAULT '{$default}'";
 
         return $this;
     }

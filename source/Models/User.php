@@ -101,7 +101,7 @@ class User extends Model implements Models
             
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$userId}");
             if($this->fail()) {
-                $this->message = "<span class='error'>Erro ao atualizar, verifique os dados</span>";
+                $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>";
                 return null;
             }
             
@@ -116,7 +116,7 @@ class User extends Model implements Models
             }
             $userId = $this->create(self::$entity, $this->safe());
             if($this->fail()) {
-                $this->message = "<span class='error'>Erro ao cadastrar, verifique os dados</span>";
+                $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
@@ -133,7 +133,7 @@ class User extends Model implements Models
         }
 
         if($this->fail()) {
-            $this->message = "<span class='error'>Não foi possível remover o usuário</span>";
+            $this->message = "<span class='danger'>Não foi possível remover o usuário</span>";
             return null;
         }
         $this->message = "<span class='success'>Usuário foi removido com sucesso</span>";
@@ -201,7 +201,7 @@ class User extends Model implements Models
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$userId}");
         }
         if($this->fail()) {
-            $this->message = "<span class='error'>Erro ao resetar senha, tente novamente</span>";
+            $this->message = "<span class='danger'>Erro ao resetar senha, tente novamente</span>";
             return null;
         }
         $this->message = "<span class='warning'>Nova senha será cadastrada no próximo login</span>";

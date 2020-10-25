@@ -53,7 +53,7 @@ stap by stap
 		   - access varchar(255) not null - ok
 		   - active(bit) not null default(1) - ok
 	- criar a model - ok
-		
+
 - remover seleção de texto
 - ativar o icone de configuração no menu - ok
 - esqueci a senha
@@ -66,8 +66,9 @@ stap by stap
 	- gravar um token para resetar senha - ok
 	- enviar um link no e-mail para resetar senha - ?
 - adicionar nova configuração de servidor
-	- impedir salvar nome de conexão repetido
+	- impedir salvar nome de conexão repetido - ok
 - não permitir excluir um usuário logado - ok
-
-
-
+- exibir mascará ao salvar - ok
+- na edição de usuario somente no segundo click que aceita salvar - ok
+- advertir antes de resetar a senha - ok
+- criar uma class para salvamento(ok)/leitura em ajax

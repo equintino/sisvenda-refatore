@@ -19,9 +19,7 @@ $group = function() {
     return new Models\Group();
 };
 
-/**
- * cookie
- */
+/** cookie */
 $cookie = filter_input(INPUT_COOKIE, "svlogin", FILTER_SANITIZE_STRIPPED);
 parse_str($cookie, $cookie);
 
@@ -29,23 +27,10 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 //$password = base64_decode(filter_input(INPUT_COOKIE, "password", FILTER_SANITIZE_STRIPPED));
 //$remember = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
 
-/**
- * set constants
- */
-$fileConfig = __DIR__ . "/../../.env";
-$handle = fopen($fileConfig, "r"); 
-while($row = fgets($handle)) {
-    if(!empty(trim($row))) {
-        $params = explode("=", trim(str_replace("\"","", $row)));
-        if(!defined($params[0])) {
-            define($params[0], "{$params[1]}");
-        }
-    }
-}
+/** set constants */
+(new Classes\FileTransation(".env"))->getConst();
 
-/**
- * Pages access
- */
+/** Pages access */
 $getScreens = function($path) {
     $directory = dir($path);
     while($file = $directory->read()) {

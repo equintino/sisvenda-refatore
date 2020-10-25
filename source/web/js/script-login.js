@@ -65,24 +65,22 @@ $(document).ready(function() {
                     e.preventDefault();
                     var buttonName;
                     var dataSet = $(this).find("form").serializeArray();
-                    $(this).find("button").on("click", function() {
-                        buttonName = $(this).text();
-                        if(buttonName !== "Salvar") {
-                            dataSet.push(
-                                {
-                                    name: "act",
-                                    value: "login"    
-                                },
-                                {
-                                    name: "action",
-                                    value: "edit"
-                                }
-                            );
-                            var link = "../Support/ajaxSave.php";
-                            saveData(link, dataSet);
-                        }
-                    });
-            });
+                    buttonName = $(this).text();
+                    if(buttonName !== "Salvar") {
+                        dataSet.push(
+                            {
+                                name: "act",
+                                value: "login"    
+                            },
+                            {
+                                name: "action",
+                                value: "edit"
+                            }
+                        );
+                        var link = "../Support/ajaxSave.php";
+                        saveData(link, dataSet);
+                    }
+                });
         }
         else if(action === "Exclui") {
             var logged = $(".identification").text().split(":")[1].trim().toLowerCase();
@@ -125,22 +123,30 @@ $(document).ready(function() {
             });
         }
         else if(action === "Reseta") {
-            var link = "../Support/ajaxSave.php";
-            var data = [
-                {
-                    name: "act",
-                    value: "login"
-                },
-                {
-                    name: "Logon",
-                    value: login
-                },
-                {
-                    name: "action",
-                    value: "reset"
+            var conf = modal.confirm({
+                title: "A senha será excluída"
+            })
+            conf.on("click", function() {
+                if($(this).val() == 1) {
+                    var link = "../Support/ajaxSave.php";
+                    var data = [
+                        {
+                            name: "act",
+                            value: "login"
+                        },
+                        {
+                            name: "action",
+                            value: "reset"
+                        },
+                        {
+                            name: "Logon",
+                            value: login
+                        }
+                    ];
+                    modal.hide();
+                    saveData(link, data);
                 }
-            ];
-            saveData(link, data);
+            });            
         }
     });
 });
