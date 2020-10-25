@@ -137,14 +137,14 @@ class Config
     {
         if(array_key_exists($this->local, $this->file)) {
             $this->message = "<span class=warning >O nome de conexão já existe</span>";
-            return false;
+            return false
         }
         else {
             return $this->save();
         }
     }
 
-    public function save(): ?bool
+    public function save(): bool
     {
         $this->file[$this->local] = [
             "dsn" => $this->getDsn(),
@@ -185,7 +185,7 @@ class Config
         return $resp;
     }
 
-    public function message()
+    public function message(): string
     {
         return $this->message;
     }

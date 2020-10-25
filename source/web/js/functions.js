@@ -97,6 +97,7 @@ var saveForm = function(act, action, connectionName = null) {
                     success = true;
                 }
                 else {
+                    background = "var(--cor-warning)";
                     success = false;
                 }
                 $("#flashes")

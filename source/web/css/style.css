@@ -405,7 +405,7 @@ section.loading, .text-loading {
     pointer-events: auto;
     background-clip: padding-box;
     outline: 0;
-    margin: -250px auto;
+    margin: -280px auto;
     //max-height: 90%;
     background: #ffffff;
     box-shadow: var(--box-shadow);

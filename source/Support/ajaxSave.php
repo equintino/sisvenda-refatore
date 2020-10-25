@@ -20,7 +20,7 @@ if($params["act"] === "connection") {
 
         $config->setConfConnection($connectionName["connectionName"], $data);
         $config->confirmSave();
-        echo json_encode($config->message());
+        return print(json_encode($config->message()));
     }
     elseif($params["action"] === "edit" ) {
         $connectionName = $params["connectionName"];
