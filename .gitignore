@@ -1,4 +1,5 @@
 /.vscode/
+/.env
 /nbproject/
 /vendor/
 /source/Config/.config.ini
