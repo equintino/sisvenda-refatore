@@ -1,8 +1,8 @@
 <?php
 
-namespace Controllers;
+namespace Source\Controllers;
 
-abstract class Controller 
+abstract class Controller
 {
 
 }

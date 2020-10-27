@@ -4,7 +4,7 @@ require __DIR__ . "/../../vendor/autoload.php";
 
 $connectionName = filter_input(INPUT_GET, "connectionName", FILTER_SANITIZE_STRIPPED);
 $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
-$config = new Config\Config();
+$config = new Source\Config\Config();
 $config->local = ($act !== "add" ? $connectionName : null); ?>
 
 <form id="config" class="form-horizontal" action="#" method="POST">

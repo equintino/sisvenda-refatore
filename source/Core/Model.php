@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace Source\Core;
 
-use Config\Config;
+use Source\Config\Config;
 
 abstract class Model
 {
@@ -46,7 +46,7 @@ abstract class Model
     {
         return isset($this->data->$name);
     }
- 
+
     /** @var array $data columns names and values */
     public function bootstrap(array $data): ?object
     {
@@ -54,7 +54,7 @@ abstract class Model
             if($name === "Senha") $value = $this->crypt($value);
             $this->$name = $value;
         }
-        
+
         return $this;
     }
 
@@ -116,7 +116,7 @@ abstract class Model
             }
             $stmt->execute();
             return $stmt;
-        } 
+        }
         catch(\PDOException $exception) {
             $this->fail = $exception;
             return null;
@@ -182,7 +182,7 @@ abstract class Model
     {
         return (new SqlParams())->orderParams($params);
     }
-    
+
     /** pagination */
     protected function limit(): string
     {

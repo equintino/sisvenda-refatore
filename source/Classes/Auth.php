@@ -1,8 +1,8 @@
 <?php
 
-namespace Classes;
+namespace Source\Classes;
 
 class Auth
 {
-    
+
 }

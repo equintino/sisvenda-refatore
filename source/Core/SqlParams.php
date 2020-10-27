@@ -1,10 +1,10 @@
 <?php
 
-namespace Core;
+namespace Source\Core;
 
 /** used in conjunction with the Model class */
 class SqlParams extends Model
-{    
+{
     public function orderParams(string $params): ?string
     {
         return $this->sql .= " ORDER BY {$params} ";

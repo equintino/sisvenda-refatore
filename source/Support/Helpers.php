@@ -4,19 +4,19 @@
  * Core
  */
 $config = function() {
-    return new Config\Config();
+    return new Source\Config\Config();
 };
 
 $globalEnv = function() {
-    return new Config\GlobalEnv();
+    return new Source\Config\GlobalEnv();
 };
 
 $user = function() {
-    return new Models\User();
+    return new Source\Models\User();
 };
 
 $group = function() {
-    return new Models\Group();
+    return new Source\Models\Group();
 };
 
 /** cookie */
@@ -28,7 +28,7 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 //$remember = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
 
 /** set constants */
-(new Classes\FileTransation(".env"))->getConst();
+(new Source\Classes\FileTransation(".env"))->getConst();
 
 /** Pages access */
 $getScreens = function($path) {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Database;
+namespace Source\Database;
 
-use Core\Model;
+use Source\Core\Model;
 
 class Blueprint
 {
@@ -20,7 +20,7 @@ class Blueprint
 
     public function run(): string
     {
-        return $this->createIfExists() . "(" . $this->sql 
+        return $this->createIfExists() . "(" . $this->sql
             . ", " . implode(", ", $this->timestamps) . ")";
     }
 
@@ -41,7 +41,7 @@ class Blueprint
             case "mysql":
                 return $this->sql .= "DROP TABLE IF EXISTS " . $this->entity;
             case "sqlsrv":
-                return $this->sql .= "if exists (select * from sysobjects where name='" 
+                return $this->sql .= "if exists (select * from sysobjects where name='"
                             . $this->entity . "' and xtype='U') DROP TABLE " . $this->entity;
         }
     }
@@ -56,7 +56,7 @@ class Blueprint
                 return $this->sql .= "{$name} INT NOT NULL IDENTITY(1,1) PRIMARY KEY";
         }
     }
-    
+
     /** @var string name, @var string $null, @var string $default, */
     public function int(string $name): object
     {
@@ -133,7 +133,7 @@ class Blueprint
             $partOne = substr($this->sql, 0, $end);
             $partTwo = substr($this->sql, $end + 4, strlen($this->sql));
             $this->sql = $partOne . $partTwo;
-        }       
+        }
 
         return $this;
     }
@@ -165,7 +165,7 @@ class Blueprint
                 $type = null;
             default:
                 $type = null;
-            
+
         }
         $this->timestamps = [
             "created_at DATETIME NOT NULL DEFAULT {$default}",

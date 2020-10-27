@@ -15,8 +15,8 @@ $(document).ready(function() {
         });
     }
     $("select[name=NomeFantasia]").change(function() {
-        var companyId = $(this).val();    
-        $(location).attr("href", "../web/index.php?pagina=login&companyId=" + companyId);
+        var companyId = $(this).val();
+        $(location).attr("href", "../web/login&companyId=" + companyId);
     });
     $(".container .header button").on("click", function() {
         var btnAction = $(this).text();
@@ -30,7 +30,7 @@ $(document).ready(function() {
                     dataSet.push(
                         {
                             name: "act",
-                            value: "login"    
+                            value: "login"
                         },
                         {
                             name: "action",
@@ -70,7 +70,7 @@ $(document).ready(function() {
                         dataSet.push(
                             {
                                 name: "act",
-                                value: "login"    
+                                value: "login"
                             },
                             {
                                 name: "action",
@@ -124,7 +124,8 @@ $(document).ready(function() {
         }
         else if(action === "Reseta") {
             var conf = modal.confirm({
-                title: "A senha será excluída"
+                title: "A senha será excluída",
+                message: "A nova senha será cadastrada no próximo login"
             })
             conf.on("click", function() {
                 if($(this).val() == 1) {
@@ -146,7 +147,7 @@ $(document).ready(function() {
                     modal.hide();
                     saveData(link, data);
                 }
-            });            
+            });
         }
     });
 });

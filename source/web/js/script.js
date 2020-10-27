@@ -37,7 +37,7 @@ $(function($) {
             dataType: "json",
             success: function(response) {
                 if(response === 1) {
-                    $(location).attr("href","source/web/index.php");
+                    $(location).attr("href","source/web");
                 }
                 else if(response === 2) {
                     var link = "source/Support/ajaxSave.php";
@@ -179,7 +179,11 @@ $(function($) {
                             act: "connection",
                             action: "delete"
                         };
-                        saveData(link, data, "Excluindo");
+                        if(saveData(link, data, "Excluindo")) {
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, setTime);
+                        }
                     }
                 }
             });

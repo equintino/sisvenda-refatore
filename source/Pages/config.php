@@ -1,6 +1,4 @@
-<?php $config = $config(); ?>
 <div id="config" class="container mt-5">
-    <!--<h5 class="mt-4" align="center">CONEXÃO COM O BANCO DE DADOS</h5>-->
     <div class="buttons">
         <button class="button btnAction">Adicionar</button>
     </div>
@@ -21,7 +19,7 @@
                 <?php
                     $localSelected = $config->getConfConnection();
                     foreach($config->getFile() as $local => $params):
-                        $config->local = $local; 
+                        $config->local = $local;
                         $ativa = ($localSelected === $local ? "*" : null) ?>
                 <tr>
                     <td><?= $ativa.$local ?></td>

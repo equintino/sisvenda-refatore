@@ -72,3 +72,6 @@ stap by stap
 - na edição de usuario somente no segundo click que aceita salvar - ok
 - advertir antes de resetar a senha - ok
 - criar uma class para salvamento(ok)/leitura em ajax
+- configurando as rotas
+- ajustar tela modal no modo absolute ou fixed
+- reload da tela ao confirmar exclusão da configuração do banco - ok

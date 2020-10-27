@@ -1,12 +1,23 @@
 <?php
 
-namespace Core;
+namespace Source\Core;
 
-abstract class Safety 
+abstract class Safety
 {
     public static function dataConnection(): ?string
     {
         return Connect::getConfConnection();
+    }
+
+    public static function screens($path)
+    {
+        $directory = dir($path);
+        while($file = $directory->read()) {
+            if($file !==  "." && $file !== "..") {
+                $screens[] = substr($file, 0, -4);
+            }
+        }
+        return $screens;
     }
 
     public static function crypt(string $passwd): ?string
@@ -51,7 +62,7 @@ abstract class Safety
                 str_pad($cost,2,"0",STR_PAD_LEFT), //add the cost in two digits
                 $salt //add the salt
         ));
-    
+
         //now do the actual hashing
         return crypt($password,$param);
     }

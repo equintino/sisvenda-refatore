@@ -12,11 +12,11 @@
         <?php
             require __DIR__ . "/vendor/autoload.php";
 
-            $version = new Classes\Version();
+            $version = new Source\Classes\Version();
             $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
             $connectionName = filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
             $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
-            $connectionList = array_keys((new Config\Config())->getFile()); ?>
+            $connectionList = array_keys((new Source\Config\Config())->getFile()); ?>
     </head>
     <body class="text-center gradient">
         <div class="mask"></div>

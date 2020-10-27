@@ -6,7 +6,7 @@
         <div class="group">
             <fieldset >
                 <legend>Grupos</legend>
-                <?php foreach($group()->all() as $group): ?>
+                <?php foreach($groups as $group): ?>
                     <p class="btnAction"><?= $group->name ?></p>
                 <?php endforeach ?>
             </fieldset>
@@ -18,7 +18,7 @@
         <div class="screen">
             <fieldset>
                 <legend>Telas<span></span></legend>
-                <?php foreach($getScreens(__DIR__) as $screen): 
+                <?php foreach($screens as $screen):
                     if($screen !== "home"): ?>
                     <p><i class="fa fa-times" style="color: red"></i> <?= $screen ?></p>
                     <?php endif; endforeach ?>

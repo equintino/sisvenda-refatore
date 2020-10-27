@@ -1,9 +1,9 @@
 <?php
 
-namespace Models;
+namespace Source\Models;
 
-use Core\Model;
-use Database\Migrations\CreateCompanysTable;
+use Source\Core\Model;
+use Source\Database\Migrations\CreateCompanysTable;
 
 class Company extends Model implements Models
 {
@@ -20,7 +20,7 @@ class Company extends Model implements Models
             $this->message = "Empresa não encontrada do id informado.";
             return null;
         }
-        
+
         return $load->fetchObject(__CLASS__);
     }
 
@@ -34,22 +34,22 @@ class Company extends Model implements Models
             $this->message = "Empresa não encontrada.";
             return null;
         }
-        
+
         return $find->fetchObject(__CLASS__);
     }
 
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "
-            . self::$entity . " WHERE ATIVO=1 " 
-            . $this->order($order) 
+            . self::$entity . " WHERE ATIVO=1 "
+            . $this->order($order)
             . $this->limit(), "limit={$limit}&offset={$offset}");
 
         if($this->fail || !$all->rowCount()) {
             $this->message = "Sua consulta não retornou nenhum registro.";
             return null;
         }
-        
+
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
@@ -62,13 +62,13 @@ class Company extends Model implements Models
         /** Update */
         if(!empty($this->id)) {
             $companyId = $this->id;
-            $company = $this->read("SELECT id FROM " . self::$entity . " WHERE CNPJ = :CNPJ AND ID != :ID", 
+            $company = $this->read("SELECT id FROM " . self::$entity . " WHERE CNPJ = :CNPJ AND ID != :ID",
                 "CNPJ={$this->CNPJ}&ID={$companyId}");
             if($company->rowCount()) {
                 $this->message = "A Empresa informada já está cadastrada.";
                 return null;
             }
-            
+
             $this->update(self::$entity, $this->safe(), "ID = :ID", "ID={$companyId}");
             if($this->fail()) {
                 $this->message = "Erro ao atualizar, verifique os dados.";
@@ -120,7 +120,7 @@ class Company extends Model implements Models
                 return false;
             }
         }
-        
+
         return true;
     }
 

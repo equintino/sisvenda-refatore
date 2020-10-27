@@ -1,6 +1,8 @@
 <?php
 
-namespace Config;
+namespace Source\Config;
+
+use Source\Core\Connect;
 
 class Config
 {
@@ -21,7 +23,7 @@ class Config
     /** contant file env */
     public function getConfConnection(): ?string
     {
-        return \Core\Connect::getConfConnection();
+        return Connect::getConfConnection();
     }
 
     public function setConfConnection(string $connectionName, string $data)
@@ -186,7 +188,7 @@ class Config
                 $string .= "{$param}='{$value}'\r\n";
             }
         }
-        
+
         $resp = fwrite($handle, $string);
         fclose($handle);
         return $resp;

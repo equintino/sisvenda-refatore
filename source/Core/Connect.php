@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Source\Core;
 
 use \PDO;
 use \PDOException;
@@ -34,7 +34,7 @@ class Connect
                     self::getPasswd($config["passwd"]),
                     self::OPTIONS
                 );
-            } 
+            }
             catch (\PDOException $exception) {
                 die("<div>Whoops, houve algum erro ao conectar com o banco!</div>");
                 //die("<i style='font-size: .7em'>" . $exception->getMessage() . "</i>)");

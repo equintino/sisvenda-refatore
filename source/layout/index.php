@@ -57,16 +57,19 @@
             </section>
             <p class="text-loading">Texto da ação "loading"</p>
             <div id="flashes">aqui vai sua mensagem...</div>
-            <div id="screenPage">Aqui vai a página </div>
-            <?php if(!empty($access)): ?>
+
+
+            <!--<?php if(!empty($access)): ?>
                 <?php if(in_array($page, $pages) || $page === 'home' ):
-                    include __DIR__ . "/../pages/" . $page . ".php"; ?>
+                    include __DIR__ . "/../Pages/" . $page . ".php"; ?>
                 <?php else:?>
                     <h3 style="text-align:center;color:#196430;"><i class="fa fa-ban" style="color:red"></i> Acesso não Permitido.</h3>
                 <?php endif; ?>
             <?php else:?>
-                <?php require __DIR__ . "/../pages/" . $page . ".php"; ?>
-            <?php endif; ?>
+                <?php require __DIR__ . "/../Pages/" . $page . ".php"; ?>
+            <?php endif; ?>-->
+
+
             <!-- Janelas -->
             <div id="boxe_main" >
                 <div id="title"></div>

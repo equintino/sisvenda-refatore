@@ -1,10 +1,10 @@
 <?php
 
-namespace Models;
+namespace Source\Models;
 
-use Core\Model;
-use Database\Migrations\CreateUsersTable;
-use Models\Group;
+use Source\Core\Model;
+use Source\Database\Migrations\CreateUsersTable;
+use Source\Models\Group;
 
 class User extends Model implements Models
 {
@@ -16,7 +16,7 @@ class User extends Model implements Models
 
     /** @var array filds required */
     private $required = [ "Logon", "Senha", "IDEmpresa", "USUARIO", "Nome", "Email" ];
-    
+
     public function getEntity()
     {
         return self::$entity;
@@ -35,7 +35,7 @@ class User extends Model implements Models
             $this->message = "<span class='warning'>Usuario não encontrado do id informado</span>";
             return null;
         }
-        
+
         return $load->fetchObject(__CLASS__);
     }
 
@@ -64,22 +64,22 @@ class User extends Model implements Models
             $this->message = "<span class='warning'>Usuario não encontrado do email informado</span>";
             return null;
         }
-        
+
         return (is_array($busca) ? $find->fetchAll(\PDO::FETCH_CLASS, __CLASS__) : $find->fetchObject(__CLASS__));
     }
 
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "
-            . self::$entity . " " 
-            . $this->order($order) 
+            . self::$entity . " "
+            . $this->order($order)
             . $this->limit(), "limit={$limit}&offset={$offset}");
 
         if($this->fail || !$all->rowCount()) {
             $this->message = "<span class='warning'>Sua consulta não retornou usuários</span>";
             return null;
         }
-        
+
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
@@ -92,19 +92,19 @@ class User extends Model implements Models
         /** Update */
         if(!empty($this->id)) {
             $userId = $this->id;
-            $email = $this->read("SELECT id FROM " . self::$entity . " WHERE Email = :Email AND id != :id", 
+            $email = $this->read("SELECT id FROM " . self::$entity . " WHERE Email = :Email AND id != :id",
                 "Email={$this->Email}&id={$userId}");
             if($email->rowCount()) {
                 $this->message = "<span class='warning'>O e-mail informado já está cadastrado</span>";
                 return null;
             }
-            
+
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$userId}");
             if($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>";
                 return null;
             }
-            
+
             $this->message = "<span class='success'>Dados atualizados com sucesso</span>";
         }
 
@@ -138,7 +138,7 @@ class User extends Model implements Models
         }
         $this->message = "<span class='success'>Usuário foi removido com sucesso</span>";
         $this->data = null;
-        
+
         return $this;
     }
 
@@ -155,7 +155,7 @@ class User extends Model implements Models
             $this->message = "<span class='warning'>O formato do e-mail não parece válido</span>";
             return false;
         }
-        
+
         return true;
     }
 
@@ -197,7 +197,7 @@ class User extends Model implements Models
     {
         $userId = $this->id;
         if(!empty($userId)) {
-            $this->token = crypt("Gera Token", "rl");        
+            $this->token = crypt("Gera Token", "rl");
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$userId}");
         }
         if($this->fail()) {

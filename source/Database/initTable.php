@@ -3,11 +3,11 @@
 /** table creation file */
 require __DIR__ . "/../autoload.php";
 
-$creation = new Database\CreationProcess();
+$creation = new Source\Database\CreationProcess();
 $creation->define("localMysql");
 
 /** init table tb_usuario */
-$user = new Models\User();
+$user = new Source\Models\User();
 var_dump($user->createThisTable());
 $data = [
     "Nome" => "Edmilson",
@@ -25,7 +25,7 @@ var_dump(
 );
 
 /** init table tb_group */
-$group = new Models\Group();
+$group = new Source\Models\Group();
 var_dump(
     $group->createThisTable()
 );
@@ -39,7 +39,7 @@ $group->save();
 var_dump($group->message());
 
 /** init table Dados_Empresa */
-$company = new Models\Company();
+$company = new Source\Models\Company();
 var_dump(
     $company->createThisTable()
 );

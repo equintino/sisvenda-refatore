@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Migrations;
+namespace Source\Database\Migrations;
 
-use Config\Config;
-use Database\CreateTable;
-use Database\Schema;
-use Database\Blueprint;
+use Source\Config\Config;
+use Source\Database\CreateTable;
+use Source\Database\Schema;
+use Source\Database\Blueprint;
 
 class CreateCompanysTable implements CreateTable
 {

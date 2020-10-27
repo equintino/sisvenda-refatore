@@ -1,14 +1,14 @@
 <link rel="stylesheet" href="../web/css/style-login.css" />
 <?php
     $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-    $companys = (new Models\Company())->all();
-    $users = (new Models\User())->find(["IDEmpresa" => $companyId]);
-    $groups = (new Models\Group())->all();
+    $companys = (new Source\Models\Company())->all();
+    $users = (new Source\Models\User())->find(["IDEmpresa" => $companyId]);
+    $groups = (new Source\Models\Group())->all();
     echo "<script>var companyId = '" . $companyId . "' </script>"; ?>
 <div class="container">
     <div class="header">
         <div class="select-company">
-            <label>EMPRESA:</lable> 
+            <label>EMPRESA:</lable>
             <select class="form-input" name="NomeFantasia">
                 <option value=""></option>
                 <?php foreach($companys as $company): ?>
@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     if(isset($users)):
                         foreach($users as $user): ?>
                             <tr>

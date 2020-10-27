@@ -2,7 +2,7 @@
 
 namespace Test;
 
-use Database\CreationProcess;
+use Source\Database\CreationProcess;
 
 class CreationTableTest
 {

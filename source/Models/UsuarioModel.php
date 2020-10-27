@@ -1,11 +1,11 @@
 <?php
 
-namespace Model;
+namespace Source\Model;
 
-use Dao\Dao4;
-use Dao\CriterioBusca;
-use Model\Parameter\Find;
-use Core\Model;
+use Source\Dao\Dao4;
+use Source\Dao\CriterioBusca;
+use Source\Model\Parameter\Find;
+use Source\Core\Model;
 
 /**
  * Description of UsuarioModel
@@ -15,14 +15,14 @@ use Core\Model;
 class UsuarioModel extends Model {
     protected $guarded = [
     ];
-    
+
     protected $tabela = 'Usuário';
     public $campos;
     private $find;
     private $dao4;
     private $search;
     private $model;
-    
+
     public function __construct()
     {
         $this->dao4 = new Dao4();
@@ -32,12 +32,12 @@ class UsuarioModel extends Model {
 
         $this->search->setTabela('Usuário');
     }
-    
+
     public function getCampos()
     {
         return $this->campos;
     }
-    
+
     public function getAll($n)
     {
         //$dao4 = new Dao4();
@@ -47,35 +47,35 @@ class UsuarioModel extends Model {
         $this->search->setArray( array() );
         $this->dao4->setOrder( array( "desc" => "Visivel" ) );
         $this->dao4->setCampos($this->getCampo($this->tabela));
-        
+
         foreach ($this->dao4->encontre($this->search) as $v)
         {
             $resp[] = $v->getArray();
         }
-        
+
         return $resp;
     }
-    
+
     public function find()
     {
         return $this->find;
     }
-    
+
     public function update( Model $model )
     {
         /*$model->getArray()->setDataCancelado(date("Y-m-d H:i:s"));
             $this->dao4->setWhere( array( "IDEMPRESA" => $model->getArray()
                 ->getIDEmpresa(), "Pedido" => $model->getArray()
                     ->getPedido() ) );
-            
+
         return $this->dao4->grava( $model );*/
     }
-    
+
     public function save( $obj )
     {
         /*$this->dao4->setWhere( array( "IDEMPRESA" => $obj->getIDEmpresa()
             , "Pedido" => $obj->getPedido() ) );*/
-        
+
         /**
          * @example path description
          * <P> Impredir que tente gravar campos inexistentes </p>
@@ -97,13 +97,13 @@ class UsuarioModel extends Model {
                 }
             }
         }
-            
+
         $this->model->setArray($obj);
         $this->model->setTabela($this->search->getTabela());
-        
+
         return $this->dao4->grava( $this->model );*/
     }
-    
+
     public function getFind()
     {
         return $this->find;
@@ -112,26 +112,26 @@ class UsuarioModel extends Model {
     public function setFind( CriterioBusca $search )
     {
         $search->setTabela($this->tabela);
-                
+
         if(isset($this->find))
         {
             //$this->find->dao4->setIndex("Pedido");
-            
+
             $this->find->search = $search;
         }
-        
+
         return $this->find;
     }
-    
+
     public function setWhere($search)
     {
         $this->dao4->setWhere($search->getArray());
         var_dump($search, $this->dao4);
     }
-    
+
     private function setValida($search)
     {
         var_dump($search);die;
     }
-    
+
 }

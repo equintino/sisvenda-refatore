@@ -2,7 +2,7 @@
 
 require __DIR__ . "/../../vendor/autoload.php";
 
-$companys = (new Models\Company())->all(); ?>
+$companys = (new Source\Models\Company())->all(); ?>
 
 <select name="companyId">
     <option value=""></option>

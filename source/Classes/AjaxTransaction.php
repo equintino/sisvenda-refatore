@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Source\Classes;
 
 class AjaxTransaction
 {
@@ -27,20 +27,7 @@ class AjaxTransaction
     public function saveData(): ?string
     {
         $this->cleanFields();
-        $className = $this->getClassName();
-
-        if($className === "User") {
-            $this->params["USUARIO"] = &$this->params["Logon"];
-            $this->search = $this->params["Logon"];
-        }
-        elseif($className === "Group") {
-            unset($this->params["Logon"]);
-            $this->search = $this->params["name"]; 
-        }
-        else {
-            unset($this->params["Logon"]);
-            $this->search = $this->params["name"];
-        }
+        $this->setSearch();
         $this->setMethodClass();
         $this->setData();
 
@@ -67,7 +54,28 @@ class AjaxTransaction
 
     private function getClassName(): string
     {
-        return explode("\\",get_class($this->class))[1];
+        $start = strripos(get_class($this->class),"\\");
+        $className = get_class($this->class);
+        return substr($className, $start + 1);
+    }
+
+    private function setSearch(): void
+    {
+        $className = $this->getClassName();
+
+        switch($className) {
+            case "User":
+                $this->params["USUARIO"] = &$this->params["Logon"];
+                $this->search = $this->params["Logon"];
+                break;
+            case "Group":
+                unset($this->params["Logon"]);
+                $this->search = $this->params["name"];
+                break;
+            default:
+                unset($this->params["Logon"]);
+                $this->search = $this->params["name"];
+        }
     }
 
     private function setMethodClass()
@@ -139,7 +147,7 @@ class AjaxTransaction
 
     public function message()
     {
-        return json_encode($this->class->message(), 
+        return json_encode($this->class->message(),
             JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }

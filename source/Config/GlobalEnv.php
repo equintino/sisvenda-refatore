@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-namespace Config;
+namespace Source\Config;
 
 class GlobalEnv extends Config
 {

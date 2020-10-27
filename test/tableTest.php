@@ -8,7 +8,7 @@ $creation = new Test\CreationTableTest("localMysql");
 //die("altere os nomes das tabelas antes de rodar os testes e depois comente esta linha");
 
 /** table test_user */
-$table = new Models\User();
+$table = new Source\Models\User();
 $table::$entity = "test_users";
 $data = [
     "Logon" => "edmilson",
@@ -28,7 +28,7 @@ $creation->testTable($table, $data, $busca);
 //////// -------/////////
 
 /** table test_group */
-$table = new Models\Group();
+$table = new Source\Models\Group();
 $table::$entity = "test_groups";
 $data = [
     "name" => "Administrador",
@@ -45,7 +45,7 @@ $creation->testTable($table, $data, $busca);
 
 
 /** table test_Dados_Empresa */
-$table = new Models\Company();
+$table = new Source\Models\Company();
 $table::$entity = "test_Dados_Empresa";
 $data = [
     //"ID" => "Administrador",

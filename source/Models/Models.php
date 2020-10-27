@@ -1,6 +1,6 @@
 <?php
 
-namespace Models;
+namespace Source\Models;
 
 interface Models
 {

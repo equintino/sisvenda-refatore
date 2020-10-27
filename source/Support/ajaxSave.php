@@ -15,7 +15,7 @@ $params = (getPost($_POST));
 if($params["act"] === "connection") {
     if($params["action"] === "add") {
         $data = $params["data"];
-        $config = new Config\Config();
+        $config = new Source\Config\Config();
         parse_str($data, $connectionName);
 
         $config->setConfConnection($connectionName["connectionName"], $data);
@@ -25,24 +25,24 @@ if($params["act"] === "connection") {
     elseif($params["action"] === "edit" ) {
         $connectionName = $params["connectionName"];
         $data = $params["data"];
-        $config = new Config\Config();
+        $config = new Source\Config\Config();
 
         $config->setConfConnection($connectionName, $data);
         $config->save();
         echo json_encode($config->message());
     }
     elseif($params["action"] === "delete") {
-        $config = new Config\Config();
+        $config = new Source\Config\Config();
         $config->delete($params["connectionName"]);
         echo json_encode($config->message());
     }
 }
 /** modal classes */
 elseif($params["act"] === "group") {
-    $class = new Models\Group();
-    echo (new Classes\AjaxTransaction($class, $params))->saveData();
+    $class = new Source\Models\Group();
+    echo (new Source\Classes\AjaxTransaction($class, $params))->saveData();
 }
 elseif($params["act"] === "login") {
-    $class = new Models\User();
-    echo (new Classes\AjaxTransaction($class, $params))->saveData();
+    $class = new Source\Models\User();
+    echo (new Source\Classes\AjaxTransaction($class, $params))->saveData();
 }

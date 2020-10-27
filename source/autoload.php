@@ -2,7 +2,8 @@
 
 spl_autoload_register(function($class) {
     $basedir = __DIR__ . "/";
-    $file = $basedir . str_replace("\\","/",$class) . ".php";
+    $namespace = "Source/";
+    $file = $basedir . str_replace("\\","/", substr($class, strlen($namespace))) . ".php";
     if(file_exists($file)) require $file;
 });
 

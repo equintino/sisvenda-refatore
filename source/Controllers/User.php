@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers;
+namespace Source\Controllers;
 
 class User extends Controller
 {
@@ -10,6 +10,19 @@ class User extends Controller
     {
         $this->user = new \Models\User();
     }
+
+    public function home()
+    {
+        var_dump($this->user->all());
+    }
+
+    public function edit()
+    {
+        echo 'Estou aqui';die;
+        var_dump($this->user->load($id));
+    }
+
+
 
     public function find(string $login, string $columns = "*"): ?\Models\User
     {

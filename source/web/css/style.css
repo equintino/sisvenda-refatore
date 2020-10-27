@@ -36,7 +36,7 @@
     /* For browsers that do not support gradients */
     background-color: #ccc;
     /* Standard syntax (must be last) */
-    background-image: linear-gradient(to right, #ccc, #F3F3F3); 
+    background-image: linear-gradient(to right, #ccc, #F3F3F3);
 }
 
 .mask {
@@ -249,7 +249,7 @@ section.loading, .text-loading {
 }
 
 .schedule {
-    animation: turns .8s linear infinite; 
+    animation: turns .8s linear infinite;
 }
 
 /** login identification */
@@ -401,12 +401,11 @@ section.loading, .text-loading {
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
-    max-width: 60%;
+    max-width: 50%;
     pointer-events: auto;
     background-clip: padding-box;
     outline: 0;
-    margin: -280px auto;
-    //max-height: 90%;
+    margin: 0 auto;
     background: #ffffff;
     box-shadow: var(--box-shadow);
     z-index: 3;
@@ -428,7 +427,7 @@ section.loading, .text-loading {
     font-weight: var(--title-weight);
     display: none;
 }
- 
+
 #boxe_main #message {
     font-weight: 400;
     margin-left: 10px;
@@ -527,7 +526,7 @@ section.loading, .text-loading {
     color: #333 !important;
     border: 1px solid #979797;
     background-color: white;
-    background: -webkit-gradient(linear, left top, left bottom, 
+    background: -webkit-gradient(linear, left top, left bottom,
         color-stop(0%, #fff), color-stop(100%, #dcdcdc));
     background: -webkit-linear-gradient(top, #f6f6f6 0%, #e3e3e3 100%);
     background: -moz-linear-gradient(top, #f6f6f6 0%, #e3e3e3 100%);
@@ -539,7 +538,7 @@ section.loading, .text-loading {
 .btnAction:active, .group .active {
     border: 1px solid #426c9e;
     background-color: #e4e4e4;
-    background: -webkit-gradient(linear, left top, left bottom, 
+    background: -webkit-gradient(linear, left top, left bottom,
         color-stop(0%, #e4e4e4), color-stop(100%, #cfcfcf));
     background: -webkit-linear-gradient(top, #e4e4e4 0%, #cfcfcf 100%);
     background: -moz-linear-gradient(top, #e4e4e4 0%, #cfcfcf 100%);

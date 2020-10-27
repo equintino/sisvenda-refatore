@@ -1,9 +1,9 @@
-<?php 
+<?php
 
-namespace Models;
+namespace Source\Models;
 
-use Core\Model;
-use Database\Migrations\CreateGroupsTable;
+use Source\Core\Model;
+use Source\Database\Migrations\CreateGroupsTable;
 
 class Group extends Model implements Models
 {
@@ -20,7 +20,7 @@ class Group extends Model implements Models
             $this->message = "<span class='warning'>Grupo não encontrado do id informado</span>";
             return null;
         }
-        
+
         return $load->fetchObject(__CLASS__);
     }
 
@@ -34,22 +34,22 @@ class Group extends Model implements Models
             $this->message = "<span class='warning'>Grupo não encontrado</span>";
             return null;
         }
-        
+
         return $find->fetchObject(__CLASS__);
     }
 
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "
-            . self::$entity . " " 
-            . $this->order($order) 
+            . self::$entity . " "
+            . $this->order($order)
             . $this->limit(), "limit={$limit}&offset={$offset}");
 
         if($this->fail || !$all->rowCount()) {
             $this->message = "<span class='warning'>Sua consulta não retornou nenhum grupo</span>";
             return null;
         }
-        
+
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
@@ -62,13 +62,13 @@ class Group extends Model implements Models
         /** Update */
         if(!empty($this->id)) {
             $groupId = $this->id;
-            $group = $this->read("SELECT id FROM " . self::$entity . " WHERE name = :name AND id != :id", 
+            $group = $this->read("SELECT id FROM " . self::$entity . " WHERE name = :name AND id != :id",
                 "name={$this->name}&id={$groupId}");
             if($group->rowCount()) {
                 $this->message = "<span class='warning'>O Grupo informado já está cadastrado</span>";
                 return null;
             }
-            
+
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$groupId}");
             if($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>";
@@ -120,7 +120,7 @@ class Group extends Model implements Models
                 return false;
             }
         }
-        
+
         return true;
     }
 

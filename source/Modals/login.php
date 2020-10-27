@@ -1,15 +1,15 @@
 <?php
     require __DIR__ . "/../../vendor/autoload.php";
-    
+
     $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-    $companys = (new Models\Company())->all();
-    $users = (new Models\User())->find(["IDEmpresa" => $companyId]);
-    $groups = (new Models\Group())->all();
+    $companys = (new Source\Models\Company())->all();
+    $users = (new Source\Models\User())->find(["IDEmpresa" => $companyId]);
+    $groups = (new Source\Models\Group())->all();
     echo "<script>var companyId = '" . $companyId . "' </script>";
 
     $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
     $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
-    $user = (new Models\User())->find($login); ?>
+    $user = (new Source\Models\User())->find($login); ?>
 <style>
     #boxe_main {
         width: 40%;
@@ -93,7 +93,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php 
+            <?php
             if(isset($users)):
                 foreach($users as $user): ?>
                     <tr>
