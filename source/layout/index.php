@@ -95,6 +95,6 @@
         <script>var page = "<?= $page ?>";</script>
         <script type="text/javascript" src="../web/js/functions.js"></script>
         <script type="text/javascript" src="../web/js/script.js"></script>
-        <script type="text/javascript" src="../web/js/jquery.js"></script>
+        <!--<script type="text/javascript" src="../web/js/jquery.js"></script>-->
     </body>
 </html>

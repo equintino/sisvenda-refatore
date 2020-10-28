@@ -396,16 +396,17 @@ section.loading, .text-loading {
 }
 
 #boxe_main {
-    position: relative;
+    position: fixed;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
-    max-width: 50%;
+    width: 50%;
+    left: 50%;
+    margin: 0 -25%;
     pointer-events: auto;
     background-clip: padding-box;
     outline: 0;
-    margin: 0 auto;
     background: #ffffff;
     box-shadow: var(--box-shadow);
     z-index: 3;

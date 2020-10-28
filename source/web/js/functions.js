@@ -8,21 +8,18 @@ var modal = {
     close: function() {
         var that = this;
         $("#boxe_main .close, #mask_main").on("click", function() {
-            that.nameModal.hide();
-            that.title.hide();
-            that.message.hide();
-            that.mask.hide();
+            (that.nameModal, that.mask).fadeOut();
             window.location.reload();
         });
     },
     /** @var title, message, content */
     show: function(params) {
         this.close();
-        if(params.title && params.title !== null) this.title.html(params.title).show();
-        if(params.message && params.message !== null) this.message.html(params.message).show();
+        if(params.title && params.title !== null) this.title.html(params.title).fadeIn();
+        if(params.message && params.message !== null) this.message.html(params.message).fadeIn();
         if(params.content && params.content !== null) this.content.load(params.content);
-        this.mask.show();
-        this.nameModal.show();
+        this.mask.fadeIn();
+        this.nameModal.fadeIn();
         return this;
     },
     hide: function() {
