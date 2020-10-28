@@ -123,11 +123,10 @@ $(document).ready(function() {
             });
         }
         else if(action === "Reseta") {
-            var conf = modal.confirm({
+            modal.confirm({
                 title: "A senha será excluída",
                 message: "A nova senha será cadastrada no próximo login"
-            })
-            conf.on("click", function() {
+            }).on("click", function() {
                 if($(this).val() == 1) {
                     var link = "../Support/ajaxSave.php";
                     var data = [
@@ -144,8 +143,9 @@ $(document).ready(function() {
                             value: login
                         }
                     ];
-                    modal.hide();
-                    saveData(link, data);
+                    if(saveData(link, data)) {
+                        modal.hide();
+                    }
                 }
             });
         }

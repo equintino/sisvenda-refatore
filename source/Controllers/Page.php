@@ -26,6 +26,7 @@ class Page extends Controller
         echo "<script>var companyId = '" . $companyId . "' </script>";
 
         (new View())->login();
+        echo "<script>var page='login'</script>";
 
     }
 
@@ -34,12 +35,14 @@ class Page extends Controller
         $groups = (new Group())->all();
         $screens = Safety::screens(__DIR__);
         (new View())->shield($groups, $screens);
+        echo "<script>var page='shield'</script>";
     }
 
     public function config()
     {
         $config = new Config();
         (new View())->config($config);
+        echo "<script>var page='config'</script>";
     }
 
     public function exit()

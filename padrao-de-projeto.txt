@@ -75,4 +75,4 @@ stap by stap
 - configurando as rotas - ok
 - ajustar tela modal no modo absolute ou fixed - ok
 - reload da tela ao confirmar exclusão da configuração do banco - ok
-- indicar no menu a pagina ativa
+- indicar no menu a pagina ativa - ok

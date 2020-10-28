@@ -23,7 +23,7 @@ var modal = {
         return this;
     },
     hide: function() {
-        $("#boxe_main, #mask_main").hide();
+        $("#boxe_main").hide();
     },
     confirm: function(params) {
         this.close();
