@@ -61,12 +61,12 @@
 
             <!--<?php if(!empty($access)): ?>
                 <?php if(in_array($page, $pages) || $page === 'home' ):
-                    include __DIR__ . "/../Pages/" . $page . ".php"; ?>
+                    include __DIR__ . "/../pages/" . $page . ".php"; ?>
                 <?php else:?>
                     <h3 style="text-align:center;color:#196430;"><i class="fa fa-ban" style="color:red"></i> Acesso não Permitido.</h3>
                 <?php endif; ?>
             <?php else:?>
-                <?php require __DIR__ . "/../Pages/" . $page . ".php"; ?>
+                <?php require __DIR__ . "/../pages/" . $page . ".php"; ?>
             <?php endif; ?>-->
 
 

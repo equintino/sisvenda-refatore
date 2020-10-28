@@ -49,7 +49,7 @@ class Route
 
     public static function redirect($uri)
     {
-        
+        return header("Location: {$uri}");
     }
 
     private static function namespace(): string
