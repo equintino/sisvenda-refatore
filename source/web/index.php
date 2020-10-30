@@ -20,7 +20,6 @@ if(!empty($_SESSION["login"])) {
         echo "<script>window.location.reload()</script>";
     });
 
-    Route::get("/editar", "User:edit");
     Route::get("/rotas", function() {
         var_dump(Route::routes());
     });

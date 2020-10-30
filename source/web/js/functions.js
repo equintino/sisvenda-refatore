@@ -1,48 +1,67 @@
 /** Modal */
-var modal = {
-    nameModal: $("#boxe_main"),
-    mask: $("#mask_main"),
-    title: $("#boxe_main #title"),
-    message: $("#boxe_main #message"),
-    content: $("#boxe_main #content"),
-    close: function() {
-        var that = this;
-        $("#boxe_main .close, #mask_main").on("click", function() {
-            (that.nameModal, that.mask).fadeOut();
-            window.location.reload();
-        });
-    },
-    /** @var title, message, content */
-    show: function(params) {
-        this.close();
-        if(params.title && params.title !== null) this.title.html(params.title).fadeIn();
-        if(params.message && params.message !== null) this.message.html(params.message).fadeIn();
-        if(params.content && params.content !== null) this.content.load(params.content);
-        this.mask.fadeIn();
-        this.nameModal.fadeIn();
-        return this;
-    },
-    hide: function() {
-        $("#boxe_main").hide();
-    },
-    confirm: function(params) {
-        this.close();
-        this.content.html("<div align='right'><button class='button cancel' value='0'>Cancela</button><button class='button error' style='margin-left: 3px' value='1'>Confirma</button></div>");
-        this.show(params);
-
-        return this.content.find("button").on("button click", function() {
-            if($(this).val() == 0) {
-                $("#boxe_main .close").trigger("click");
-            }
-            else {
-                return $(this).val();
-            }
-        });
-    },
-    on: function() {
-        return this;
+(function (root, factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+      // AMD
+      define(['jquery'], factory);
+    } else if (typeof exports === 'object') {
+      // Node, CommonJS-like
+      module.exports = factory(require('jquery'));
+    } else {
+      // Browser globals (root is window)
+      root.modal = factory(root.jQuery);
     }
-};
+}(this, function init($, undefined) {
+    var modal = {
+        nameModal: $("#boxe_main"),
+        mask: $("#mask_main"),
+        title: $("#boxe_main #title"),
+        message: $("#boxe_main #message"),
+        content: $("#boxe_main #content"),
+        close: function() {
+            var that = this;
+            $("#boxe_main .close, #mask_main").on("click", function() {
+                that.nameModal.hide();
+                that.mask.fadeOut();
+                //window.location.reload();
+            });
+        },
+        /** @var title, message, content */
+        show: function(params) {
+            this.close();
+            if(params.title && params.title !== null) this.title.html(params.title).show();
+            if(params.message && params.message !== null) this.message.html(params.message).show();
+            if(params.content && params.content !== null) this.content.load(params.content);
+            this.mask.fadeIn();
+            this.nameModal.fadeIn().css({
+                display: "flex",
+                top: 0
+            });
+            return this;
+        },
+        hide: function() {
+            $("#boxe_main").hide();
+        },
+        confirm: function(params) {
+            this.close();
+            this.content.html("<div align='right'><button class='button cancel' value='0'>Cancela</button><button class='button error' style='margin-left: 3px' value='1'>Confirma</button></div>");
+            this.show(params);
+
+            return this.content.find("button").on("button click", function() {
+                if($(this).val() == 0) {
+                    $("#boxe_main .close").trigger("click");
+                }
+                else {
+                    return $(this).val();
+                }
+            });
+        },
+        on: function() {
+            return this;
+        }
+    };
+    return modal;
+}));
 
 /** loading */
 var loading = {
@@ -70,6 +89,7 @@ var loading = {
 var saveForm = function(act, action, connectionName = null) {
     $("#boxe_main").on("submit", function(e) {
         e.preventDefault();
+        var success;
         var data = $("#boxe_main form").serialize();
         var top = $("#top").height();
         $.ajax({
@@ -130,6 +150,7 @@ var saveForm = function(act, action, connectionName = null) {
                 }, 500);
             }
         });
+        return success;
     });
 };
 

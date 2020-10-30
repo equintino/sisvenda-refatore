@@ -11,7 +11,7 @@ class Shield extends Controller
     public function list()
     {
         $groups["groups"] = (new Group())->all();
-        $screens["screens"] = Safety::screens(__DIR__);
+        $screens["screens"] = Safety::screens(__DIR__ . "/../pages");
         $params = [ $groups, $screens ];
 
         (new View("shield", $params))->show();

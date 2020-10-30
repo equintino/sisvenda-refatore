@@ -77,6 +77,9 @@ $(function($) {
                                     }, setTime);
                                 }
                             }
+                        }).css({
+                            top: "25%",
+                            "padding": "30px"
                         });
                 }
                 else {
@@ -112,9 +115,7 @@ $(function($) {
         });
     });
 
-    /**
-     * Edition of the configuration
-     */
+    /** Edition of the configuration */
     $("#config .buttons .button").on("click", function(e) {
         e.preventDefault();
         if($(this).text() === "Adicionar") {
@@ -124,7 +125,7 @@ $(function($) {
                 content: content
             });
 
-            saveForm("connection","add");
+            console.log(saveForm("connection","add"));
         }
     });
     $("table#tabConf tbody .edition, table#tabConf tbody .delete").on("click", function() {

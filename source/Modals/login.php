@@ -1,22 +1,16 @@
 <?php
     require __DIR__ . "/../../vendor/autoload.php";
 
-    $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-    $companys = (new Source\Models\Company())->all();
-    $users = (new Source\Models\User())->find(["IDEmpresa" => $companyId]);
-    $groups = (new Source\Models\Group())->all();
-    echo "<script>var companyId = '" . $companyId . "' </script>";
-
     $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
     $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
-    $user = (new Source\Models\User())->find($login); ?>
-<style>
-    #boxe_main {
-        width: 40%;
-        margin-top: -280px;
-        padding: 30px;
-    }
+    $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
+    $users = (new \Source\Models\User())->find(["IDEmpresa" => $companyId]);
+    $user = (new \Source\Models\User())->find($login);
+    $groups = (new \Source\Models\Group())->all();
 
+    echo "<script>var companyId = '" . $companyId . "' </script>"; ?>
+
+<style>
     form#form-token input {
         text-align: center;
     }
@@ -78,46 +72,46 @@
 </div><!-- edit -->
 
 <?php elseif($act === "list"): ?>
-<fieldset class="p-3" >
-    <legend>LISTA DE USUÁRIOS</legend>
-    <table id="tabList" class="my-table" width="100%" >
-        <thead>
-            <tr>
-                <th>NOME</th>
-                <th>LOGIN</th>
-                <th>GRUPO</th>
-                <th>ATIVO</th>
-                <th>EDITAR</th>
-                <th>EXCLUIR</th>
-                <th>RESETAR SENHA</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if(isset($users)):
-                foreach($users as $user): ?>
-                    <tr>
-                        <td><?= $user->Nome ?></td>
-                        <td><?= $user->Logon ?></td>
-                        <td><?= (!empty($user->getGroup()) ? $user->getGroup()->name : null) ?></td>
-                        <td><?= $user->Visivel == 1 ? "SIM" : "NÃO"; ?></td>
-                        <td title="Edita" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-pencil" ></i></td>
-                        <td title="Exclui" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-times"></i></td>
-                        <td title="Reseta" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-key "></i></td>
-                    </tr>
+    <fieldset class="fieldset p-3" >
+        <legend>LISTA DE USUÁRIOS</legend>
+        <table id="tabList" class="my-table" width="100%" >
+            <thead>
+                <tr>
+                    <th>NOME</th>
+                    <th>LOGIN</th>
+                    <th>GRUPO</th>
+                    <th>ATIVO</th>
+                    <th>EDITAR</th>
+                    <th>EXCLUIR</th>
+                    <th>RESETAR SENHA</th>
+                </tr>
+            </thead>
+            <tbody>
                 <?php
-                endforeach;
-            endif ?>
-        </tbody>
-    </table>
-</fieldset>
+                if(isset($users)):
+                    foreach($users as $user): ?>
+                        <tr>
+                            <td><?= $user->Nome ?></td>
+                                <td><?= $user->Logon ?></td>
+                            <td><?= (!empty($user->getGroup()) ? $user->getGroup()->name : null) ?></td>
+                            <td><?= $user->Visivel == 1 ? "SIM" : "NÃO"; ?></td>
+                            <td title="Edita" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-pencil" ></i></td>
+                            <td title="Exclui" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-times"></i></td>
+                            <td title="Reseta" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-key "></i></td>
+                        </tr>
+                <?php
+                    endforeach;
+                endif ?>
+            </tbody>
+        </table>
+    </fieldset>
 <?php elseif($act === "token"): ?>
-<form id="form-token" class="form-signin" action="#" method="POST" >
-    <input type="hidden" name="Logon" value="<?= $login ?>" />
-    <input class="form-control" type="password" name="Senha" autofocus/>
-    <label class="label" for="Senha">Digite sua nova senha</label>
-    <input class="form-input" type="password" name="confSenha" />
-    <label class="label" for="confSenha">Confirme</label>
-    <button id="btn-token" class="button-style mt-3" >Enviar</button>
-</form>
+    <form id="form-token" class="form-signin" action="#" method="POST" >
+        <input type="hidden" name="Logon" value="<?= $login ?>" />
+        <input class="form-control" type="password" name="Senha" autofocus/>
+        <label class="label" for="Senha">Digite sua nova senha</label>
+        <input class="form-input" type="password" name="confSenha" />
+        <label class="label" for="confSenha">Confirme</label>
+        <button id="btn-token" class="button-style mt-3" >Enviar</button>
+    </form>
 <?php endif; ?>

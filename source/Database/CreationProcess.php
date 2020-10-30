@@ -2,6 +2,8 @@
 
 namespace Source\Database;
 
+use \Source\Config\Config;
+
 class CreationProcess
 {
     private $connectionName;
@@ -11,7 +13,7 @@ class CreationProcess
     {
         define("CONF_CONNECTION", $name);
         $this->connectionName = CONF_CONNECTION;
-        $this->type = (new \Config\Config())->type();
+        $this->type = (new Config())->type();
     }
 
     public function getConnectionName(): string
