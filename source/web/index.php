@@ -15,6 +15,8 @@ if(!empty($_SESSION["login"])) {
     Route::get("/login", "User:init");
     Route::get("/seguranca", "Shield:list");
     Route::get("/configuracao", "Config:list");
+    Route::get("/add", "Config:add");
+    Route::get("/edit", "Config:edit");
     Route::get("/sair", function() {
         (new Session())->destroy();
         echo "<script>window.location.reload()</script>";
@@ -23,6 +25,7 @@ if(!empty($_SESSION["login"])) {
     Route::get("/rotas", function() {
         var_dump(Route::routes());
     });
+
 }
 else {
     header("Location:../../index.php");

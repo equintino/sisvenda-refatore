@@ -55,10 +55,10 @@
                     return $(this).val();
                 }
             });
-        },
-        on: function() {
-            return this;
-        }
+        }//,
+        // on: function() {
+        //     return this;
+        // }
     };
     return modal;
 }));

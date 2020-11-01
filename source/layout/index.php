@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
         <script type="text/javascript" src="../web/js/datatables.js"></script>
         <script type="text/javascript" src="../web/js/bootbox.js"></script>
+        <script type="text/javascript" src="../web/js/jquery.router.js"></script>
+        <script type="text/javascript" src="../web/js/sammy.js"></script>
 
 
         <!--<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro&display=swap" rel="stylesheet" />

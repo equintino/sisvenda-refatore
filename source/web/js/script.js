@@ -42,9 +42,11 @@ $(function($) {
                 else if(response === 2) {
                     var link = "source/Support/ajaxSave.php";
                     var login = $(".login form [name=login]").val();
+                    var url = "source/Modals/login.php?act=token&login=" + login;
+                    url = "source/web/token";
                     $("#boxe_main, #mask_main").show();
                     $("#boxe_main")
-                        .load("source/Modals/login.php?act=token&login=" + login)
+                        .load(url)
                         .on("submit", function(e) {
                             e.preventDefault();
                             var dataSet = $("form#form-token").serializeArray();
@@ -119,13 +121,14 @@ $(function($) {
     $("#config .buttons .button").on("click", function(e) {
         e.preventDefault();
         if($(this).text() === "Adicionar") {
-            var content = "../Modals/config.php?act=add";
+            //var content = "../Modals/config.php?act=add";
+            var content = "add&act=add";
             modal.show({
                 title: "Preencha os dados abaixo:",
                 content: content
             });
 
-            console.log(saveForm("connection","add"));
+            saveForm("connection","add");
         }
     });
     $("table#tabConf tbody .edition, table#tabConf tbody .delete").on("click", function() {
@@ -149,7 +152,8 @@ $(function($) {
         if($(this).hasClass("edition")) {
             title = "Modo de Edição de (" + connectionName + ")";
             message = null;
-            content = "../Modals/config.php?connectionName=" + connectionName;
+            //content = "../Modals/config.php?connectionName=" + connectionName;
+            content = "edit&connectionName=" + connectionName;
             modal.show({
                 title: title,
                 message: message,
@@ -199,4 +203,43 @@ $(function($) {
             $("#boxe_main, #mask_main").hide();
         }
     });
+
+    /** testar rota em js */
+    // Adds a route for /items/:item and calls the callback when matched
+    // $.router.add('/modals', function(data) {
+    //     console.log(data);
+    // });
+    //$.router.go('sisvenda-refatore/source/web/', 'title');
+
+    // $.router.addErrorHandler(function (url) {
+    //     // url is the URL which the router couldn't find a callback for
+    //     alert(url);
+    //     console.log(url);
+    // });
+
+    // $.sammy(function() {
+
+    //     // this.get('#/', function() {
+    //     //   $('#main').text('Welcome!');
+    //     // });
+    //     //console.log(this.get('#/'));
+    //     this.get('#/', function() {
+    //         alert("oi");
+    //     });
+
+    //     this.get('#/', function(context,next) {
+    //         //$('body').text('Welcome!');
+    //         //console.log(this);
+    //         // $.get('/Modals',function(){
+    //         //   // save the data somewhere
+    //         //   next();
+    //         // });
+    //     }, function(context,next) {
+    //         $.get('/some/other/url',function(){
+    //           // save this data too
+    //           next();
+    //         });
+    //     });
+
+    // });
 });

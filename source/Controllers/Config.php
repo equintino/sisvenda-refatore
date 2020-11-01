@@ -19,9 +19,20 @@ class Config extends Controller
         echo "<script>var page='config'</script>";
     }
 
+    public function add()
+    {
+        echo "<style>#boxe_main #topHeader, #boxe_main .identification { display: none }</style>";
+        include __DIR__  . "/../Modals/config.php";
+    }
+
     public function edit()
     {
-        //include __DIR__  . "/../Modals/config.php";
-        //echo "<script>$('#boxe_main').load('../Modals/config.php').show()</script>";
+        echo "<style>#boxe_main #topHeader, #boxe_main .identification { display: none }</style>";
+        include __DIR__ . "/../Modals/config.php";
+    }
+
+    public function save($params)
+    {
+
     }
 }

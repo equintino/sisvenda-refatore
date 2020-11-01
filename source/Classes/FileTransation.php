@@ -29,7 +29,7 @@ class FileTransation
         $string = "";
         while($row = fgets($handle)) {
             if(preg_match("/CONF_CONNECTION/", $row)) {
-                $string .= "CONF_CONNECTION=" . $connectionName;
+                $string .= "CONF_CONNECTION=" . $connectionName . "\r\n";
             }
             else {
                 $string .= $row;

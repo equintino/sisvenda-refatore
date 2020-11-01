@@ -20,4 +20,9 @@ class User extends Controller
         echo "<script>var page='login'</script>";
     }
 
+    public function token()
+    {
+        echo "estou aqui no token";
+    }
+
 }

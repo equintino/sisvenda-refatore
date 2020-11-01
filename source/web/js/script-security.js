@@ -18,11 +18,11 @@ $(function($) {
     $(".screen p i").click(function() {
         if(!$(".btnAction").hasClass("active")) return;
         change = changeCheck($(this), "fa fa-check", "fa fa-times");
-    });  
+    });
 
     $("button.save, button.cancel").on("click", function(e) {
         e.preventDefault();
-        var btnName = this["innerText"];   
+        var btnName = this["innerText"];
         if(btnName === "Adicionar Grupo") {
             var formGroup = modal.show({
                 title: "Cadastro de Grupo",
@@ -42,10 +42,11 @@ $(function($) {
                 if(saveData(link, data)) {
                     setTimeout(function() {
                         $("#mask_main").trigger("click");
+                        window.location.reload();
                     }, 1000);
                 }
             });
-        } 
+        }
         else if(btnName === "Excluir Grupo") {
             if(!$(".btnAction").hasClass("active")) return;
             var groupName = $(".group .active").text();
@@ -71,8 +72,8 @@ $(function($) {
                         $(".btnAction.active").remove();
                     }
                 }
-            });            
-        } 
+            });
+        }
         else if(btnName === "Gravar") { /** parte ok */
             if(!$(".btnAction").hasClass("active") || typeof(change) === "undefined") return;
             var security = getScreenAccess($(".screen p"), "fa fa-check");
