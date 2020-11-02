@@ -5,15 +5,18 @@ namespace Source\Core;
 class Route
 {
     protected static $route;
+    protected $urlBase = CONF_URL_BASE;
+    private static $separator = ":";
 
     public static function get(string $route, $handler): void
     {
+        $route = substr($route, (strripos($route, "/")));
         $get = "/" . filter_input(INPUT_GET, "url", FILTER_SANITIZE_SPECIAL_CHARS);
         self::$route = [
             $route => [
                 "route" => $route,
-                "controller" => (!is_string($handler) ? $handler : strstr($handler, ":", true)),
-                "method" => (!is_string($handler) ?: str_replace(":","", strstr($handler, ":", false)))
+                "controller" => (!is_string($handler) ? $handler : strstr($handler, self::$separator, true)),
+                "method" => (!is_string($handler) ?: str_replace(self::$separator,"", strstr($handler, self::$separator, false)))
             ]
         ];
 
@@ -47,12 +50,12 @@ class Route
         return self::$route;
     }
 
-    public static function redirect($uri)
+    public static function redirect($url)
     {
-        return header("Location: {$uri}");
+        return header("Location: {$url}");
     }
 
-    private static function namespace(): string
+    private static function namespace(string $nameSpace = null): string
     {
         return "Source\Controllers\\";
     }

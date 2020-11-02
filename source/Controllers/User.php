@@ -16,13 +16,9 @@ class User extends Controller
         $companys = (new \Source\Models\Company())->all();
         $groups = (new \Source\Models\Group())->all();
         $params = [ $companys, $groups ];
+        (new Web())->theme();
         (new View("login", $params))->show();
         echo "<script>var page='login'</script>";
-    }
-
-    public function token()
-    {
-        echo "estou aqui no token";
     }
 
 }

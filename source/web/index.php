@@ -1,28 +1,28 @@
 <?php
 
+ob_start();
+
 require __DIR__ . "/../../vendor/autoload.php";
-require __DIR__ . "/../Support/Helpers.php";
 
 use Source\Core\Route;
 use Source\Core\Session;
+use Source\Controllers\Web;
 
 $session = new Session();
 
 if(!empty($_SESSION["login"])) {
-    require __DIR__ . "/../layout/index.php";
-
-    Route::get("/", "Panel:dashboard");
-    Route::get("/login", "User:init");
-    Route::get("/seguranca", "Shield:list");
-    Route::get("/configuracao", "Config:list");
-    Route::get("/add", "Config:add");
-    Route::get("/edit", "Config:edit");
-    Route::get("/sair", function() {
+    Route::get(url("/"), "Panel:dashboard");
+    Route::get(url("/login"), "User:init");
+    Route::get(url("/seguranca"), "Shield:list");
+    Route::get(url("/configuracao"), "Config:list");
+    Route::get(url("/add"), "Config:add");
+    Route::get(url("/edit"), "Config:edit");
+    Route::get(url("/sair"), function() {
         (new Session())->destroy();
         echo "<script>window.location.reload()</script>";
     });
 
-    Route::get("/rotas", function() {
+    Route::get(url("/rotas"), function() {
         var_dump(Route::routes());
     });
 
@@ -30,3 +30,5 @@ if(!empty($_SESSION["login"])) {
 else {
     header("Location:../../index.php");
 }
+
+ob_end_flush();

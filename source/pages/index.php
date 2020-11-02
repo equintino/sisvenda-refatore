@@ -1,4 +1,14 @@
-<body class="text-center gradient">
+<DOCTYPE html>
+<html>
+    <head>
+        <title>Sistema Estruturado de Venda</title>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="source/web/img/logo.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <?php require __DIR__ . "/../../vendor/autoload.php" ?>
+    </head>
+    <body class="text-center gradient">
         <div class="mask"></div>
         <div id="flashes"></div>
         <div class="logo"></div>
@@ -37,4 +47,4 @@
         <script type="text/javascript" src="source/web/js/functions.js"></script>
         <script type="text/javascript" src="source/web/js/script.js" ></script>
     </body>
-    
+</html>

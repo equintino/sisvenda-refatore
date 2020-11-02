@@ -15,19 +15,18 @@ class Config extends Controller
     {
         $config["config"] = new \Source\Config\Config();
 
+        (new Web())->theme();
         (new View("config", [ $config ]))->show();//->config($config);
         echo "<script>var page='config'</script>";
     }
 
     public function add()
     {
-        echo "<style>#boxe_main #topHeader, #boxe_main .identification { display: none }</style>";
         include __DIR__  . "/../Modals/config.php";
     }
 
     public function edit()
     {
-        echo "<style>#boxe_main #topHeader, #boxe_main .identification { display: none }</style>";
         include __DIR__ . "/../Modals/config.php";
     }
 

@@ -40,3 +40,11 @@ $getScreens = function($path) {
     }
     return $screens;
 };
+
+/** url */
+function url(string $path) {
+    if(!$path) {
+        return CONF_URL_TEST . "/source/web";
+    }
+    return CONF_URL_TEST . "/source/web" . $path;
+};

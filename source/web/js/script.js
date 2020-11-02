@@ -43,7 +43,6 @@ $(function($) {
                     var link = "source/Support/ajaxSave.php";
                     var login = $(".login form [name=login]").val();
                     var url = "source/Modals/login.php?act=token&login=" + login;
-                    url = "source/web/token";
                     $("#boxe_main, #mask_main").show();
                     $("#boxe_main")
                         .load(url)
@@ -121,7 +120,6 @@ $(function($) {
     $("#config .buttons .button").on("click", function(e) {
         e.preventDefault();
         if($(this).text() === "Adicionar") {
-            //var content = "../Modals/config.php?act=add";
             var content = "add&act=add";
             modal.show({
                 title: "Preencha os dados abaixo:",
@@ -152,7 +150,6 @@ $(function($) {
         if($(this).hasClass("edition")) {
             title = "Modo de Edição de (" + connectionName + ")";
             message = null;
-            //content = "../Modals/config.php?connectionName=" + connectionName;
             content = "edit&connectionName=" + connectionName;
             modal.show({
                 title: title,
