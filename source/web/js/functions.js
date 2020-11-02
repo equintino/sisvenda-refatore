@@ -183,7 +183,7 @@ var security = function(groupName) {
 var insertCheck = function(screens, element, optionGreen, optionRed) {
     element.find("i").removeClass();
     element.each(function() {
-        if(screens.indexOf($(this).text()) !== -1) {
+        if(screens == " *" || screens.indexOf($(this).text()) !== -1) {
             $(this).find("i").addClass(optionGreen)
                 .css("color","green");
         }

@@ -35,9 +35,15 @@
         </ul>
         <div class="navbar navbar-right config">
             <ul class="nav navbar">
-                <li><a id="login" class="nav-link icon-login" href="<?= url("/login") ?>" ><i class="fa fa-id-card" title="Cadastro de Login"></i></a></li>
-                <li><a id="shield" class="nav-link icon-shield" href="<?= url("/seguranca") ?>" ><i class="fa fa-shield" title="Segurança" ></i></a></li>
-                <li><a id="config" class="nav-link icon-config" href="<?= url("/configuracao") ?>" ><i class="fa fa-cog" title="Configuração" ></i></a></li>
+                <?php if(in_array(" login", $access) || in_array(" *", $access)): ?>
+                    <li><a id="login" class="nav-link icon-login" href="<?= url("/login") ?>" ><i class="fa fa-id-card" title="Cadastro de Login"></i></a></li>
+                <?php endif; ?>
+                <?php if(in_array(" shield", $access) || in_array(" *", $access)): ?>
+                    <li><a id="shield" class="nav-link icon-shield" href="<?= url("/seguranca") ?>" ><i class="fa fa-shield" title="Segurança" ></i></a></li>
+                <?php endif ?>
+                <?php if(in_array(" config", $access) || in_array(" *", $access)): ?>
+                    <li><a id="config" class="nav-link icon-config" href="<?= url("/configuracao") ?>" ><i class="fa fa-cog" title="Configuração" ></i></a></li>
+                <?php endif ?>
                 <li><a id="exit" class="nav-link icon-exit" href="<?= url("/sair") ?>" ><i class="fa fa-sign-out" title="Sair" ></i></a></li>
             </ul>
         </div><!-- navbar rigth-->

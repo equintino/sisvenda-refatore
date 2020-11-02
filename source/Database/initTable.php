@@ -16,7 +16,8 @@ $data = [
     "Email" => "edmquintino@gmail.com",
     "IDEmpresa" => 1,
     "Visivel" => 1,
-    "USUARIO" => "Edmilson"
+    "USUARIO" => "Edmilson",
+    "Group_id" => 1
 ];
 $user->bootstrap($data);
 $user->save();
@@ -31,7 +32,7 @@ var_dump(
 );
 $data = [
     "name" => "Administrador",
-    "access" => "home,seguranca",
+    "access" => " *",
     "active" => 1
 ];
 $group->bootstrap($data);

@@ -6,17 +6,17 @@ use Source\Core\View;
 
 class Config extends Controller
 {
+    protected $page = " config";
+
     public function __construct()
     {
-
+        parent::__construct();
     }
 
     public function list()
     {
         $config["config"] = new \Source\Config\Config();
-
-        (new Web())->theme();
-        (new View("config", [ $config ]))->show();//->config($config);
+        (new View("config", [ $config ]))->show();
         echo "<script>var page='config'</script>";
     }
 

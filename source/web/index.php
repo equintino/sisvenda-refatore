@@ -6,7 +6,6 @@ require __DIR__ . "/../../vendor/autoload.php";
 
 use Source\Core\Route;
 use Source\Core\Session;
-use Source\Controllers\Web;
 
 $session = new Session();
 

@@ -8,13 +8,19 @@ use Source\Models\Group;
 
 class Shield extends Controller
 {
+    protected $page = " shield";
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function list()
     {
         $groups["groups"] = (new Group())->all();
         $screens["screens"] = Safety::screens(__DIR__ . "/../pages");
         $params = [ $groups, $screens ];
 
-        (new Web())->theme();
         (new View("shield", $params))->show();
         echo "<script>var page='shield'</script>";
     }

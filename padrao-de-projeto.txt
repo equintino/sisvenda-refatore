@@ -76,3 +76,5 @@ stap by stap
 - reload da tela ao confirmar exclusão da configuração do banco - ok
 - indicar no menu a pagina ativa - ok
 - criar uma class para salvamento(ok)/leitura em ajax
+- restringir o acesso as telas - ok
+- não permite remover todos os acessos

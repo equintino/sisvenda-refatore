@@ -31,15 +31,15 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 (new Source\Classes\FileTransation(".env"))->getConst();
 
 /** Pages access */
-$getScreens = function($path) {
-    $directory = dir($path);
-    while($file = $directory->read()) {
-        if($file !==  "." && $file !== "..") {
-            $screens[] = substr($file, 0, -4);
-        }
-    }
-    return $screens;
-};
+// $getScreens = function($path) {
+//     $directory = dir($path);
+//     while($file = $directory->read()) {
+//         if($file !==  "." && $file !== "..") {
+//             $screens[] = substr($file, 0, -4);
+//         }
+//     }
+//     return $screens;
+// };
 
 /** url */
 function url(string $path) {
