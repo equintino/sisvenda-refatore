@@ -6,9 +6,14 @@ use Source\Core\View;
 
 class Panel extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function dashboard()
     {
-        (new Web())->theme();
+        $this->theme->show();
         (new view("home"))->show();
     }
 

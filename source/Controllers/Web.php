@@ -6,31 +6,31 @@ use Source\Models\Group;
 
 class Web extends Controller
 {
-    private $theme;
-    public $access;
+    public $theme = __DIR__ . "/../layout/index.php";
+    private $access;
 
-    public function __construct(string $theme = "layout/index.php")
+    public function __construct()
     {
-        $this->theme = $theme;
-
+        $this->validate();
     }
 
-    public function theme($bool = true)
+    public function show()
     {
-        $access = $this->validate();
-        if($bool) {
-            require __DIR__ . "/../{$this->theme}";
-        }
-        return $this;
+        $access = $this->access;
+        require $this->theme;
     }
 
-    public function validate(): ?array
+    public function validate(): void
     {
         $login = $_SESSION["login"];
         $group = new Group();
         if($login->Group_id) {
-            return explode(",", $group->load($login->Group_id)->access);
+            $this->access = explode(",", $group->load($login->Group_id)->access);
         }
-        return [];
+    }
+
+    public function getAccess(): ?array
+    {
+        return $this->access;
     }
 }

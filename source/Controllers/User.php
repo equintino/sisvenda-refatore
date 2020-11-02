@@ -18,6 +18,8 @@ class User extends Controller
         $companys = (new \Source\Models\Company())->all();
         $groups = (new \Source\Models\Group())->all();
         $params = [ $companys, $groups ];
+
+        $this->theme->show();
         (new View("login", $params))->show();
         echo "<script>var page='login'</script>";
     }
