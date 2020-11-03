@@ -196,15 +196,10 @@ var insertCheck = function(screens, element, optionGreen, optionRed) {
 
 /** @return object */
 var getScreenAccess = function(element, check) {
-    var x = 0;
+    var access = " home";
     element.each(function() {
         if($(this).find("i").hasClass(check)) {
-            if(x++ === 0) {
-                access = $(this).text();
-            }
-            else {
-                access += "," + $(this).text();
-            }
+            access += "," + $(this).text();
         }
     });
     var groupName = element.parent().find("span").text().replace("Grupo: ","");

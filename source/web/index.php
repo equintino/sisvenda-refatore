@@ -13,6 +13,7 @@ if(!empty($_SESSION["login"])) {
     Route::get(url("/"), "Panel:dashboard");
     Route::get(url("/login"), "User:init");
     Route::get(url("/seguranca"), "Shield:list");
+    Route::get(url("/add-group"), "Group:add");
     Route::get(url("/configuracao"), "Config:list");
     Route::get(url("/add"), "Config:add");
     Route::get(url("/edit"), "Config:edit");

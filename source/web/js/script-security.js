@@ -7,6 +7,7 @@ $(function($) {
         $(".btnAction").removeClass("active");
         $(this).addClass("active");
 
+        /** Mark accessible screens */
         var screens = security(groupName);
         if(screens.success) {
             insertCheck(screens.access, $(".screen p"), "fa fa-check", "fa fa-times");
@@ -14,7 +15,7 @@ $(function($) {
     });
 
     var change;
-    /* marca e desmarca telas */
+    /* change check */
     $(".screen p i").click(function() {
         if(!$(".btnAction").hasClass("active")) return;
         change = changeCheck($(this), "fa fa-check", "fa fa-times");
@@ -24,10 +25,11 @@ $(function($) {
         e.preventDefault();
         var btnName = this["innerText"];
         if(btnName === "Adicionar Grupo") {
+            var url = "add-group";
             var formGroup = modal.show({
                 title: "Cadastro de Grupo",
                 message: null,
-                content: "../Modals/grupo.php"
+                content: url
             });
             $(formGroup.content).on("submit", function(e){
                 e.preventDefault();
@@ -79,6 +81,7 @@ $(function($) {
             var security = getScreenAccess($(".screen p"), "fa fa-check");
             security.act = "group";
             security.action = "edit";
+            
             saveData("../Support/ajaxSave.php", security);
         }
     });
