@@ -26,7 +26,7 @@ class AjaxTransaction
 
     public function saveData(): ?string
     {
-        $this->confSenha();
+        (array_key_exists("Senha", $this->params) ? $this->confSenha(): null);
         $this->cleanFields();
         $this->setSearch();
         $this->setMethodClass();

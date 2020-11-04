@@ -7,6 +7,7 @@ class Route
     protected static $route;
     protected $urlBase = CONF_URL_BASE;
     private static $separator = ":";
+    private static $group;
 
     public static function get(string $route, $handler): void
     {
@@ -48,6 +49,11 @@ class Route
     public static function routes(): array
     {
         return self::$route;
+    }
+
+    public static function group(string $group)
+    {
+        self::$group = $group;
     }
 
     public static function redirect($url)
