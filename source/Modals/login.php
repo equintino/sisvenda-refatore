@@ -39,7 +39,7 @@
                     <input type="password" class="form-input" id="senha" name="Senha" <?= isset($user)  ? "disabled" : ("required='required'") ?> /></div><!-- col -->
                 <div class="col-md">
                     <label for="senha2" class="label">Confirme: </label>
-                    <input type="password" class="form-input" id="senha2" <?= isset($user) ? "disabled" : ("required='required'") ?>/></div><!-- col -->
+                    <input type="password" class="form-input" id="senha2" name="confSenha" <?= isset($user) ? "disabled" : ("required='required'") ?>/></div><!-- col -->
             </div><!-- row -->
             <?php else: ?>
                 <input type="hidden" name="Logon" value="<?= $user->Logon ?>" ?>

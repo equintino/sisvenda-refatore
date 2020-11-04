@@ -79,4 +79,5 @@ stap by stap
 - restringir o acesso as telas - ok
 - não permite remover todos os acessos - ok
 - colocar no canto superior direito a mensagem flash - ok
-- permitiu cadastrar sem conferir as senhas
+- permitiu cadastrar sem conferir as senhas - ok
+- implementar grupo de rotas

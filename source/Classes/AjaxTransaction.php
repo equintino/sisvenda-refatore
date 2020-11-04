@@ -26,6 +26,7 @@ class AjaxTransaction
 
     public function saveData(): ?string
     {
+        $this->confSenha();
         $this->cleanFields();
         $this->setSearch();
         $this->setMethodClass();
@@ -42,6 +43,16 @@ class AjaxTransaction
             }
         }
         return $this->params;
+    }
+
+    private function confSenha()
+    {
+        $senha = $this->params["Senha"];
+        $confSenha = $this->params["confSenha"];
+        if($senha !== $confSenha) {
+            print(json_encode("<span class='warning'>A senha não foi confirmada</span>"));
+            die;
+        }
     }
 
     private function replaceData($class): object

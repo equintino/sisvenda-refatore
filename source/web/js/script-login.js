@@ -164,7 +164,6 @@ $(function($) {
                             .trigger("click");
                     }
             });
-
         }
         else {
             var companyId = $(this).closest(".header").find("select :selected").val();
