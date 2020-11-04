@@ -93,6 +93,7 @@
                 <table id='tabAjax' class='display'></table>
             </div>
 
+        <span id="alert"></span>
         </div><!-- content -->
         <script>var page = "<?= $page ?>";</script>
         <script type="text/javascript" src="../web/js/functions.js"></script>

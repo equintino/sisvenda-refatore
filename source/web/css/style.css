@@ -73,6 +73,28 @@ section.loading, .text-loading {
     background: var(--cor-primary);
 }
 
+#alert {
+    position: fixed;
+    top: 10%;
+    right: 0;
+    padding: 5px 15px;
+    border-radius: 5px 0 0 0;
+    //display: none;
+}
+
+#alert {
+    /* animation-name: example;
+    animation-duration: 2s; */
+    overflow: hidden;
+    margin-right: -300px;
+    z-index: 9;
+}
+
+/* @keyframes example {
+    from {right: -200px;}
+    to {right: 0%;}
+} */
+
 .flash, #flashes {
     position: fixed;
     top: 0px;

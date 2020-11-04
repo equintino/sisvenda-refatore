@@ -77,4 +77,7 @@ stap by stap
 - indicar no menu a pagina ativa - ok
 - criar uma class para salvamento(ok)/leitura em ajax
 - restringir o acesso as telas - ok
-- não permite remover todos os acessos
+- não permite remover todos os acessos - ok
+- aumentar o timeout do flash quando for erro ou warning
+- colocar no canto inferior direito a mensagem flash
+- permitiu cadastrar sem conferir as senhas

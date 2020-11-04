@@ -8,7 +8,8 @@ $(function($) {
         $(this).addClass("active");
 
         /** Mark accessible screens */
-        var screens = security(groupName);
+        var url = "load-group&groupName=" + groupName;
+        var screens = security(groupName, url);
         if(screens.success) {
             insertCheck(screens.access, $(".screen p"), "fa fa-check", "fa fa-times");
         }
@@ -35,13 +36,14 @@ $(function($) {
                 e.preventDefault();
                 var groupName = $("[name=group-name]").val();
                 if(groupName === "") return;
-                var link = "../Support/ajaxSave.php";
+                //var link = "../Support/ajaxSave.php";
+                var url = "save-group";
                 var data = {
                     name: groupName,
                     act: "group",
                     action: "add"
                 };
-                if(saveData(link, data)) {
+                if(saveData(url, data)) {
                     setTimeout(function() {
                         $("#mask_main").trigger("click");
                         window.location.reload();
@@ -52,6 +54,8 @@ $(function($) {
         else if(btnName === "Excluir Grupo") {
             if(!$(".btnAction").hasClass("active")) return;
             var groupName = $(".group .active").text();
+            //var url = "../Support/ajaxSave.php";
+            var url = "save-group";
             var conf = bootbox.confirm({
                 message: "Deseja realmente excluir o grupo <span style='color:red; font-size: 1.1rem; margin-left: 5px'>" + groupName + "</span>",
                 buttons: {
@@ -70,7 +74,7 @@ $(function($) {
                         data.name = groupName;
                         data.act = "group";
                         data.action = "delete";
-                        saveData("../Support/ajaxSave.php", data);
+                        saveData(url, data);
                         $(".btnAction.active").remove();
                     }
                 }
@@ -79,10 +83,12 @@ $(function($) {
         else if(btnName === "Gravar") { /** parte ok */
             if(!$(".btnAction").hasClass("active") || typeof(change) === "undefined") return;
             var security = getScreenAccess($(".screen p"), "fa fa-check");
+            //var url = "../Support/ajaxSave.php";
+            var url = "save-group";
             security.act = "group";
             security.action = "edit";
-            
-            saveData("../Support/ajaxSave.php", security);
+
+            saveData(url, security);
         }
     });
     $("#mask, .mask").click(function() {

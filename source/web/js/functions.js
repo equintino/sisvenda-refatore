@@ -86,14 +86,15 @@ var loading = {
 };
 
 /** save configuration */
-var saveForm = function(act, action, connectionName = null) {
+var saveForm = function(act, action, connectionName = null, url = "../Suporte/ajaxSave.php") {
     $("#boxe_main").on("submit", function(e) {
         e.preventDefault();
         var success;
         var data = $("#boxe_main form").serialize();
         var top = $("#top").height();
+        //var url = "../Support/ajaxSave.php";
         $.ajax({
-            url: "../Support/ajaxSave.php",
+            url: url,
             type: "POST",
             dataType: "JSON",
             data: {
@@ -117,29 +118,59 @@ var saveForm = function(act, action, connectionName = null) {
                     background = "var(--cor-warning)";
                     success = false;
                 }
-                $("#flashes")
+                $( "#alert" )
                     .html(response)
                     .css({
-                        background: background,
-                        top: top
+                        overflow: "hidden",
+                        background: background
                     })
-                    .slideDown();
+                    .animate({
+                    "margin-right": "0"
+                }, 2000, function() {
+                    setTimeout(function() {
+                        $("#alert").animate({
+                        "margin-right": "-400px"
+                        });
+                    }, 3000);
+                });
+                // $("#flashes")
+                //     .html(response)
+                //     .css({
+                //         background: background,
+                //         top: top
+                //     })
+                //     .slideDown();
                 setTimeout(function() {
-                    $("#flashes").slideUp();
+                    //$("#flashes").slideUp();
                     loading.hide();
                     (success ? window.location.reload(): null);
                 }, setTime);
             },
             error: function(error) {
-                $("#flashes")
-                    .html(error)
+                $( "#alert" )
+                    .html(response)
                     .css({
-                        background: "var(--cor-error)",
-                        top: top
+                        overflow: "hidden",
+                        background: background
                     })
-                    .slideDown();
+                    .animate({
+                    "margin-right": "0"
+                }, 2000, function() {
+                    setTimeout(function() {
+                        $("#alert").animate({
+                        "margin-right": "-400px"
+                        });
+                    }, 3000);
+                });
+                // $("#flashes")
+                //     .html(error)
+                //     .css({
+                //         background: "var(--cor-error)",
+                //         top: top
+                //     })
+                //     .slideDown();
                 setTimeout(function() {
-                    $("#flashes").slideUp();
+                    //$("#flashes").slideUp();
                     loading.hide();
                     $("#mask_main").fadeOut();
                 }, setTime);
@@ -157,10 +188,10 @@ var saveForm = function(act, action, connectionName = null) {
 /**
  * Read screen access
  */
-var security = function(groupName) {
+var security = function(groupName, url = null ) {
     var resp;
     $.ajax({
-        url: "../Support/ajaxLoad.php",
+        url: url,
         type: "POST",
         dataType: "JSON",
         data: { groupName: groupName },
@@ -257,30 +288,61 @@ var saveData = function(link, data, msg = "Salvando") {
             else {
                 background = "var(--cor-warning";
             }
-            $("#flashes")
+
+            $( "#alert" )
                 .html(response)
                 .css({
-                    background: background,
-                    top: top
+                    overflow: "hidden",
+                    background: background
                 })
-                .slideDown();
+                .animate({
+                "margin-right": "0"
+            }, 2000, function() {
+                setTimeout(function() {
+                    $("#alert").animate({
+                    "margin-right": "-400px"
+                    });
+                }, 3000);
+            });
+            // $("#flashes")
+            //     .html(response)
+            //     .css({
+            //         background: background,
+            //         top: top
+            //     })
+            //     .slideDown();
             setTimeout(function() {
-                 $("#flashes").slideUp();
+                 //$("#flashes").slideUp();
                  loading.hide();
                  $("#mask_main").hide();
             }, setTime);
         },
         error: function(error) {
             var top = $("#top").height();
-            $("#flashes")
-                .html(error)
+            $( "#alert" )
+                .html(response)
                 .css({
-                    background: "var(--cor-danger)",
-                    top: top
+                    overflow: "hidden",
+                    background: background
                 })
-                .slideDown();
+                .animate({
+                "margin-right": "0"
+            }, 2000, function() {
+                setTimeout(function() {
+                    $("#alert").animate({
+                    "margin-right": "-400px"
+                    });
+                }, 3000);
+            });
+            // $("#flashes,")
+            //     .html(error)
+            //     .css({
+            //         background: "var(--cor-danger)",
+            //         top: top
+            //     })
+            //     .slideDown();
             setTimeout(function() {
-                $("#flashes").slideUp();
+                //$("#flashes").slideUp();
                 loading.hide();
                 $("#mask_main").fadeOut();
             }, setTime);

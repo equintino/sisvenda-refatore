@@ -11,7 +11,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 /**
  * variables
  */
-var setTime = 2000;
+var setTime = 0;
 
 $(function($) {
     /** menu behavior */
@@ -61,7 +61,7 @@ $(function($) {
                             );
                             if(dataSet[1]["value"] !== dataSet[2]["value"]) {
                                 $("#flashes")
-                                    .text("As senhas não conferem")
+                                    .text("As senhas não conferem......")
                                     .css({
                                         background: "var(--cor-warning",
                                         top: 0
@@ -119,14 +119,15 @@ $(function($) {
     /** Edition of the configuration */
     $("#config .buttons .button").on("click", function(e) {
         e.preventDefault();
+        var url = "save-config";
         if($(this).text() === "Adicionar") {
-            var content = "add&act=add";
+            var content = "add-config&act=add";
             modal.show({
                 title: "Preencha os dados abaixo:",
                 content: content
             });
 
-            saveForm("connection","add");
+            saveForm("connection","add", "null", url);
         }
     });
     $("table#tabConf tbody .edition, table#tabConf tbody .delete").on("click", function() {
@@ -148,15 +149,16 @@ $(function($) {
         }
 
         if($(this).hasClass("edition")) {
+            var url = "update-config";
             title = "Modo de Edição de (" + connectionName + ")";
             message = null;
-            content = "edit&connectionName=" + connectionName;
+            content = "edit-config&connectionName=" + connectionName;
             modal.show({
                 title: title,
                 message: message,
                 content: content
             });
-            saveForm("connection", "edit", connectionName);
+            saveForm("connection", "edit", connectionName, url);
         }
         else if($(this).hasClass("delete")) {
             title = "Modo de Exclusão de (" + connectionName + ")";
@@ -175,7 +177,8 @@ $(function($) {
                 },
                 callback: function(result){
                     if(result) {
-                        var link = "../Support/ajaxSave.php";
+                        //var link = "../Support/Save.php";
+                        var link = "delete-config";
                         var data = {
                             connectionName: connectionName,
                             act: "connection",

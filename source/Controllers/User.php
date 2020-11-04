@@ -3,6 +3,7 @@
 namespace Source\Controllers;
 
 use Source\Core\View;
+use Source\Classes\AjaxTransaction;
 
 class User extends Controller
 {
@@ -22,6 +23,35 @@ class User extends Controller
         $this->theme->show();
         (new View("login", $params))->show();
         echo "<script>var page='login'</script>";
+    }
+
+    public function list()
+    {
+        require __DIR__ . "/../Modals/login.php";
+    }
+
+    public function add()
+    {
+        require __DIR__ . "/../Modals/login.php";
+    }
+
+    public function edit()
+    {
+        require __DIR__ . "/../Modals/login.php";
+    }
+
+    public function save()
+    {
+        $params = $this->getPost($_POST);
+        $class = new \Source\Models\User();
+        echo (new AjaxTransaction($class, $params))->saveData();
+    }
+
+    public function delete()
+    {
+        $params = $this->getPost($_POST);
+        $class = new \Source\Models\User();
+        echo (new AjaxTransaction($class, $params))->saveData();
     }
 
 }

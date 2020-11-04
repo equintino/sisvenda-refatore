@@ -12,11 +12,21 @@ $session = new Session();
 if(!empty($_SESSION["login"])) {
     Route::get(url("/"), "Panel:dashboard");
     Route::get(url("/login"), "User:init");
+    Route::get(url("/list-login"), "User:list");
+    Route::get(url("/add-login"), "User:add");
+    Route::get(url("/edit-login"), "User:edit");
+    Route::get(url("/save-login"), "User:save");
+    Route::get(url("/delete-login"), "User:delete");
     Route::get(url("/seguranca"), "Shield:list");
     Route::get(url("/add-group"), "Group:add");
+    Route::get(url("/load-group"), "Group:load");
+    Route::get(url("/save-group"), "Group:save");
     Route::get(url("/configuracao"), "Config:list");
-    Route::get(url("/add"), "Config:add");
-    Route::get(url("/edit"), "Config:edit");
+    Route::get(url("/add-config"), "Config:add");
+    Route::get(url("/edit-config"), "Config:edit");
+    Route::get(url("/save-config"), "Config:save");
+    Route::get(url("/update-config"), "Config:update");
+    Route::get(url("/delete-config"), "Config:delete");
     Route::get(url("/sair"), function() {
         (new Session())->destroy();
         echo "<script>window.location.reload()</script>";

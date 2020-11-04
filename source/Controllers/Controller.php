@@ -11,7 +11,7 @@ abstract class Controller
     public function __construct()
     {
         $this->theme = new Web();
-        
+
         /** Restricted access */
         if(!empty($this->page)) {
             $access = $this->theme->getAccess();
@@ -19,5 +19,12 @@ abstract class Controller
                 die("<h2 class='title' style='text-align:center'>Acesso restrito</h2>");
             }
         }
+    }
+
+    protected function getPost($data) {
+        foreach($data as $key => $value) {
+            $params[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRIPPED);
+        }
+        return $params;
     }
 }

@@ -2,9 +2,11 @@ function exhibition(element) {
     $(element).on("click", function() {
         var action = $(this).attr("title");
         var login = $(this).closest("tr").find("td:eq(1)").text();
+        //var url = "../Modals/login.php?act=edit&login=" + login;
+        var url = "edit-login&act=edit&login=" + login;
         if(action === "Edita") {
             $("#exhibition")
-                .load("../Modals/login.php?act=edit&login=" + login)
+                .load(url)
                 .on("submit", function(e) {
                     e.preventDefault();
                     var buttonName;
@@ -21,8 +23,9 @@ function exhibition(element) {
                                 value: "edit"
                             }
                         );
-                        var link = "../Support/ajaxSave.php";
-                        saveData(link, dataSet);
+                        //var link = "../Support/ajaxSave.php";
+                        url = "save-login";
+                        saveData(url, dataSet);
                     }
                 });
         }
@@ -42,7 +45,6 @@ function exhibition(element) {
             modal.confirm({
                 title: "Você deseja realmente excluir o usuário <span style='color:red; margin-left: 5px'><strong>" + login + "</strong></span>",
                 message: " "
-
             }).on("click", function() {
                 var dataSet = [
                     {
@@ -59,8 +61,9 @@ function exhibition(element) {
                     }
                 ];
                 if($(this).val() == 1) {
-                    var link = "../Support/ajaxSave.php";
-                    saveData(link, dataSet, "Excluindo");
+                    //var link = "../Support/ajaxSave.php";
+                    var url = "delete-login";
+                    saveData(url, dataSet, "Excluindo");
                     setTimeout(function() {
                         $("#boxe_main .close").trigger("click");
                         window.location.reload();
@@ -74,7 +77,8 @@ function exhibition(element) {
                 message: "A nova senha será cadastrada no próximo login"
             }).on("click", function() {
                 if($(this).val() == 1) {
-                    var link = "../Support/ajaxSave.php";
+                    //var link = "../Support/ajaxSave.php";
+                    var url = "save-login";
                     var data = [
                         {
                             name: "act",
@@ -89,7 +93,7 @@ function exhibition(element) {
                             value: login
                         }
                     ];
-                    if(saveData(link, data)) {
+                    if(saveData(url, data)) {
                         modal.hide();
                     }
                 }
@@ -122,14 +126,18 @@ $(function($) {
     }
     $("select[name=NomeFantasia]").change(function() {
         var companyId = $(this).val();
-        $(location).attr("href", "../web/login&companyId=" + companyId);
+        //var url = "../web/login&companyId=" + companyId;
+        var url = "login&companyId=" + companyId;
+        $(location).attr("href", url);
     });
     $(".container .header button").on("click", function() {
         var btnAction = $(this).text();
         var companyId = $("select[name=NomeFantasia]").val();
+        //var url = "../Modals/login.php?act=edit";
+        var url = "add-login&act=edit";
         if(btnAction === "Adicionar") {
             $("#exhibition")
-                .load("../Modals/login.php?act=edit")
+                .load(url)
                 .on("submit", function(e) {
                     e.preventDefault();
                     var dataSet = $(this).find("form").serializeArray();
@@ -147,7 +155,8 @@ $(function($) {
                             value: companyId
                         }
                     );
-                    var link = "../Support/ajaxSave.php?act=login";
+                    //var link = "../Support/ajaxSave.php?act=login";
+                    var link = "save-login&act=login";///{" + dataSet + "}";
                     var result = saveData(link, dataSet);
                     if(result) {
                         $("#exhibition form#login-register")
@@ -159,7 +168,9 @@ $(function($) {
         }
         else {
             var companyId = $(this).closest(".header").find("select :selected").val();
-            $("#exhibition").load("../Modals/login.php?act=list&companyId=" + companyId, function() {
+            //var url = "../Modals/login.php?act=list&companyId=" + companyId;
+            var url = "list-login&act=list&companyId=" + companyId;
+            $("#exhibition").load(url, function() {
                 exhibition("#exhibition table#tabList tbody td");
                 disabledTableLine("#exhibition table tbody tr");
             });
