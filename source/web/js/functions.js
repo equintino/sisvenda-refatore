@@ -85,6 +85,38 @@ var loading = {
     }
 };
 
+/** alert message */
+var alertLatch = function(text, background) {
+    var box = $("#alert").html(text).css("display","none");
+    var marginRight = box.width() + 40;
+    var css = box.css({
+                display: "block",
+                overflow: "hidden",
+                background: background,
+                "margin-right": -marginRight
+            });
+    css.animate({
+            "margin-right": "0"
+        }, 2000, function() {
+            setTimeout(function() {
+                $("#alert").animate({
+                    "margin-right": -marginRight
+                });
+            }, 3000);
+        });
+    $("#alert").on("click", function() {
+        css.animate({
+                "margin-right": "0"
+            }, 2000, function() {
+                setTimeout(function() {
+                    $("#alert").animate({
+                        "margin-right": -marginRight
+                    });
+                }, 3000);
+            });
+    });
+};
+
 /** save configuration */
 var saveForm = function(act, action, connectionName = null, url = "../Suporte/ajaxSave.php") {
     $("#boxe_main").on("submit", function(e) {
@@ -118,28 +150,7 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
                     background = "var(--cor-warning)";
                     success = false;
                 }
-                $( "#alert" )
-                    .html(response)
-                    .css({
-                        overflow: "hidden",
-                        background: background
-                    })
-                    .animate({
-                    "margin-right": "0"
-                }, 2000, function() {
-                    setTimeout(function() {
-                        $("#alert").animate({
-                        "margin-right": "-400px"
-                        });
-                    }, 3000);
-                });
-                // $("#flashes")
-                //     .html(response)
-                //     .css({
-                //         background: background,
-                //         top: top
-                //     })
-                //     .slideDown();
+                alertLatch(response, background);
                 setTimeout(function() {
                     //$("#flashes").slideUp();
                     loading.hide();
@@ -147,28 +158,7 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
                 }, setTime);
             },
             error: function(error) {
-                $( "#alert" )
-                    .html(response)
-                    .css({
-                        overflow: "hidden",
-                        background: background
-                    })
-                    .animate({
-                    "margin-right": "0"
-                }, 2000, function() {
-                    setTimeout(function() {
-                        $("#alert").animate({
-                        "margin-right": "-400px"
-                        });
-                    }, 3000);
-                });
-                // $("#flashes")
-                //     .html(error)
-                //     .css({
-                //         background: "var(--cor-error)",
-                //         top: top
-                //     })
-                //     .slideDown();
+                alertLatch(response, background);
                 setTimeout(function() {
                     //$("#flashes").slideUp();
                     loading.hide();
@@ -288,29 +278,7 @@ var saveData = function(link, data, msg = "Salvando") {
             else {
                 background = "var(--cor-warning";
             }
-
-            $( "#alert" )
-                .html(response)
-                .css({
-                    overflow: "hidden",
-                    background: background
-                })
-                .animate({
-                "margin-right": "0"
-            }, 2000, function() {
-                setTimeout(function() {
-                    $("#alert").animate({
-                    "margin-right": "-400px"
-                    });
-                }, 3000);
-            });
-            // $("#flashes")
-            //     .html(response)
-            //     .css({
-            //         background: background,
-            //         top: top
-            //     })
-            //     .slideDown();
+            alertLatch(response, background);
             setTimeout(function() {
                  //$("#flashes").slideUp();
                  loading.hide();
@@ -319,28 +287,7 @@ var saveData = function(link, data, msg = "Salvando") {
         },
         error: function(error) {
             var top = $("#top").height();
-            $( "#alert" )
-                .html(response)
-                .css({
-                    overflow: "hidden",
-                    background: background
-                })
-                .animate({
-                "margin-right": "0"
-            }, 2000, function() {
-                setTimeout(function() {
-                    $("#alert").animate({
-                    "margin-right": "-400px"
-                    });
-                }, 3000);
-            });
-            // $("#flashes,")
-            //     .html(error)
-            //     .css({
-            //         background: "var(--cor-danger)",
-            //         top: top
-            //     })
-            //     .slideDown();
+            alertLatch(response, background);
             setTimeout(function() {
                 //$("#flashes").slideUp();
                 loading.hide();

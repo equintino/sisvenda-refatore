@@ -203,43 +203,4 @@ $(function($) {
             $("#boxe_main, #mask_main").hide();
         }
     });
-
-    /** testar rota em js */
-    // Adds a route for /items/:item and calls the callback when matched
-    // $.router.add('/modals', function(data) {
-    //     console.log(data);
-    // });
-    //$.router.go('sisvenda-refatore/source/web/', 'title');
-
-    // $.router.addErrorHandler(function (url) {
-    //     // url is the URL which the router couldn't find a callback for
-    //     alert(url);
-    //     console.log(url);
-    // });
-
-    // $.sammy(function() {
-
-    //     // this.get('#/', function() {
-    //     //   $('#main').text('Welcome!');
-    //     // });
-    //     //console.log(this.get('#/'));
-    //     this.get('#/', function() {
-    //         alert("oi");
-    //     });
-
-    //     this.get('#/', function(context,next) {
-    //         //$('body').text('Welcome!');
-    //         //console.log(this);
-    //         // $.get('/Modals',function(){
-    //         //   // save the data somewhere
-    //         //   next();
-    //         // });
-    //     }, function(context,next) {
-    //         $.get('/some/other/url',function(){
-    //           // save this data too
-    //           next();
-    //         });
-    //     });
-
-    // });
 });

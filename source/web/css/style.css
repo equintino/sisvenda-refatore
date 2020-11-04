@@ -75,19 +75,18 @@ section.loading, .text-loading {
 
 #alert {
     position: fixed;
-    top: 10%;
+    top: 70px;
     right: 0;
-    padding: 5px 15px;
+    padding: 10px 30px;
     border-radius: 5px 0 0 0;
-    //display: none;
-}
-
-#alert {
-    /* animation-name: example;
-    animation-duration: 2s; */
+    text-shadow: 1px 1px 4px gray;
+    letter-spacing: .08rem;
+    font-weight: 300;
+    font-size: .9rem;
+    font-style: italic;
     overflow: hidden;
-    margin-right: -300px;
     z-index: 9;
+    cursor: pointer;
 }
 
 /* @keyframes example {
@@ -278,9 +277,7 @@ section.loading, .text-loading {
 .identification {
     color: var(--cor-primary);
     position: absolute;
-    right: 10px;
-    //float: right;
-    //margin-right: 10px;
+    right: 30px;
     font-weight: 700;
     font-size: .9em;
 }

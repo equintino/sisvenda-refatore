@@ -78,6 +78,5 @@ stap by stap
 - criar uma class para salvamento(ok)/leitura em ajax
 - restringir o acesso as telas - ok
 - não permite remover todos os acessos - ok
-- aumentar o timeout do flash quando for erro ou warning
-- colocar no canto inferior direito a mensagem flash
+- colocar no canto superior direito a mensagem flash - ok
 - permitiu cadastrar sem conferir as senhas
