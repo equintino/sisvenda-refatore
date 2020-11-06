@@ -11,7 +11,11 @@ class Route
 
     public static function get(string $route, $handler): void
     {
-        $route = substr($route, (strripos($route, "/")));
+        // $route = substr($route, (strripos($route, "/")));
+        // preg_match_all("~\{\s* ([a-zA-Z_][a-zA-Z0-9_-]*) \}~x", $route, $keys, PREG_SET_ORDER);
+
+        // $route = (!$this->group ? $route : "/{$this->group}{$route}");
+
         $get = "/" . filter_input(INPUT_GET, "url", FILTER_SANITIZE_SPECIAL_CHARS);
         self::$route = [
             $route => [

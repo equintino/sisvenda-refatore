@@ -4,17 +4,18 @@ namespace Source\Core;
 
 use Source\Classes\Version;
 use Source\Config\Config;
+use Source\Models\Group;
 
 class View
 {
     const BASE_DIR = __DIR__ . "/../pages";
-    private $page;
-    private $params;
+    private $access;
+    public $theme;
 
-    public function __construct(string $page = "home", array $params = [])
+    public function __construct(string $theme = null)
     {
-        $this->page = $page;
-        $this->params = $params;
+        $this->theme = __DIR__ . "/../layout/index.php";
+        $this->validate();
     }
 
     public function start()
@@ -28,15 +29,35 @@ class View
         include self::BASE_DIR . "/index.php";
     }
 
-    public function show()
+    public function render(string $page, array $params = [])
     {
         /** makes variables available to the page */
-        for($x = 0; $x < count($this->params); $x++) {
-            foreach($this->params[$x] as $key => $param) {
-                $$key = $param;
+        if($params) {
+            for($x = 0; $x < count($params); $x++) {
+                foreach($params[$x] as $key => $param) {
+                    $$key = $param;
+                }
             }
         }
-        include self::BASE_DIR . "/{$this->page}.php";
+
+        require self::BASE_DIR . "/{$page}.php";
     }
 
+    public function insertTheme()
+    {
+        $access = $this->access;
+        require $this->theme;
+    }
+
+    public function validate(): void
+    {
+        if(!empty($_SESSION) && array_key_exists("login", $_SESSION)) {
+            $login = $_SESSION["login"];
+        }
+        $group = new Group();
+        if(!empty($login) && $login->Group_id) {
+            $this->access = array_combine(array("access"),
+                explode(",", $group->load($login->Group_id)->access));
+        }
+    }
 }

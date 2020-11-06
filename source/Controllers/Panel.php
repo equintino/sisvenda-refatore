@@ -17,4 +17,9 @@ class Panel extends Controller
         (new view("home"))->show();
     }
 
+    public function login()
+    {
+        echo "estou no login";
+    }
+
 }

@@ -42,7 +42,7 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 // };
 
 /** url */
-function url(string $path) {
+function url(string $path = "/") {
     if(!$path) {
         return CONF_URL_TEST . "/source/web";
     }

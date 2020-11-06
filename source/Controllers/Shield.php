@@ -21,8 +21,8 @@ class Shield extends Controller
         $screens["screens"] = Safety::screens(__DIR__ . "/../pages");
         $params = [ $groups, $screens ];
 
-        $this->theme->show();
-        (new View("shield", $params))->show();
+        $this->view->insertTheme();
+        $this->view->render("shield", $params);
         echo "<script>var page='shield'</script>";
     }
 

@@ -16,8 +16,8 @@ class Config extends Controller
     public function list()
     {
         $config["config"] = new \Source\Config\Config();
-        $this->theme->show();
-        (new View("config", [ $config ]))->show();
+        $this->view->insertTheme();
+        $this->view->render("config", [ $config ]);
         echo "<script>var page='config'</script>";
     }
 

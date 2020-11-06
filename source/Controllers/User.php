@@ -20,8 +20,8 @@ class User extends Controller
         $groups = (new \Source\Models\Group())->all();
         $params = [ $companys, $groups ];
 
-        $this->theme->show();
-        (new View("login", $params))->show();
+        $this->view->insertTheme();
+        $this->view->render("login", $params);
         echo "<script>var page='login'</script>";
     }
 

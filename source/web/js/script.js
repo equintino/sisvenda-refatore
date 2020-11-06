@@ -11,7 +11,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 /**
  * variables
  */
-var setTime = 0;
+var setTime = 2000;
 
 $(function($) {
     /** menu behavior */
