@@ -25,21 +25,21 @@ if(!empty($_SESSION["login"])) {
     $router->get("/add-login", "User:add");
     $router->get("/edit-login", "User:edit");
 
-    $router->get("/save-login", "User:save");/** testar */
-    $router->get("/delete-login", "User:delete");/** testar */
+    $router->post("/save-login", "User:save");
+    $router->post("/delete-login", "User:delete");
 
     $router->get("/seguranca", "Shield:list");
 
     $router->get("/add-group", "Group:add");
-    $router->get("/load-group", "Group:load");/** testar */
-    $router->get("/save-group", "Group:save");/** testar */
+    $router->post("/load-group", "Group:load");
+    $router->post("/save-group", "Group:save");
 
     $router->get("/configuracao", "Config:list");
     $router->get("/add-config", "Config:add");
     $router->get("/edit-config", "Config:edit");
-    $router->get("/save-config", "Config:save");/** testar */
-    $router->get("/update-config", "Config:update");/** testar */
-    $router->get("/delete-config", "Config:delete");/** testar */
+    $router->post("/save-config", "Config:save");
+    $router->post("/update-config", "Config:update");
+    $router->post("/delete-config", "Config:delete");
 
     $router->get("/sair", function() {
         (new Session())->destroy();
