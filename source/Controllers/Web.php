@@ -6,9 +6,6 @@ use Source\Models\Group;
 
 class Web extends Controller
 {
-    //public $theme = __DIR__ . "/../layout/index.php";
-    //private $access;
-
     public function __construct()
     {
         parent::__construct();
@@ -17,9 +14,9 @@ class Web extends Controller
     public function home(): void
     {
         $title = [ "title" => "Sistema de Venda" ];
-        $shortcut = [ "shortcut" => "../web/img/logo.png" ];
+        $shortcut = [ "shortcut" => "../asset/img/logo.png" ];
         $page = [ "page" => "home" ];
-        $loading = [ "loading" => "../web/img/logo-menu.gif" ];
+        $loading = [ "loading" => "../asset/img/logo-menu.gif" ];
         $this->view->insertTheme([ $title, $shortcut, $page, $loading ]);
         $this->view->render("home");
     }
@@ -28,20 +25,7 @@ class Web extends Controller
     {
         $errcode = [ "errcode" => $data["errcode"] ];
         $title = [ "title" => "Erro ao carregar página" ];
-        $path = __DIR__ . "/../layout/index.php";
-        $this->view->insertTheme([ $title ], $path);
+        $this->view->insertTheme([ $title ]);
         $this->view->render("error", [ $errcode ]);
     }
-
-    public function show()
-    {
-        //$access = $this->access;
-        //$this->view->theme(__DIR__ . "/../layout/index.php");
-        //require $this->theme;
-    }
-
-    // public function getAccess(): ?array
-    // {
-    //     return $this->access;
-    // }
 }

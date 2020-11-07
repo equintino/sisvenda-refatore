@@ -14,7 +14,7 @@ class View
 
     public function __construct(string $theme = null)
     {
-        $this->theme = __DIR__ . "/../layout/index.php";
+        $this->theme = $theme;
         $this->validate();
     }
 
@@ -58,7 +58,7 @@ class View
             }
         }
         $access = $this->access;
-        require (!empty($path) ? $path : $this->theme);
+        require (!empty($path) ? $path : $this->theme . "/theme.php");
     }
 
     public function validate(): void

@@ -10,11 +10,9 @@ abstract class Controller
     protected $view;
     protected $seo;
 
-    protected $theme;
-
     public function __construct()
     {
-        $this->view = new View();
+        $this->view = new View(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/");
     }
 
     protected function getPost($data) {
