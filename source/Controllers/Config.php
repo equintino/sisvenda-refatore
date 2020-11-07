@@ -16,9 +16,10 @@ class Config extends Controller
     public function list()
     {
         $config["config"] = new \Source\Config\Config();
-        $this->view->insertTheme();
+
+        $page = [ "page" => "config" ];
+        $this->view->insertTheme([ $page ]);
         $this->view->render("config", [ $config ]);
-        echo "<script>var page='config'</script>";
     }
 
     public function add()

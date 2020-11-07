@@ -42,9 +42,21 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 // };
 
 /** url */
-function url(string $path = "/") {
+function url(string $path = "/"): string
+{
     if(!$path) {
         return CONF_URL_TEST . "/source/web";
     }
     return CONF_URL_TEST . "/source/web" . $path;
 };
+
+function theme(string $path): string
+{
+    return CONF_BASE_THEME . "/{$path}";
+    if(file_exists(CONF_BASE_THEME . "/../../{$path}")) {
+        return CONF_BASE_THEME . "/../../{$path}";
+    }
+    else {
+        return CONF_BASE_THEME . "/../../../{$path}";
+    }
+}

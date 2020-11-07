@@ -14,15 +14,23 @@ class Web extends Controller
         parent::__construct();
     }
 
-    public function home()
+    public function home(): void
     {
-        $this->view->insertTheme();
+        $title = [ "title" => "Sistema de Venda" ];
+        $shortcut = [ "shortcut" => "../web/img/logo.png" ];
+        $page = [ "page" => "home" ];
+        $loading = [ "loading" => "../web/img/logo-menu.gif" ];
+        $this->view->insertTheme([ $title, $shortcut, $page, $loading ]);
         $this->view->render("home");
     }
 
-    public function error()
+    public function error($data): void
     {
-        echo "erro";
+        $errcode = [ "errcode" => $data["errcode"] ];
+        $title = [ "title" => "Erro ao carregar página" ];
+        $path = __DIR__ . "/../layout/index.php";
+        $this->view->insertTheme([ $title ], $path);
+        $this->view->render("error", [ $errcode ]);
     }
 
     public function show()

@@ -20,9 +20,10 @@ class User extends Controller
         $groups = (new \Source\Models\Group())->all();
         $params = [ $companys, $groups ];
 
-        $this->view->insertTheme();
+        $loading = [ "loading" => theme("img/loading.png") ];
+        $page = [ "page" => "login" ];
+        $this->view->insertTheme([ $page, $loading ]);
         $this->view->render("login", $params);
-        echo "<script>var page='login'</script>";
     }
 
     public function list()

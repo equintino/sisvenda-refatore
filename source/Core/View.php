@@ -34,8 +34,10 @@ class View
         /** makes variables available to the page */
         if($params) {
             for($x = 0; $x < count($params); $x++) {
-                foreach($params[$x] as $key => $param) {
-                    $$key = $param;
+                if(!empty($params[$x])) {
+                    foreach($params[$x] as $key => $param) {
+                        $$key = $param;
+                    }
                 }
             }
         }
@@ -43,10 +45,20 @@ class View
         require self::BASE_DIR . "/{$page}.php";
     }
 
-    public function insertTheme()
+    public function insertTheme(array $params = null, string $path = null)
     {
+        /** makes variables available to the page */
+        if($params) {
+            for($x = 0; $x < count($params); $x++) {
+                if(!empty($params[$x])) {
+                    foreach($params[$x] as $key => $param) {
+                        $$key = $param;
+                    }
+                }
+            }
+        }
         $access = $this->access;
-        require $this->theme;
+        require (!empty($path) ? $path : $this->theme);
     }
 
     public function validate(): void
@@ -56,8 +68,7 @@ class View
         }
         $group = new Group();
         if(!empty($login) && $login->Group_id) {
-            $this->access = array_combine(array("access"),
-                explode(",", $group->load($login->Group_id)->access));
+            $this->access["access"] = explode(",", $group->load($login->Group_id)->access);
         }
     }
 }
