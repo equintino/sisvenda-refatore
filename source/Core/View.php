@@ -68,7 +68,7 @@ class View
         }
         $group = new Group();
         if(!empty($login) && $login->Group_id) {
-            $this->access["access"] = explode(",", $group->load($login->Group_id)->access);
+            $this->access = explode(",", $group->load($login->Group_id)->access);
         }
     }
 }

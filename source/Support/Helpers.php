@@ -50,13 +50,12 @@ function url(string $path = "/"): string
     return CONF_URL_TEST . "/source/web" . $path;
 };
 
-function theme(string $path): string
+function theme(string $path)
 {
-    return CONF_BASE_THEME . "/{$path}";
-    if(file_exists(CONF_BASE_THEME . "/../../{$path}")) {
-        return CONF_BASE_THEME . "/../../{$path}";
+    if(preg_match("/ops/" ,$_SERVER["REQUEST_URI"])) {
+        return "../../{$path}";
     }
     else {
-        return CONF_BASE_THEME . "/../../../{$path}";
+        return "../{$path}";
     }
 }
