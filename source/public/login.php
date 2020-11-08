@@ -1,13 +1,3 @@
-<DOCTYPE html>
-<html>
-    <head>
-        <title>Sistema Estruturado de Venda</title>
-        <meta charset="UTF-8">
-        <link rel="shortcut icon" href="source/web/img/logo.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <?php require __DIR__ . "/../../vendor/autoload.php" ?>
-    </head>
     <body class="text-center gradient">
         <div class="mask"></div>
         <div id="flashes"></div>
@@ -34,7 +24,7 @@
                         </select>
                     </div>
                     <div class="checkbox m-2">
-                        <label><input type="checkbox" name="remember" value="1" <?= ($checked == 1 ? "checked" : null) ?> > Lembre-me</label>
+                        <label><input type="checkbox" name="remember" value="1" <?= (!empty($checked) && $checked == 1 ? "checked" : null) ?> > Lembre-me</label>
                     </div>
                     <button class="button-style" type="submit">Entrar</button>
                     <p class="mt-1 text-muted">© 2020 <?= (!empty($version) ? "({$version}v)" : null) ?></p>
@@ -43,8 +33,7 @@
         </div>
         <div id="boxe_main"></div>
         <div id="mask_main"></div>
-        <script type="text/javascript" src="source/web/js/datatables.js" ></script>
-        <script type="text/javascript" src="source/web/js/functions.js"></script>
-        <script type="text/javascript" src="source/web/js/script.js" ></script>
+        <script type="text/javascript" src="source/public/js/datatables.js" ></script>
+        <script type="text/javascript" src="source/public/js/functions.js"></script>
+        <script type="text/javascript" src="source/public/js/script.js" ></script>
     </body>
-</html>

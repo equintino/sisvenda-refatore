@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../web/css/style-login.css" />
+<link rel="stylesheet" href="<?= theme("asset/css/style-login.css") ?>" />
 <?php
     $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
     $companys = (new Source\Models\Company())->all();
@@ -59,4 +59,4 @@
         </fieldset>
     </div><!-- editar -->
 </div><!-- cadLogin -->
-<script type="text/javascript" src="../web/js/script-login.js"></script>
+<script type="text/javascript" src="<?= theme("asset/js/script-login.js") ?>"></script>

@@ -14,9 +14,9 @@ class Web extends Controller
     public function home(): void
     {
         $title = [ "title" => "Sistema de Venda" ];
-        $shortcut = [ "shortcut" => "../asset/img/logo.png" ];
+        $shortcut = [ "shortcut" => theme("asset/img/logo.png") ];
         $page = [ "page" => "home" ];
-        $loading = [ "loading" => "../asset/img/logo-menu.gif" ];
+        $loading = [ "loading" => theme("asset/img/logo-menu.gif") ];
         $this->view->insertTheme([ $title, $shortcut, $page, $loading ]);
         $this->view->render("home");
     }

@@ -26,7 +26,7 @@ class View
         $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
         $connectionList = array_keys((new Config())->getFile());
 
-        include self::BASE_DIR . "/index.php";
+        include __DIR__ . "/../public/login.php";
     }
 
     public function render(string $page, array $params = [])

@@ -45,17 +45,21 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 function url(string $path = "/"): string
 {
     if(!$path) {
-        return CONF_URL_TEST . "/source/web";
+        return CONF_URL_TEST;
     }
-    return CONF_URL_TEST . "/source/web" . $path;
+    return CONF_URL_TEST . "/" . str_replace("/", "", $path);
 };
 
 function theme(string $path)
 {
-    if(preg_match("/ops/" ,$_SERVER["REQUEST_URI"])) {
-        return "../../{$path}";
+    return "themes/" . CONF_VIEW_THEME . "/{$path}";
+    return (__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "{$path}");
+    //return CONF_VIEW_THEME . "/../source/public/asset/img/logo.png";
+    return "{$path}";
+    if(preg_match("/ops/", $_SERVER["REQUEST_URI"])) {
+        return "/../../{$path}";
     }
     else {
-        return "../{$path}";
+        return "{$path}";
     }
 }

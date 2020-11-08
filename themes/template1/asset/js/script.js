@@ -28,7 +28,7 @@ $(function($) {
         e.preventDefault();
         $(".login button").html("<i class='fa fa-sync-alt schedule'></i>");
         var data = $("form.form-signin").serialize();
-        var url = "source/web/login.php";
+        var url = "source/public/login.php";
 
         $.ajax({
             url: url,
@@ -37,7 +37,7 @@ $(function($) {
             dataType: "json",
             success: function(response) {
                 if(response === 1) {
-                    $(location).attr("href","source/web");
+                    $(location).attr("href","/");
                 }
                 else if(response === 2) {
                     var link = "source/Support/ajaxSave.php";
