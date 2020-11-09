@@ -120,7 +120,7 @@ function disabledTableLine(dom) {
     });
 }
 
-$(function($) {
+$(function() {
     if(companyId) {
         disabledTableLine("#exhibition table tbody tr");
     }

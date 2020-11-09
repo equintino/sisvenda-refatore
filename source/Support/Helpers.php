@@ -52,14 +52,10 @@ function url(string $path = "/"): string
 
 function theme(string $path)
 {
-    return "themes/" . CONF_VIEW_THEME . "/{$path}";
-    return (__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "{$path}");
-    //return CONF_VIEW_THEME . "/../source/public/asset/img/logo.png";
-    return "{$path}";
     if(preg_match("/ops/", $_SERVER["REQUEST_URI"])) {
-        return "/../../{$path}";
+        return "../themes/" . CONF_VIEW_THEME . "/{$path}";
     }
     else {
-        return "{$path}";
+        return "themes/" . CONF_VIEW_THEME . "/{$path}";
     }
 }

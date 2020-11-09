@@ -3,19 +3,19 @@
     <head>
         <title><?= ( $title ?? "Sistema Estruturado de Venda" ) ?></title>
         <meta charset="UTF-8">
-        <link rel="shortcut icon" href="<?= theme("web/img/logo.png") ?>" />
+        <link rel="shortcut icon" href="<?= theme("asset/img/logo.png") ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="<?= theme("web/css/style.css") ?>" rel="stylesheet"/>
-        <link href="<?= theme("web/css/datatables.css") ?>" rel="stylesheet">
+        <link href="<?= theme("asset/css/style.css") ?>" rel="stylesheet"/>
+        <link href="<?= theme("asset/css/datatables.css") ?>" rel="stylesheet">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <script type="text/javascript" src="<?= theme("web/js/datatables.js") ?>"></script>
-        <script type="text/javascript" src="<?= theme("web/js/bootbox.js") ?>"></script>
+        <script type="text/javascript" src="<?= theme("asset/js/datatables.js") ?>"></script>
+        <script type="text/javascript" src="<?= theme("asset/js/bootbox.js") ?>"></script>
     </head>
     <body class="body">
         <div id="top"><?php require __DIR__ . "/top.php"; ?></div>
         <div class="content">
             <section class="loading">
-                <img class="schedule" src="<?= theme("web/img/loading.png") ?>" alt="reading" height="50px"/>
+                <img class="schedule" src="<?= theme("asset/img/loading.png") ?>" alt="reading" height="50px"/>
             </section>
             <p class="text-loading">Texto da ação "loading"</p>
             <div id="flashes">aqui vai sua mensagem...</div>
@@ -56,7 +56,7 @@
         <span id="alert"></span>
         </div><!-- content -->
         <script>var page = "<?= $page ?>";</script>
-        <script type="text/javascript" src="<?= theme("web/js/functions.js") ?>" ></script>
-        <script type="text/javascript" src="<?= theme("web/js/script.js") ?>" ></script>
+        <script type="text/javascript" src="<?= theme("asset/js/functions.js") ?>" ></script>
+        <script type="text/javascript" src="<?= theme("asset/js/script.js") ?>" ></script>
     </body>
 </html>

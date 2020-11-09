@@ -1,3 +1,14 @@
+<DOCTYPE html>
+<html>
+    <head>
+        <title>Sistema Estruturado de Venda</title>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="<?= theme("asset/img/logo.png") ?>" >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="<?= theme("asset/css/style.css") ?>" rel="stylesheet"/>
+        <link href="<?= theme("asset/css/datatables.css") ?>" rel="stylesheet">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    </head>
     <body class="text-center gradient">
         <div class="mask"></div>
         <div id="flashes"></div>
@@ -33,7 +44,7 @@
         </div>
         <div id="boxe_main"></div>
         <div id="mask_main"></div>
-        <script type="text/javascript" src="source/public/js/datatables.js" ></script>
-        <script type="text/javascript" src="source/public/js/functions.js"></script>
-        <script type="text/javascript" src="source/public/js/script.js" ></script>
+        <script type="text/javascript" src="<?= theme("asset/js/datatables.js") ?>" ></script>
+        <script type="text/javascript" src="<?= theme("asset/js/functions.js") ?>"></script>
+        <script type="text/javascript" src="<?= theme("asset/js/script.js") ?>" ></script>
     </body>
