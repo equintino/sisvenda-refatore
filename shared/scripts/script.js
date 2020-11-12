@@ -11,7 +11,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 /**
  * variables
  */
-var setTime = 2000;
+var setTime = 500;
 
 $(function($) {
     /** menu behavior */
@@ -24,9 +24,9 @@ $(function($) {
     });
 
     /** authentication */
-    $(".login form.form-signin").submit(function(e) {
+    $("main form.form-signin").submit(function(e) {
         e.preventDefault();
-        $(".login button").html("<i class='fa fa-sync-alt schedule'></i>");
+        $("main button").html("<i class='fa fa-sync-alt schedule'></i>");
         var data = $("form.form-signin").serialize();
         var url = "source/public/main.php";
 
@@ -41,11 +41,13 @@ $(function($) {
                 }
                 else if(response === 2) {
                     var link = "source/Support/ajaxSave.php";
-                    var login = $(".login form [name=login]").val();
+                    var login = $("main form [name=login]").val();
                     var url = "source/Modals/login.php?act=token&login=" + login;
                     $("#boxe_main, #mask_main").show();
                     $("#boxe_main")
-                        .load(url)
+                        .load(url, function() {
+                            $("#form-token").find("[name=Senha]").focus();
+                        })
                         .on("submit", function(e) {
                             e.preventDefault();
                             var dataSet = $("form#form-token").serializeArray();
@@ -57,19 +59,14 @@ $(function($) {
                                 {
                                     name: "action",
                                     value: "change"
+                                },
+                                {
+                                    name: "Logon",
+                                    value: login
                                 }
                             );
-                            if(dataSet[1]["value"] !== dataSet[2]["value"]) {
-                                $("#flashes")
-                                    .text("As senhas não conferem......")
-                                    .css({
-                                        background: "var(--cor-warning",
-                                        top: 0
-                                    })
-                                    .slideDown();
-                                setTimeout(function() {
-                                    $("#flashes").slideUp();
-                                }, setTime);
+                            if(dataSet[0]["value"] !== dataSet[1]["value"]) {
+                                alertLatch("As senhas não conferem", "var(--cor-warning)");
                             }
                             else {
                                 if(saveData(link, dataSet, "Salvando")) {
@@ -79,38 +76,20 @@ $(function($) {
                                 }
                             }
                         }).css({
-                            top: "25%",
+                            top: "20%",
                             "padding": "30px"
                         });
                 }
                 else {
-                    $("#flashes")
-                        .text(response)
-                        .css({
-                            background: "var(--cor-warning)",
-                            top: 0
-                        })
-                        .slideDown();
-                    setTimeout(function() {
-                        $("#flashes").slideUp();
-                    }, setTime);
+                    alertLatch(response, "var(--cor-warning)");
                 }
             },
             error: function(error) {
-                $("#flashes")
-                    .html(error.responseText)
-                    .css({
-                        background: "var(--cor-danger)",
-                        top: 0
-                    })
-                    .slideDown();
-                setTimeout(function() {
-                    $("#flashes").slideUp();
-                }, setTime);
+                alertLatch("As senhas não conferem", "var(--cor-danger)");
             },
             complete: function(response) {
                 setTimeout(function(){
-                    $(".login button").text("Entrar");
+                    $("main button").text("Entrar");
                 }, 1300);
             }
         });

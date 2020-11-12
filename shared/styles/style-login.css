@@ -1,20 +1,29 @@
-.container .header {
-    text-align: justify;
-    margin: 20px auto;
-    width: 60%;
+.header div {
+    text-align: center;
 }
 
-.container .header > div {
-    display: inline-block;
+.header h5 {
+    margin: 30px 0 -5px;
+    text-align: center;
+    color: var(--cor-primary);
 }
 
-.container .header div:last-child {
-    width: 100%;
+.header .buttons {
+    margin: auto;
+}
+
+#exhibition {
+    margin: 10px auto;
+    width: 70%;
 }
 
 .select-company {
     color: var(--cor-primary);
     font-size: .8rem;
+}
+
+.select-company label {
+    text-align: left;
 }
 
 .select-company select {
@@ -24,21 +33,11 @@
 }
 
 .buttons button {
-    margin-top: -30px;
     font-size: .6rem;
 }
 
 #add {
     display: none;
-}
-
-#exhibition {
-    margin-top: -30px;
-}
-
-#exhibition {
-    width: 70%;
-    margin: auto;
 }
 
 #add, #edit {

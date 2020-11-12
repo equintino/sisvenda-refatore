@@ -17,7 +17,7 @@ class Group extends Controller
 
         $group = new \Source\Models\Group();
         $dGroup = $group->find($groupName);
-        $security["access"] = explode(",",$dGroup->access);
+        $security["access"] = explode(",", $dGroup->access);
         return print(json_encode($security));
     }
 
@@ -29,7 +29,31 @@ class Group extends Controller
     public function save()
     {
         $params = $this->getPost($_POST);
-        $class = new \Source\Models\Group();
-        echo (new AjaxTransaction($class, $params))->saveData();
+        $group = new \Source\Models\Group();
+
+        $group->bootstrap($params);
+        $group->save();
+        return print(json_encode($group->message()));
+    }
+
+    public function update()
+    {
+        $params = $this->getPost($_POST);
+        $group = (new \Source\Models\Group())->find($params["name"]);
+
+        foreach($params as $key => $value) {
+            $group->$key = $value;
+        }
+
+        $group->save();
+        return print(json_encode($group->message()));
+    }
+
+    public function delete()
+    {
+        $params = $this->getPost($_POST);
+        $group = (new \Source\Models\Group())->find($params["name"]);
+        $group->destroy();
+        return print(json_encode($group->message()));
     }
 }

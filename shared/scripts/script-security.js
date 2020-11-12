@@ -39,9 +39,9 @@ $(function($) {
                 //var link = "../Support/ajaxSave.php";
                 var url = "save-group";
                 var data = {
-                    name: groupName,
-                    act: "group",
-                    action: "add"
+                    name: groupName//,
+                    //act: "group",
+                    //action: "add"
                 };
                 if(saveData(url, data)) {
                     setTimeout(function() {
@@ -55,7 +55,7 @@ $(function($) {
             if(!$(".btnAction").hasClass("active")) return;
             var groupName = $(".group .active").text();
             //var url = "../Support/ajaxSave.php";
-            var url = "save-group";
+            var url = "delete-group";
             var conf = bootbox.confirm({
                 message: "Deseja realmente excluir o grupo <span style='color:red; font-size: 1.1rem; margin-left: 5px'>" + groupName + "</span>",
                 buttons: {
@@ -72,8 +72,8 @@ $(function($) {
                     if(result) {
                         data = {};
                         data.name = groupName;
-                        data.act = "group";
-                        data.action = "delete";
+                        //data.act = "group";
+                        //data.action = "delete";
                         saveData(url, data);
                         $(".btnAction.active").remove();
                     }
@@ -84,9 +84,9 @@ $(function($) {
             if(!$(".btnAction").hasClass("active") || typeof(change) === "undefined") return;
             var security = getScreenAccess($(".screen p"), "fa fa-check");
             //var url = "../Support/ajaxSave.php";
-            var url = "save-group";
-            security.act = "group";
-            security.action = "edit";
+            var url = "update-group";
+            //security.act = "group";
+            //security.action = "edit";
 
             saveData(url, security);
         }

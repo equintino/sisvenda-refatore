@@ -92,16 +92,7 @@ class AjaxTransaction
     private function setMethodClass()
     {
         switch($this->action) {
-            case "add":
-                $this->method = "save";
-                break;
-            case "change":
-                $this->method = "save";
-                break;
-            case "edit":
-                $this->method = "save";
-                break;
-            case "reset":
+            case "add": case "change": case "edit": case "reset":
                 $this->method = "save";
                 break;
             case "delete":
@@ -126,7 +117,7 @@ class AjaxTransaction
                 $data = $this->class->bootstrap($this->params);
                 $this->class = $data;
                 break;
-            case "change":
+            case "change":/** token */
                 $data = $this->class->find($this->search);
                 $data->Senha = $this->class->crypt($this->params["Senha"]);
                 $data->token = null;
@@ -135,9 +126,9 @@ class AjaxTransaction
             case "edit":
                 $data = $this->class->find($this->search);
                 $data = $this->replaceData($data);
-                $this->class= $data;
+                $this->class = $data;
                 break;
-            case "reset":
+            case "reset":/** token */
                 $data = $this->class->find($this->search);
                 $data->token();
                 $this->class = $data;

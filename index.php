@@ -2,9 +2,10 @@
     ob_start();
     require __DIR__ . "/vendor/autoload.php";
     use CoffeeCode\Router\Router;
-    use Source\Core\Route;
+    //use Source\Core\Route;
     use Source\Core\Session;
-    use Source\Core\View;
+    use Source\Controllers\Web;
+    //use Source\Core\View;
     $session = new Session();
 
     if(!empty($_SESSION["login"])) {
@@ -21,15 +22,18 @@
         $router->get("/list-login", "User:list");
         $router->get("/add-login", "User:add");
         $router->get("/edit-login", "User:edit");
-
         $router->post("/save-login", "User:save");
+        $router->post("/update-login", "User:update");
         $router->post("/delete-login", "User:delete");
+        $router->post("/reset-login", "User:reset");
 
         $router->get("/seguranca", "Shield:list");
 
         $router->get("/add-group", "Group:add");
         $router->post("/load-group", "Group:load");
         $router->post("/save-group", "Group:save");
+        $router->post("/update-group", "Group:update");
+        $router->post("/delete-group", "Group:delete");
 
         $router->get("/configuracao", "Config:list");
         $router->get("/add-config", "Config:add");
@@ -62,7 +66,7 @@
         }
     }
     else {
-        (new View())->start();
+        (new Web())->start();
     }
 
     ob_end_flush();

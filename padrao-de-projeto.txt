@@ -81,3 +81,4 @@ stap by stap
 - colocar no canto superior direito a mensagem flash - ok
 - permitiu cadastrar sem conferir as senhas - ok
 - implementar grupo de rotas
+- implementando o minify

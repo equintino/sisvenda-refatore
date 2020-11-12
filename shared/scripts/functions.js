@@ -55,10 +55,7 @@
                     return $(this).val();
                 }
             });
-        }//,
-        // on: function() {
-        //     return this;
-        // }
+        }
     };
     return modal;
 }));
@@ -97,7 +94,7 @@ var alertLatch = function(text, background) {
             });
     css.animate({
             "margin-right": "0"
-        }, 2000, function() {
+        }, 1000, function() {
             setTimeout(function() {
                 $("#alert").animate({
                     "margin-right": -marginRight
@@ -107,7 +104,7 @@ var alertLatch = function(text, background) {
     $("#alert").on("click", function() {
         css.animate({
                 "margin-right": "0"
-            }, 2000, function() {
+            }, 1000, function() {
                 setTimeout(function() {
                     $("#alert").animate({
                         "margin-right": -marginRight

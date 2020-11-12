@@ -87,6 +87,7 @@ section.loading, .text-loading {
     overflow: hidden;
     z-index: 9;
     cursor: pointer;
+    color: white;
 }
 
 /* @keyframes example {
@@ -94,7 +95,7 @@ section.loading, .text-loading {
     to {right: 0%;}
 } */
 
-.flash, #flashes {
+/* .flash, #flashes {
     position: fixed;
     top: 0px;
     width: 100%;
@@ -106,11 +107,11 @@ section.loading, .text-loading {
     font-weight: bolder;
     text-align: center;
     z-index: 5;
-}
+} */
 
-#flashes {
+/* #flashes {
     top: 13%;
-}
+} */
 
 /** messages */
 .success {
@@ -123,7 +124,7 @@ section.loading, .text-loading {
     color: white;
 }
 
-.error {
+.error, .danger {
     background: var(--cor-danger);
     color: white;
 }
@@ -183,8 +184,12 @@ section.loading, .text-loading {
 }
 
 /** login */
+.box {
+    text-align: center;
+}
+
 .logo {
-    margin-top: 6%;
+    margin-top: 130px;
     background-image: url("../img/logo.png");
     background-repeat: no-repeat;
     background-size: 120px;
@@ -192,14 +197,29 @@ section.loading, .text-loading {
     height: 120px;
 }
 
-.login {
-    max-width: 350px;
-    margin: auto;
-    /*background: #eaeaea;*/
-    padding: 30px 30px 5px;
+main .form-signin {
+    width: 350px;
+    margin: -20px auto;
+    padding: 30px 35px 5px;
     border-radius: 5px;
     box-shadow: 4px 4px 4px gray;
 }
+
+/* .login {
+    width: 50%;
+    text-align: center;
+    display: inline-block;
+    background: black;
+    margin: 0 auto;
+    //padding: 30px 30px 5px;
+    //display: inline-block;
+    border-radius: 5px;
+    box-shadow: 4px 4px 4px gray;
+} */
+
+/* .login form {
+    width: 100%;
+} */
 
 .form-input {
     width: 88%;
@@ -230,6 +250,7 @@ section.loading, .text-loading {
     font-weight: 600;
     color: white;
     width: 100%;
+    height: 40px;
     padding: 5px;
     border-radius: 5px;
     background: var(--cor-primary);
@@ -289,7 +310,7 @@ section.loading, .text-loading {
 }
 
 .my-table th, .my-table td {
-    padding: 2px;
+    padding: 4px;
 }
 
 .my-table td {

@@ -204,7 +204,7 @@ class User extends Model implements Models
             $this->message = "<span class='danger'>Erro ao resetar senha, tente novamente</span>";
             return null;
         }
-        $this->message = "<span class='warning'>Nova senha será cadastrada no próximo login</span>";
+        $this->message = "<span class='success'>Nova senha será cadastrada no próximo login</span>";
     }
 
 }

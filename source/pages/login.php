@@ -1,29 +1,28 @@
-<link rel="stylesheet" href="<?= theme("asset/css/style-login.css") ?>" />
-<?php
-    $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-    $companys = (new Source\Models\Company())->all();
-    $users = (new Source\Models\User())->find(["IDEmpresa" => $companyId]);
-    $groups = (new Source\Models\Group())->all();
-    echo "<script>var companyId = '" . $companyId . "' </script>"; ?>
+<link rel="stylesheet" href="<?= theme("asset/style.css") ?>" />
 <div class="container">
-    <div class="header">
-        <div class="select-company">
-            <label>EMPRESA:</lable>
-            <select class="form-input" name="NomeFantasia">
-                <option value=""></option>
-                <?php foreach($companys as $company): ?>
-                <option value="<?= $company->ID ?>" <?= ($company->ID === $companyId ? "selected" : null) ?> ><?= $company->NomeFantasia ?></option>
-                <?php endforeach ?>
-            </select>
+    <header class="header">
+        <h5>USUÁRIOS</h5>
+        <div class="row">
+            <div class="col select-company">
+                <label>EMPRESA:</lable>
+                <select class="form-input" name="NomeFantasia">
+                    <option value=""></option>
+                    <?php foreach($companys as $company): ?>
+                    <option value="<?= $company->ID ?>" <?= ($company->ID === $companyId ? "selected" : null) ?> >
+                        <?= $company->NomeFantasia ?>
+                    </option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="col buttons">
+                <button class="button btnAction">Adicionar</button>
+                <button class="button btnAction">Listar</button>
+            </div>
         </div>
-        <div class="buttons">
-            <button class="button btnAction">Adicionar</button>
-            <button class="button btnAction">Listar</button>
-        </div>
-        <div></div>
-    </div>
+        <!-- <div>Ultima div</div> -->
+    </header>
     <!-- Edição -->
-    <div id="exhibition" >
+    <main id="exhibition" >
         <fieldset class="fieldset p-3" >
             <legend>LISTA DE USUÁRIOS</legend>
             <table id="tabList" class="my-table" width="100%" >
@@ -39,8 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    if(isset($users)):
+                    <?php if(isset($users)):
                         foreach($users as $user): ?>
                             <tr>
                                 <td><?= $user->Nome ?></td>
@@ -51,12 +49,11 @@
                                 <td title="Exclui" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-times"></i></td>
                                 <td title="Reseta" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-key "></i></td>
                             </tr>
-                    <?php
-                        endforeach;
+                    <?php endforeach;
                     endif ?>
                 </tbody>
             </table>
         </fieldset>
-    </div><!-- editar -->
+    </main><!-- editar -->
 </div><!-- cadLogin -->
-<script type="text/javascript" src="<?= theme("asset/js/script-login.js") ?>"></script>
+<script type="text/javascript" src="<?= theme("asset/scripts.js") ?>"></script>

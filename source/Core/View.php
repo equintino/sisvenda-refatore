@@ -2,8 +2,6 @@
 
 namespace Source\Core;
 
-use Source\Classes\Version;
-use Source\Config\Config;
 use Source\Models\Group;
 
 class View
@@ -16,17 +14,6 @@ class View
     {
         $this->theme = $theme;
         $this->validate();
-    }
-
-    public function start()
-    {
-        $version =  new Version();
-        $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
-        $connectionName = filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
-        $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
-        $connectionList = array_keys((new Config())->getFile());
-
-        include __DIR__ . "/../public/login.php";
     }
 
     public function render(string $page, array $params = [])
@@ -66,6 +53,7 @@ class View
         if(!empty($_SESSION) && array_key_exists("login", $_SESSION)) {
             $login = $_SESSION["login"];
         }
+        /** allows or prohibits access */
         $group = new Group();
         if(!empty($login) && $login->Group_id) {
             $this->access = explode(",", $group->load($login->Group_id)->access);

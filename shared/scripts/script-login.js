@@ -2,7 +2,6 @@ function exhibition(element) {
     $(element).on("click", function() {
         var action = $(this).attr("title");
         var login = $(this).closest("tr").find("td:eq(1)").text();
-        //var url = "../Modals/login.php?act=edit&login=" + login;
         var url = "edit-login&act=edit&login=" + login;
         if(action === "Edita") {
             $("#exhibition")
@@ -13,18 +12,7 @@ function exhibition(element) {
                     var dataSet = $(this).find("form").serializeArray();
                     buttonName = $(this).text();
                     if(buttonName !== "Salvar") {
-                        dataSet.push(
-                            {
-                                name: "act",
-                                value: "login"
-                            },
-                            {
-                                name: "action",
-                                value: "edit"
-                            }
-                        );
-                        //var link = "../Support/ajaxSave.php";
-                        url = "save-login";
+                        url = "update-login";
                         saveData(url, dataSet);
                     }
                 });
@@ -48,20 +36,11 @@ function exhibition(element) {
             }).on("click", function() {
                 var dataSet = [
                     {
-                        name: "act",
-                        value: "login"
-                    },
-                    {
                         name: "Logon",
                         value: login
-                    },
-                    {
-                        name: "action",
-                        value: "delete"
                     }
                 ];
                 if($(this).val() == 1) {
-                    //var link = "../Support/ajaxSave.php";
                     var url = "delete-login";
                     saveData(url, dataSet, "Excluindo");
                     setTimeout(function() {
@@ -77,17 +56,8 @@ function exhibition(element) {
                 message: "A nova senha será cadastrada no próximo login"
             }).on("click", function() {
                 if($(this).val() == 1) {
-                    //var link = "../Support/ajaxSave.php";
-                    var url = "save-login";
+                    var url = "reset-login";
                     var data = [
-                        {
-                            name: "act",
-                            value: "login"
-                        },
-                        {
-                            name: "action",
-                            value: "reset"
-                        },
                         {
                             name: "Logon",
                             value: login
@@ -121,19 +91,17 @@ function disabledTableLine(dom) {
 }
 
 $(function() {
-    if(companyId) {
+    if(typeof(companyId) !== "undefined") {
         disabledTableLine("#exhibition table tbody tr");
     }
     $("select[name=NomeFantasia]").change(function() {
         var companyId = $(this).val();
-        //var url = "../web/login&companyId=" + companyId;
         var url = "login&companyId=" + companyId;
         $(location).attr("href", url);
     });
     $(".container .header button").on("click", function() {
         var btnAction = $(this).text();
         var companyId = $("select[name=NomeFantasia]").val();
-        //var url = "../Modals/login.php?act=edit";
         var url = "add-login&act=edit";
         if(btnAction === "Adicionar") {
             $("#exhibition")
@@ -143,20 +111,11 @@ $(function() {
                     var dataSet = $(this).find("form").serializeArray();
                     dataSet.push(
                         {
-                            name: "act",
-                            value: "login"
-                        },
-                        {
-                            name: "action",
-                            value: "add"
-                        },
-                        {
                             name: "IDEmpresa",
                             value: companyId
                         }
                     );
-                    //var link = "../Support/ajaxSave.php?act=login";
-                    var link = "save-login&act=login";///{" + dataSet + "}";
+                    var link = "save-login&act=login";
                     var result = saveData(link, dataSet);
                     if(result) {
                         $("#exhibition form#login-register")
@@ -167,13 +126,11 @@ $(function() {
         }
         else {
             var companyId = $(this).closest(".header").find("select :selected").val();
-            //var url = "../Modals/login.php?act=list&companyId=" + companyId;
             var url = "list-login&act=list&companyId=" + companyId;
             $("#exhibition").load(url, function() {
                 exhibition("#exhibition table#tabList tbody td");
                 disabledTableLine("#exhibition table tbody tr");
             });
-            //location.reload();
         }
     });
     exhibition("#exhibition table#tabList tbody td");
