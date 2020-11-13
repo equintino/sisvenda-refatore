@@ -10,9 +10,10 @@ class View
     private $access;
     public $theme;
 
-    public function __construct(string $theme = null)
+    public function __construct(string $theme = null, string $path = "pages")
     {
         $this->theme = $theme;
+        $this->path = __DIR__ . "/../{$path}";
         $this->validate();
     }
 
