@@ -6,14 +6,22 @@ use Source\Models\Group;
 
 class View
 {
-    const BASE_DIR = __DIR__ . "/../pages";
+    //const BASE_DIR = __DIR__ . "/../pages";
+    private $path;
     private $access;
     public $theme;
 
-    public function __construct(string $theme = null)
+    public function __construct(string $theme = null, string $path = "pages")
     {
         $this->theme = $theme;
+        $this->path = __DIR__ . "/../{$path}";
         $this->validate();
+    }
+
+    public function setPath(string $path): View
+    {
+        $this->path = __DIR__ . "/../{$path}";
+        return $this;
     }
 
     public function render(string $page, array $params = [])
@@ -29,7 +37,7 @@ class View
             }
         }
 
-        require self::BASE_DIR . "/{$page}.php";
+        require $this->path . "/{$page}.php";
     }
 
     public function insertTheme(array $params = null, string $path = null)

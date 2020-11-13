@@ -34,16 +34,39 @@ class User extends Controller
 
     public function list()
     {
-        require __DIR__ . "/../Modals/login.php";
+        $act["act"] = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
+        $login["login"] = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
+        $companyId["companyId"] = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
+        $users["users"] = (new \Source\Models\User())->find(["IDEmpresa" => $companyId["companyId"]]);
+        $user["user"] = (new \Source\Models\User())->find($login["login"]);
+        $groups["groups"] = (new \Source\Models\Group())->all();
+        $params = [ $act, $login, $companyId, $users, $user ];
+
+        echo "<script>var companyId = '" . $companyId["companyId"] . "' </script>";
+        $this->view->setPath("Modals")->render("login", $params);
     }
 
     public function add()
     {
+        $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
+        $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
+        $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
+        $users = (new \Source\Models\User())->find(["IDEmpresa" => $companyId]);
+        $user = (new \Source\Models\User())->find($login);
+        $groups = (new \Source\Models\Group())->all();
+        echo "<script>var companyId = '" . $companyId . "' </script>";
         require __DIR__ . "/../Modals/login.php";
     }
 
     public function edit()
     {
+        // $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
+        // $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
+        // $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
+        // $users = (new \Source\Models\User())->find(["IDEmpresa" => $companyId]);
+        // $user = (new \Source\Models\User())->find($login);
+        // $groups = (new \Source\Models\Group())->all();
+        // echo "<script>var companyId = '" . $companyId . "' </script>";
         require __DIR__ . "/../Modals/login.php";
     }
 

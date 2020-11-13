@@ -110,8 +110,12 @@ class User extends Model implements Models
 
         /** Create */
         if(empty($this->id)) {
-            if($this->find($this->Email) || $this->find($this->Logon)) {
-                $this->message = "<span class='warning'>O e-mail ou login informado já está cadastrado</span>";
+            if($this->find($this->Email)) {
+                $this->message = "<span class='warning'>O e-mail informado já está cadastrado</span>";
+                return null;
+            }
+            elseif($this->find($this->Logon)) {
+                $this->message = "<span class='warning'>O login informado já está cadastrado</span>";
                 return null;
             }
             $userId = $this->create(self::$entity, $this->safe());
