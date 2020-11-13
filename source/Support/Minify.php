@@ -1,6 +1,6 @@
 <?php
 
-if(strpos(url(), "localhost")) {
+if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
     /**
      * css
      */

@@ -1,11 +1,12 @@
 <?php
     ob_start();
+
     require __DIR__ . "/vendor/autoload.php";
+
     use CoffeeCode\Router\Router;
-    //use Source\Core\Route;
     use Source\Core\Session;
     use Source\Controllers\Web;
-    //use Source\Core\View;
+
     $session = new Session();
 
     if(!empty($_SESSION["login"])) {

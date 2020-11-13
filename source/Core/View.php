@@ -6,7 +6,7 @@ use Source\Models\Group;
 
 class View
 {
-    const BASE_DIR = __DIR__ . "/../pages";
+    private $path = __DIR__ . "/../pages";
     private $access;
     public $theme;
 
@@ -16,30 +16,36 @@ class View
         $this->validate();
     }
 
+    public function setPath(string $path): View
+    {
+        $this->path = __DIR__ . "/../{$path}";
+        return $this;
+    }
+
     public function render(string $page, array $params = [])
     {
         /** makes variables available to the page */
         if($params) {
-            for($x = 0; $x < count($params); $x++) {
-                if(!empty($params[$x])) {
-                    foreach($params[$x] as $key => $param) {
-                        $$key = $param;
+            foreach($params as $var => $param) {
+                if(!empty($param)) {
+                    foreach($param as $key => $values) {
+                        $$key = $values;
                     }
                 }
             }
         }
 
-        require self::BASE_DIR . "/{$page}.php";
+        require $this->path . "/{$page}.php";
     }
 
     public function insertTheme(array $params = null, string $path = null)
     {
         /** makes variables available to the page */
         if($params) {
-            for($x = 0; $x < count($params); $x++) {
-                if(!empty($params[$x])) {
-                    foreach($params[$x] as $key => $param) {
-                        $$key = $param;
+            foreach($params as $var => $param) {
+                if(!empty($param)) {
+                    foreach($param as $key => $values) {
+                        $$key = $values;
                     }
                 }
             }

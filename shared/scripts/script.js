@@ -85,7 +85,7 @@ $(function($) {
                 }
             },
             error: function(error) {
-                alertLatch("As senhas não conferem", "var(--cor-danger)");
+                alertLatch("Ops! Algo deu errado", "var(--cor-danger)");
             },
             complete: function(response) {
                 setTimeout(function(){

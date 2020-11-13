@@ -15,13 +15,15 @@ class Web extends Controller
 
     public function start(): void
     {
-        $version =  new Version();
-        $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
-        $connectionName = filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
-        $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
+        $version = new Version();
         $connectionList = array_keys((new Config())->getFile());
+        $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
+        $connectionName= filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
+        $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
 
-        include __DIR__ . "/../public/login.php";
+        $this->view->setPath("public")->render("login", [
+                compact("version","connectionList","login","connectionName","checked")
+            ]);
     }
 
     public function home(): void
@@ -30,7 +32,9 @@ class Web extends Controller
         $shortcut = [ "shortcut" => theme("asset/img/logo.png") ];
         $page = [ "page" => "home" ];
         $loading = [ "loading" => theme("asset/img/logo-menu.gif") ];
-        $this->view->insertTheme([ $title, $shortcut, $page, $loading ]);
+        $this->view->insertTheme(
+                compact("title","shortcut","page","loading")
+            );
         $this->view->render("home");
     }
 
@@ -38,7 +42,7 @@ class Web extends Controller
     {
         $errcode = [ "errcode" => $data["errcode"] ];
         $title = [ "title" => "Erro ao carregar página" ];
-        $this->view->insertTheme([ $title ]);
-        $this->view->render("error", [ $errcode ]);
+        $this->view->insertTheme(compact("title"));
+        $this->view->render("error", compact("errcode"));
     }
 }

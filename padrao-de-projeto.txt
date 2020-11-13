@@ -82,3 +82,4 @@ stap by stap
 - permitiu cadastrar sem conferir as senhas - ok
 - implementar grupo de rotas
 - implementando o minify
+- modais pela rota passando pelos controladores
