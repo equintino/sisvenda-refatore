@@ -83,3 +83,4 @@ stap by stap
 - implementar grupo de rotas
 - implementando o minify
 - modais pela rota passando pelos controladores
+- sair mudando a url(/sair) - ok

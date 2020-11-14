@@ -1,5 +1,6 @@
 /.vscode/
 /nbproject/
+/.env
 /vendor/
 /source/Config/.config.ini
 /source/ses/

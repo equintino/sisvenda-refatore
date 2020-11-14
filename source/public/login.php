@@ -40,5 +40,7 @@
                 <p class="mt-1 text-muted">© 2020 <?= (!empty($version) ? "({$version}v)" : null) ?></p>
             </form>
         </main>
+        <div id="boxe_main"></div>
+        <div id="mask_main"></div>
         <script type="text/javascript" src="<?= theme("asset/scripts.js") ?>" ></script>
     </body>

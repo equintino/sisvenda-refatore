@@ -6,14 +6,14 @@ use Source\Models\Group;
 
 class View
 {
-    private $path = __DIR__ . "/../pages";
+    private $path;
     private $access;
     public $theme;
 
-    public function __construct(string $theme = null, string $path = "pages")
+    public function __construct(string $theme = null)
     {
         $this->theme = $theme;
-        $this->path = __DIR__ . "/../{$path}";
+        $this->path  = __DIR__ . "/../pages";
         $this->validate();
     }
 

@@ -4,6 +4,9 @@
     }
 </style>
 <?php
+
+    require __DIR__ . "/../../vendor/autoload.php";
+
     $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
     $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
     $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
