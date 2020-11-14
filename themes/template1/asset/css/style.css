@@ -660,9 +660,15 @@ main .form-signin {
 }
 
 /** config */
-#config .buttons {
+#config .buttons{
+    width: 80%;
+    margin: 40px auto 20px;
     text-align: right;
-    margin: -30px 100px 10px 0;
+}
+
+#config .table-conf {
+    width: 80%;
+    margin: 0 auto;
 }
 
 /** group */

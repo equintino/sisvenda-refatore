@@ -1,8 +1,9 @@
-<div id="config" class="container mt-5">
+<div id="config">
     <div class="buttons">
         <button class="button btnAction">Adicionar</button>
     </div>
-    <fieldset class="fieldset pt-3">
+    <div class="table-conf">
+    <fieldset class="fieldset pt-3" style="width: 100%">
         <legend>BANCO DE DADOS</legend>
         <table id="tabConf" class="my-table" width="100%" >
             <thead>
@@ -34,4 +35,6 @@
             </tbody>
         </table>
     </fieldset>
+    </div>
+    <!-- <div></div> -->
 </div>

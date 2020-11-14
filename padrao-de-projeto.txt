@@ -84,6 +84,6 @@ stap by stap
 - implementando o minify - ok
 - aprimorar sistema de autenticação - ok
 - modais pela rota passando pelos controladores - ok
+- salva novo login, porém mantem a mensagem de campo login obrigatório - ok
 - ajustar a altura do menu na tela de usuário(login) - ?
 - implementar grupo de rotas
-- salva novo login, porém mantem a mensagem de campo login obrigatório - ok
