@@ -80,7 +80,8 @@ stap by stap
 - não permite remover todos os acessos - ok
 - colocar no canto superior direito a mensagem flash - ok
 - permitiu cadastrar sem conferir as senhas - ok
-- implementar grupo de rotas
-- implementando o minify
-- modais pela rota passando pelos controladores
 - sair mudando a url(/sair) - ok
+- implementando o minify - ok
+- aprimorar sistema de autenticação - ok
+- implementar grupo de rotas
+- modais pela rota passando pelos controladores

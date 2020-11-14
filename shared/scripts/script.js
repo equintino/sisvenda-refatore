@@ -42,7 +42,7 @@ $(function($) {
                 else if(response === 2) {
                     var link = "source/Support/ajaxSave.php";
                     var login = $("main form [name=login]").val();
-                    var url = "source/Modals/login.php?act=token&login=" + login;
+                    var url = "source/Modals/token.php?act=token&login=" + login;
 
                     $("#boxe_main, #mask_main").show();
                     $("#boxe_main")

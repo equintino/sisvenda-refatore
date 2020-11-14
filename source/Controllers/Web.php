@@ -15,17 +15,15 @@ class Web extends Controller
 
     public function start(): void
     {
-        if(empty($_SESSION["login"])) {
-            $version = new Version();
-            $connectionList = array_keys((new Config())->getFile());
-            $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
-            $connectionName= filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
-            $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
+        $version = new Version();
+        $connectionList = array_keys((new Config())->getFile());
+        $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
+        $connectionName= filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
+        $checked = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
 
-            $this->view->setPath("public")->render("login", [
-                    compact("version","connectionList","login","connectionName","checked")
-                ]);
-        }
+        $this->view->setPath("public")->render("login", [
+                compact("version","connectionList","login","connectionName","checked")
+            ]);
     }
 
     public function home(): void

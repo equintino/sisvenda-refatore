@@ -205,6 +205,10 @@ main .form-signin {
     box-shadow: 4px 4px 4px gray;
 }
 
+#form-token, #form-token input {
+    text-align: center;
+}
+
 /* .login {
     width: 50%;
     text-align: center;
