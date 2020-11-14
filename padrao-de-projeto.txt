@@ -83,7 +83,7 @@ stap by stap
 - sair mudando a url(/sair) - ok
 - implementando o minify - ok
 - aprimorar sistema de autenticação - ok
+- modais pela rota passando pelos controladores - ok
 - ajustar a altura do menu na tela de usuário(login) - ?
 - implementar grupo de rotas
-- modais pela rota passando pelos controladores - ok
-- salva novo login, porém mantem a mensagem de campo login obrigatório
+- salva novo login, porém mantem a mensagem de campo login obrigatório - ok

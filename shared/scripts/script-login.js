@@ -90,7 +90,7 @@ function disabledTableLine(dom) {
     });
 }
 
-$(function() {
+$(document).ready(function() {
     if(typeof(companyId) !== "undefined") {
         disabledTableLine("#exhibition table tbody tr");
     }

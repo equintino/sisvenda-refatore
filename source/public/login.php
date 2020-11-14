@@ -44,3 +44,4 @@
         <div id="mask_main"></div>
         <script type="text/javascript" src="<?= theme("asset/scripts.js") ?>" ></script>
     </body>
+</html>

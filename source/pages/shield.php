@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= theme("asset/css/style-security.css") ?>" />
+<!-- <link rel="stylesheet" href="<?= theme("asset/css/style-security.css") ?>" /> -->
 <script>var identificacao = 'ACESSO ÀS TELAS';</script>
 <div class="container">
     <h5 class="mt-4" align="center">SEGURANÇA</h5>
@@ -27,4 +27,3 @@
         </div>
     </div>
 </div><!-- container -->
-<script type="text/javascript" src="<?= theme("asset/js/script-security.js") ?>"></script>

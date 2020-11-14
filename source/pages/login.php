@@ -51,4 +51,3 @@
             </table>
         </fieldset>
     </main>
-<script type="text/javascript" src="<?= theme("asset/scripts.js") ?>"></script>
