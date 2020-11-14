@@ -1,19 +1,3 @@
-<style>
-    form#form-token input {
-        text-align: center;
-    }
-</style>
-<?php
-
-    require __DIR__ . "/../../vendor/autoload.php";
-
-    $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
-    $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
-    $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-    $users = (new \Source\Models\User())->find(["IDEmpresa" => $companyId]);
-    $user = (new \Source\Models\User())->find($login);
-    $groups = (new \Source\Models\Group())->all();
-?>
 <?php if($act === "edit"): ?>
 <div id="edit" >
     <form id="login-register" action="#" method="POST" class="form-horizontal">

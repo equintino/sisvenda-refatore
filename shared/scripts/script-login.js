@@ -99,7 +99,7 @@ $(function() {
         var url = "login&companyId=" + companyId;
         $(location).attr("href", url);
     });
-    $(".container .header button").on("click", function() {
+    $(".header button").on("click", function() {
         var btnAction = $(this).text();
         var companyId = $("select[name=NomeFantasia]").val();
         var url = "add-login&act=edit";

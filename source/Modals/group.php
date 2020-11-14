@@ -1,11 +1,3 @@
-<style>
-    #group-registration button {
-        display: inline-block;
-    }
-    #group-registration > div:last-child {
-        text-align: right;
-    }
-</style>
 <form id="group-registration" class="form-horizontal" action="#" method="POST">
     <div class="form-group">
         <label class="label" for="name">Nome do Grupo: </label>

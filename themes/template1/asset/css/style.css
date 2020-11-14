@@ -664,3 +664,8 @@ main .form-signin {
     text-align: right;
     margin: -30px 100px 10px 0;
 }
+
+/** group */
+#group-registration > div:last-child {
+    text-align: right;
+}

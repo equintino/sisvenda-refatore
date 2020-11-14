@@ -24,12 +24,24 @@ class Config extends Controller
 
     public function add()
     {
-        include __DIR__  . "/../Modals/config.php";
+        $data = $this->getGet($_GET);
+        $config = new \Source\Config\Config();
+        $config->local = null;
+
+        $params = [ $data, compact("config") ];
+
+        ($this->view->setPath("Modals")->render("config", $params));
     }
 
     public function edit()
     {
-        include __DIR__ . "/../Modals/config.php";
+        $data = $this->getGet($_GET);
+        $config = new \Source\Config\Config();
+        $config->local = $data["connectionName"];
+
+        $params = [ $data, compact("config") ];
+
+        ($this->view->setPath("Modals")->render("config", $params));
     }
 
     public function save()

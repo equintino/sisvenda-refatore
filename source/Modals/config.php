@@ -1,14 +1,5 @@
-<?php
-
-require __DIR__ . "/../../vendor/autoload.php";
-
-$connectionName = filter_input(INPUT_GET, "connectionName", FILTER_SANITIZE_STRIPPED);
-$act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
-$config = new Source\Config\Config();
-$config->local = ($act !== "add" ? $connectionName : null); ?>
-
 <form id="config" class="form-horizontal" action="#" method="POST">
-    <?php if($act === "add"): ?>
+    <?php if(!empty($act) && $act === "add"): ?>
     <div class="form-group">
         <label class="label" for="connectionName">Nome da Conexão: </label>
         <input class="form-input" type="text" name="connectionName" required/>

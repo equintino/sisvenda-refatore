@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="<?= theme("asset/style.css") ?>" />
-<div class="container">
     <header class="header">
         <h5>USUÁRIOS</h5>
         <div class="row">
@@ -19,9 +17,7 @@
                 <button class="button btnAction">Listar</button>
             </div>
         </div>
-        <!-- <div>Ultima div</div> -->
     </header>
-    <!-- Edição -->
     <main id="exhibition" >
         <fieldset class="fieldset p-3" >
             <legend>LISTA DE USUÁRIOS</legend>
@@ -54,6 +50,5 @@
                 </tbody>
             </table>
         </fieldset>
-    </main><!-- editar -->
-</div><!-- cadLogin -->
+    </main>
 <script type="text/javascript" src="<?= theme("asset/scripts.js") ?>"></script>

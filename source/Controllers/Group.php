@@ -23,7 +23,7 @@ class Group extends Controller
 
     public function add()
     {
-        include __DIR__  . "/../Modals/group.php";
+        ($this->view->setPath("Modals")->render("group"));
     }
 
     public function save()

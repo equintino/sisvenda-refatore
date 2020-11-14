@@ -34,40 +34,34 @@ class User extends Controller
 
     public function list()
     {
-        $act["act"] = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
-        $login["login"] = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
-        $companyId["companyId"] = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-        $users["users"] = (new \Source\Models\User())->find(["IDEmpresa" => $companyId["companyId"]]);
-        $user["user"] = (new \Source\Models\User())->find($login["login"]);
-        $groups["groups"] = (new \Source\Models\Group())->all();
-        $params = [ $act, $login, $companyId, $users, $user ];
+        $data = $this->getGet($_GET);
+        $login = $_SESSION["login"]->Logon;
+        $users = (new \Source\Models\User())->find(["IDEmpresa" => $data["companyId"]]);
+        $user = (new \Source\Models\User())->find($login);
+        $groups = (new \Source\Models\Group())->all();
+        $params = [ $data, compact("login", "users", "user", "groups") ];
 
-        echo "<script>var companyId = '" . $companyId["companyId"] . "' </script>";
+        echo "<script>var companyId = '" . $data["companyId"] . "' </script>";
         $this->view->setPath("Modals")->render("login", $params);
     }
 
     public function add()
     {
-        $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
-        $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
-        $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-        $users = (new \Source\Models\User())->find(["IDEmpresa" => $companyId]);
-        $user = (new \Source\Models\User())->find($login);
+        $data = $this->getGet($_GET);
         $groups = (new \Source\Models\Group())->all();
-        echo "<script>var companyId = '" . $companyId . "' </script>";
-        require __DIR__ . "/../Modals/login.php";
+        $params = [ $data, compact("groups") ];
+
+        $this->view->setPath("Modals")->render("login", $params);
     }
 
     public function edit()
     {
-        // $act = filter_input(INPUT_GET, "act", FILTER_SANITIZE_STRIPPED);
-        // $login = filter_input(INPUT_GET, "login", FILTER_SANITIZE_STRIPPED);
-        // $companyId = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-        // $users = (new \Source\Models\User())->find(["IDEmpresa" => $companyId]);
-        // $user = (new \Source\Models\User())->find($login);
-        // $groups = (new \Source\Models\Group())->all();
-        // echo "<script>var companyId = '" . $companyId . "' </script>";
-        require __DIR__ . "/../Modals/login.php";
+        $data = $this->getGet($_GET);
+        $user = (new \Source\Models\User())->find($data["login"]);
+        $groups = (new \Source\Models\Group())->all();
+        $params = [ $data, compact("user", "groups") ];
+
+        $this->view->setPath("Modals")->render("login", $params);
     }
 
     public function save()

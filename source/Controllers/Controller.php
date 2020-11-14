@@ -21,4 +21,11 @@ abstract class Controller
         }
         return $params;
     }
+
+    protected function getGet($data) {
+        foreach($data as $key => $value) {
+            $params[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_STRIPPED);
+        }
+        return $params;
+    }
 }
