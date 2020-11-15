@@ -3,6 +3,10 @@ body {
     background: var(--cor-body);
 }
 
+.shield h5 {
+    color: var(--cor-primary);
+}
+
 /** security */
 .group, .screen {
     /* border: 1px solid gray; */
@@ -22,10 +26,15 @@ body {
     flex: 1;
 }
 
-.container > div
+.shield > div
 {
     display: flex;
     padding: 30px 200px;
+    margin: auto;
+}
+
+.shield legend {
+    text-transform: uppercase;
 }
 
 /* .window
@@ -36,16 +45,15 @@ body {
     display: none;
     margin: -280px auto;
     background: #ECF2E6;
-    box-shadow: 1px 1px 2px gray;    
+    box-shadow: 1px 1px 2px gray;
     z-index: 2;
     text-align: center;
     padding-top: 80px;
 } */
 
-fieldset {
-    background: #ECF2E6;
-    box-shadow: 1px 1px 2px gray;
-    padding: 0 30px;
+.shield .fieldset {
+    padding: 8px 30px;
+    min-height: 114px;
 }
 
 .fa-times, .fa-check {

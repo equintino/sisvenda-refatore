@@ -23,7 +23,6 @@
             $("#boxe_main .close, #mask_main").on("click", function() {
                 that.nameModal.hide();
                 that.mask.fadeOut();
-                //window.location.reload();
             });
         },
         /** @var title, message, content */
@@ -121,7 +120,6 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
         var success;
         var data = $("#boxe_main form").serialize();
         var top = $("#top").height();
-        //var url = "../Support/ajaxSave.php";
         $.ajax({
             url: url,
             type: "POST",
@@ -149,7 +147,6 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
                 }
                 alertLatch(response, background);
                 setTimeout(function() {
-                    //$("#flashes").slideUp();
                     loading.hide();
                     (success ? window.location.reload(): null);
                 }, setTime);
@@ -213,14 +210,13 @@ var insertCheck = function(screens, element, optionGreen, optionRed) {
 };
 
 /** @return object */
-var getScreenAccess = function(element, check) {
+var getScreenAccess = function(element, check, groupName) {
     var access = " home";
     element.each(function() {
         if($(this).find("i").hasClass(check)) {
             access += "," + $(this).text();
         }
     });
-    var groupName = element.parent().find("span").text().replace("Grupo: ","");
     var security = {
         access: access,
         name: groupName
@@ -277,7 +273,6 @@ var saveData = function(link, data, msg = "Salvando") {
             }
             alertLatch(response, background);
             setTimeout(function() {
-                 //$("#flashes").slideUp();
                  loading.hide();
                  $("#mask_main").hide();
             }, setTime);
@@ -286,7 +281,6 @@ var saveData = function(link, data, msg = "Salvando") {
             var top = $("#top").height();
             alertLatch(response, background);
             setTimeout(function() {
-                //$("#flashes").slideUp();
                 loading.hide();
                 $("#mask_main").fadeOut();
             }, setTime);
