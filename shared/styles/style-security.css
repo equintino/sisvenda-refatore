@@ -38,20 +38,6 @@ body {
     text-transform: uppercase;
 }
 
-/* .window
-{
-    position: relative;
-    width: 60%;
-    height: 200px;
-    display: none;
-    margin: -280px auto;
-    background: #ECF2E6;
-    box-shadow: 1px 1px 2px gray;
-    z-index: 2;
-    text-align: center;
-    padding-top: 80px;
-} */
-
 .shield .fieldset {
     padding: 8px 30px;
     min-height: 114px;

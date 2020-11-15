@@ -1,4 +1,3 @@
-<!-- <link rel="stylesheet" href="<?= theme("asset/css/style-security.css") ?>" /> -->
 <script>var identificacao = 'ACESSO ÀS TELAS';</script>
 <div class="shield">
     <h5 class="mt-4" align="center">SEGURANÇA</h5>
@@ -26,4 +25,4 @@
             <button class="button save" style="float: right" >Gravar</button>
         </div>
     </div>
-</div><!-- container -->
+</div>

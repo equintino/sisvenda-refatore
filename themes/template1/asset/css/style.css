@@ -90,29 +90,6 @@ section.loading, .text-loading {
     color: white;
 }
 
-/* @keyframes example {
-    from {right: -200px;}
-    to {right: 0%;}
-} */
-
-/* .flash, #flashes {
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    background: var(--cor-secondary);
-    padding: 10px 30px;
-    color: white;
-    display: none;
-    text-transform: uppercase;
-    font-weight: bolder;
-    text-align: center;
-    z-index: 5;
-} */
-
-/* #flashes {
-    top: 13%;
-} */
-
 /** messages */
 .success {
     background: var(--cor-success);
@@ -208,22 +185,6 @@ main .form-signin {
 #form-token, #form-token input {
     text-align: center;
 }
-
-/* .login {
-    width: 50%;
-    text-align: center;
-    display: inline-block;
-    background: black;
-    margin: 0 auto;
-    //padding: 30px 30px 5px;
-    //display: inline-block;
-    border-radius: 5px;
-    box-shadow: 4px 4px 4px gray;
-} */
-
-/* .login form {
-    width: 100%;
-} */
 
 .form-input {
     width: 88%;
@@ -606,10 +567,6 @@ main .form-signin {
     box-shadow: 2px 2px 0px 1px var(--cor-danger);
 }
 
-/* .error:active {
-    background: linear-gradient(to bottom, white 0%, var(--cor-danger) 20%);
-} */
-
 .cancel {
     color: white;
     background-color: var(--cor-secondary);
@@ -622,10 +579,6 @@ main .form-signin {
     box-shadow: 2px 2px 0px 1px var(--cor-secondary);
 }
 
-/* .cancel:active {
-    //background: linear-gradient(to bottom, white 0%, var(--cor-secondary) 20%);
-} */
-
 .info {
     color: white;
     background-color: var(--cor-info);
@@ -637,10 +590,6 @@ main .form-signin {
     border-radius: .25rem;
     box-shadow: 2px 2px 0px 1px var(--cor-info);
 }
-
-/* .info:active {
-    background: linear-gradient(to bottom, white 0%, var(--cor-info) 20%);
-} */
 
 .save {
     color: white;
