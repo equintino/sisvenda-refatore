@@ -5,6 +5,7 @@ body {
 
 .shield h5 {
     color: var(--cor-primary);
+    font-weight: 600;
 }
 
 /** security */
