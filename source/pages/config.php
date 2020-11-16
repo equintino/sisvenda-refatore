@@ -20,9 +20,16 @@
                 <?php
                     $localSelected = $config->getConfConnection();
                     foreach($config->getFile() as $local => $params):
+                        $ativa = null;
+                        $background = null;
                         $config->local = $local;
-                        $ativa = ($localSelected === $local ? "*" : null) ?>
-                <tr>
+                        //$ativa = ($localSelected === $local ? "*" : null)
+                        if($localSelected === $local) {
+                            $ativa = "*";
+                            $background = "#c3d2dd";
+                        }
+                        ?>
+                <tr style="background: <?= $background ?>">
                     <td><?= $ativa.$local ?></td>
                     <td><?= $config->type() ?></td>
                     <td><?= $config->address() ?></td>
