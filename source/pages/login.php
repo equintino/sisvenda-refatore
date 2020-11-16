@@ -34,8 +34,9 @@
                 </thead>
                 <tbody>
                     <?php if(isset($users)):
+                        $login = $_SESSION["login"]->Logon;
                         foreach($users as $user): ?>
-                            <tr>
+                            <tr <?= ($login !== $user->Logon ?: "style='background: #c3d2dd'") ?> >
                                 <td><?= $user->Nome ?></td>
                                 <td><?= $user->Logon ?></td>
                                 <td><?= (!empty($user->getGroup()) ? $user->getGroup()->name : null) ?></td>

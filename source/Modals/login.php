@@ -72,10 +72,11 @@
             <tbody>
                 <?php
                 if(isset($users)):
+                    $login = $_SESSION["login"]->Logon;
                     foreach($users as $user): ?>
-                        <tr>
+                        <tr <?= ($login !== $user->Logon ?: "style='background: #c3d2dd'") ?> >
                             <td><?= $user->Nome ?></td>
-                                <td><?= $user->Logon ?></td>
+                            <td><?= $user->Logon ?></td>
                             <td><?= (!empty($user->getGroup()) ? $user->getGroup()->name : null) ?></td>
                             <td><?= $user->Visivel == 1 ? "SIM" : "NÃO"; ?></td>
                             <td title="Edita" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-pencil" ></i></td>
