@@ -38,7 +38,7 @@ class Group extends Model implements Models
         return $find->fetchObject(__CLASS__);
     }
 
-    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
+    public function all(int $limit=30, int $offset=1, string $columns = "*", string $order = "id"): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "
             . self::$entity . " "

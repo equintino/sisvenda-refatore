@@ -87,3 +87,6 @@ stap by stap
 - salva novo login, porém mantem a mensagem de campo login obrigatório - ok
 - ajustar a altura do menu na tela de usuário(login) - ?
 - implementar grupo de rotas
+- remover seleção de dados para copia
+- não permitir remover grupo adminstrador(ocultar) - ok
+- colocar background na configuração atual
