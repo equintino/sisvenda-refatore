@@ -16,13 +16,13 @@
             <div class="form-row mb-2">
                 <div class="col-md">
                     <label for="login" class="label">Login:</label>
-                    <input type="text" class="form-input" id="login" name="Logon" value="<?= (isset($user) ? $user->Logon : null) ?>" required="required"/></div><!-- col -->
+                    <input type="text" class="form-input" id="login" name="Logon" value="<?= ((isset($user) ? $user->Logon : null)) ?>" required="required"/></div><!-- col -->
                 <div class="col-md">
                     <label for="senha" class="label">Senha: </label>
-                    <input type="password" class="form-input" id="senha" name="Senha" <?= isset($user)  ? "disabled" : ("required='required'") ?> /></div><!-- col -->
+                    <input type="password" class="form-input" id="senha" name="Senha" <?= (isset($user)  ? "disabled" : ("required='required'")) ?> /></div><!-- col -->
                 <div class="col-md">
                     <label for="senha2" class="label">Confirme: </label>
-                    <input type="password" class="form-input" id="senha2" name="confSenha" <?= isset($user) ? "disabled" : ("required='required'") ?>/></div><!-- col -->
+                    <input type="password" class="form-input" id="senha2" name="confSenha" <?= (isset($user) ? "disabled" : ("required='required'")) ?>/></div><!-- col -->
             </div><!-- row -->
             <?php else: ?>
                 <input type="hidden" name="Logon" value="<?= $user->Logon ?>" ?>
@@ -33,8 +33,8 @@
                     <input type="text" class="form-input" id="cargo" name="Cargo" value="<?= (isset($user) ? $user->Cargo : null) ?>"/></div>
                 <div class="col">
                     <label for="grupo" class="label" >Grupo:</label>
-                    <select name="Group_id" class="form-input" >
-                        <option value="0"></option>
+                    <select name="Group_id" class="form-input" required="required" >
+                        <option value=""></option>
                         <?php foreach($groups as $group): ?>
                         <option value="<?= $group->id ?>" <?= (isset($user) && $user->Group_id ==  $group->id) ? "selected" : null ?>><?= $group->name ?></option>
                         <?php endforeach ?>

@@ -23,22 +23,22 @@
                     Gerenciamento
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <?php if (in_array('gerenciamento-orcamento', $access)): ?>
+                    <?php if (!empty($access) && in_array(' gerenciamento-orcamento', $access)): ?>
                     <a href="<?= url("/orcamento") ?>" class="dropdown-item" >
                          Orçamento
                     </a>
                     <?php endif ?>
-                    <?php if (in_array('venda', $access)): ?>
+                    <?php if (!empty($access) && in_array(' venda', $access)): ?>
                     <a href="<?= url("/gerenciamento") ?>" class="dropdown-item" >
                         Venda
                     </a>
                     <?php endif; ?>
-                    <?php if (in_array('gerEntrega', $access)): ?>
+                    <?php if (!empty($access) && in_array(' gerEntrega', $access)): ?>
                     <a href="<?= url("/entrega") ?>" class="dropdown-item" >
                         Entrega de Produtos
                     </a>
                     <?php endif; ?>
-                    <?php if (in_array('preco', $access)): ?>
+                    <?php if (!empty($access) && in_array(' preco', $access)): ?>
                     <a href="<?= url("/preco") ?>" class="dropdown-item" >
                         Preço
                     </a>
@@ -53,7 +53,7 @@
         </ul>
         <div class="navbar navbar-right config">
             <ul class="nav navbar">
-                <?php if(in_array(" login", $access) || in_array(" *", $access)): ?>
+                <?php if(!empty($access) && (in_array(" login", $access) || in_array(" *", $access))): ?>
                     <li>
                         <a id="login" class="nav-link icon-login" href="<?= url("login") ?>" >
                             <i class="fa fa-id-card" title="Cadastro de Login"></i>

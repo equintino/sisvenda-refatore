@@ -3,6 +3,7 @@
 namespace Source\Core;
 
 use Source\Models\Group;
+use Source\Controllers\Web;
 
 class View
 {
@@ -36,6 +37,9 @@ class View
             }
         }
 
+        if(!empty($this->access) && !in_array(" {$page}", $this->access)) {
+            return print("<h5 align='center' style='color: var(--cor-primary)'>Acesso Restrito</h5>");
+        }
         require $this->path . "/{$page}.php";
     }
 

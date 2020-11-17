@@ -9,11 +9,11 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     </head>
     <body class="body">
-        <header>
+        <!-- <header> -->
             <div id="top">
                 <?php require __DIR__ . "/top.php"; ?>
             </div>
-        </header>
+        <!-- </header> -->
         <div class="content">
             <section class="loading">
                 <img class="schedule" src="<?= theme("asset/img/loading.png") ?>" alt="reading" height="50px"/>
