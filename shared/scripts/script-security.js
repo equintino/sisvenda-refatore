@@ -1,4 +1,19 @@
+/** functions */
+function checkGroup() {
+    var groupName = $(".group fieldset p.active").text();
+    $(".screen legend span").text("Grupo: " + groupName)
+        .css("float","right");
+
+    /** Mark accessible screens */
+    var url = "load-group&groupName=" + groupName;
+    var screens = security(groupName, url);
+    if(screens.success) {
+        insertCheck(screens.access, $(".screen span"), "fa fa-check", "fa fa-times");
+    }
+}
+
 $(function($) {
+    checkGroup();
     $(".btnAction").click(function() {
         var groupName = $(this).text();
         $(".screen legend span").text("Grupo: " + groupName)

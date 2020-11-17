@@ -94,3 +94,4 @@ stap by stap
 - remover seleção de dados para copia
 - ajustar telas responsivas
 - conferir se os dados da conexao apagam(ses)
+- Initially select the group belonging to the logged-in user

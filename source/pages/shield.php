@@ -5,8 +5,9 @@
         <div class="group">
             <fieldset class="fieldset">
                 <legend>Grupos</legend>
-                <?php foreach($groups as $group): ?>
-                    <p class="btnAction"><?= $group->name ?></p>
+                <?php foreach($groups as $group):
+                    $active = ($group->id === $groupId ? "active" : null); ?>
+                    <p class="btnAction <?= $active ?>"><?= $group->name ?></p>
                 <?php endforeach ?>
             </fieldset>
             <button class="button save" style="float: right">Adicionar Grupo</button>

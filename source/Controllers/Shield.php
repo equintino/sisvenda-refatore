@@ -5,6 +5,7 @@ namespace Source\Controllers;
 use Source\Core\View;
 use Source\Core\Safety;
 use Source\Models\Group;
+use Source\Models\User;
 
 class Shield extends Controller
 {
@@ -19,7 +20,8 @@ class Shield extends Controller
     {
         $groups["groups"] = (new Group())->all();
         $screens["screens"] = Safety::screens(__DIR__ . "/../pages");
-        $params = [ $groups, $screens ];
+        $groupId["groupId"] = (new User())->find($_SESSION["login"]->Logon)->Group_id;
+        $params = [ $groups, $screens, $groupId ];
 
         $page = [ "page" => "shield" ];
         $this->view->insertTheme([ $page ]);
