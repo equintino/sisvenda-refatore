@@ -2,7 +2,7 @@
 
 namespace Source\Controllers;
 
-use Source\Classes\AjaxTransaction;
+//use Source\Classes\AjaxTransaction;
 
 class Group extends Controller
 {
