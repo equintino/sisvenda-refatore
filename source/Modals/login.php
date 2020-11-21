@@ -60,6 +60,7 @@
         <table id="tabList" class="my-table" width="100%" >
             <thead>
                 <tr>
+                    <th></th>
                     <th>NOME</th>
                     <th>LOGIN</th>
                     <th>GRUPO</th>
@@ -70,11 +71,12 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                if(isset($users)):
+                <?php if(isset($users)):
                     $login = $_SESSION["login"]->Logon;
-                    foreach($users as $user): ?>
+                    foreach($users as $user):
+                            $arrow = ($login === $user->Logon ? "<i class='fa fa-arrow-right' aria-hidden='true' ></i>" : null);?>
                         <tr <?= ($login !== $user->Logon ?: "style='background: #c3d2dd'") ?> >
+                            <td><?= (!empty($arrow) ? $arrow : null) ?></td>
                             <td><?= $user->Nome ?></td>
                             <td><?= $user->Logon ?></td>
                             <td><?= (!empty($user->getGroup()) ? $user->getGroup()->name : null) ?></td>
@@ -83,9 +85,8 @@
                             <td title="Exclui" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-times"></i></td>
                             <td title="Reseta" data-id="<?= $user->id ?>" data="<?= $user->Logon ?>" ><i class="fa fa-key "></i></td>
                         </tr>
-                <?php
-                    endforeach;
-                endif ?>
+                <?php endforeach;
+                    endif ?>
             </tbody>
         </table>
     </fieldset>

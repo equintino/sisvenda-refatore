@@ -8,6 +8,7 @@
         <table id="tabConf" class="my-table" width="100%" >
             <thead>
                 <tr>
+                    <th></th>
                     <th>NOME</th>
                     <th>TIPO</th>
                     <th>ENDEREÇO</th>
@@ -20,17 +21,18 @@
                 <?php
                     $localSelected = $config->getConfConnection();
                     foreach($config->getFile() as $local => $params):
-                        $ativa = null;
+                        $active = null;
                         $background = null;
+                        $arrow = null;
                         $config->local = $local;
-                        //$ativa = ($localSelected === $local ? "*" : null)
                         if($localSelected === $local) {
-                            $ativa = "*";
+                            $active = "*";
+                            $arrow = "<i class='fa fa-arrow-right' aria-hidden='true' ></i>";
                             $background = "#c3d2dd";
-                        }
-                        ?>
+                        } ?>
                 <tr style="background: <?= $background ?>">
-                    <td><?= $ativa.$local ?></td>
+                    <td><?= (!empty($arrow) ? $arrow : null) ?></td>
+                    <td><?= $active.$local ?></td>
                     <td><?= $config->type() ?></td>
                     <td><?= $config->address() ?></td>
                     <td><?= $config->database() ?></td>
@@ -43,5 +45,4 @@
         </table>
     </fieldset>
     </div>
-    <!-- <div></div> -->
 </div>

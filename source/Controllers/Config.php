@@ -3,32 +3,36 @@
 namespace Source\Controllers;
 
 use Source\Core\View;
+use Source\Controllers\Traits\ConfigTrait;
 
 class Config extends Controller
 {
+    use ConfigTrait;
     protected $page = " config";
+    private $config;
+    private $types = [ "mysql", "sqlsrv" ];
 
     public function __construct()
     {
         parent::__construct();
+        $this->setConfig(new \Source\Config\Config());
+        $this->config = $this->getConfig();
     }
 
     public function list()
     {
-        $config["config"] = new \Source\Config\Config();
-
-        $page = [ "page" => "config" ];
-        $this->view->insertTheme([ $page ]);
-        $this->view->render("config", [ $config ]);
+        $config = (object) $this->config;
+        $activeConnection = \Source\Core\Connect::getConfConnection();
+        $page = "config";
+        $this->view->insertTheme( [ compact("page") ] );
+        $this->view->render("config", [ compact("config","activeConnection") ]);
     }
 
     public function add()
     {
         $data = $this->getGet($_GET);
-        $config = new \Source\Config\Config();
-        $config->local = null;
-
-        $params = [ $data, compact("config") ];
+        $types = $this->types;
+        $params = [ $data, compact("types") ];
 
         ($this->view->setPath("Modals")->render("config", $params));
     }
@@ -36,43 +40,34 @@ class Config extends Controller
     public function edit()
     {
         $data = $this->getGet($_GET);
-        $config = new \Source\Config\Config();
-        $config->local = $data["connectionName"];
+        $types = $this->types;
+        $connectionName = $data["connectionName"];
+        $config = $this->config;
+        $config->local = $connectionName;
 
-        $params = [ $data, compact("config") ];
-
-        ($this->view->setPath("Modals")->render("config", $params));
+        ($this->view->setPath("Modals")->render("config", [ compact("config", "types") ]));
     }
 
     public function save()
     {
         $params = $this->getPost($_POST);
         $data = $params["data"];
-        $config = new \Source\Config\Config();
-        parse_str($data, $connectionName);
-
-        $config->setConfConnection($connectionName["connectionName"], $data);
-        $config->confirmSave();
-        echo json_encode($config->message());
+        $this->config->save($data);
+        echo json_encode($this->config->message());
     }
 
     public function update()
     {
         $params = $this->getPost($_POST);
-        $connectionName = $params["connectionName"];
         $data = $params["data"];
-        $config = new \Source\Config\Config();
-
-        $config->setConfConnection($connectionName, $data);
-        $config->save();
-        echo json_encode($config->message());
+        $this->config->update($params);
+        echo json_encode($this->config->message());
     }
 
     public function delete()
     {
         $params = $this->getPost($_POST);
-        $config = new \Source\Config\Config();
-        $config->delete($params["connectionName"]);
-        echo json_encode($config->message());
+        $this->config->delete($params["connectionName"]);
+        echo json_encode($this->config->message());
     }
 }

@@ -620,6 +620,12 @@ main .form-signin {
     margin: 0 auto;
 }
 
+.table-conf table i.fa-arrow-right, #tabList i.fa-arrow-right {
+    color: var(--cor-primary);
+    font-size: .7rem;
+    margin-left: -18px;
+}
+
 /** group */
 #group-registration > div:last-child {
     text-align: right;

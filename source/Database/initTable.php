@@ -4,7 +4,7 @@
 require __DIR__ . "/../autoload.php";
 
 $creation = new Source\Database\CreationProcess();
-$creation->define("local");
+$creation->define("localMysql");
 
 /** init table tb_usuario */
 $user = new Source\Models\User();
@@ -54,3 +54,22 @@ $company->save();
 var_dump(
     $company->message()
 );
+
+/** init table Configs */
+// $config = new Source\Models\Config();
+// var_dump(
+//     $config->createThisTable()
+// );
+// $data = [
+//     "name" => "local",
+//     "type" => "mysql",
+//     "address" => "localhost",
+//     "db" => "teste",
+//     "user" => "root",
+//     "passwd" => ""
+// ];
+// $config->bootstrap($data);
+// $config->save();
+// var_dump(
+//     $config->message()
+// );

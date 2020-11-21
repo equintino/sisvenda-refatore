@@ -26,14 +26,14 @@ class Config
         return Connect::getConfConnection();
     }
 
-    public function setConfConnection(string $connectionName, string $data)
+    public function setConfConnection(string $data, string $connectionName = null)
     {
         parse_str($data, $data);
         $this->local = (!empty($connectionName) ? $connectionName : $data["connectionName"]);
         $this->data = $data;
         $this->setType($this->data["type"]);
         $this->setAddress($this->data["address"]);
-        $this->setDatabase($this->data["database"]);
+        $this->setDatabase($this->data["db"]);
         $this->setUser($this->data["user"]);
         if(!empty($this->data["passwd"])) {
             $this->setPasswd($this->data["passwd"]);
@@ -55,7 +55,7 @@ class Config
         return strstr($this->file[$this->local]["dsn"], ":", true);
     }
 
-    public function setType(string $type)
+    private function setType(string $type)
     {
         $dsn = "";
         switch($type) {
@@ -73,7 +73,7 @@ class Config
         return substr(strstr(strstr($this->file[$this->local]["dsn"], "="), ";", true),1);
     }
 
-    public function setAddress(string $address)
+    private function setAddress(string $address)
     {
         $this->dsn .= "{$address};";
     }
@@ -83,7 +83,7 @@ class Config
         return substr(strrchr($this->file[$this->local]["dsn"], "="), 1);
     }
 
-    public function setDatabase(string $database)
+    private function setDatabase(string $database)
     {
         if($this->data["type"] === "sqlsrv") {
             $name = "Database";
@@ -109,7 +109,7 @@ class Config
         return $this->user;
     }
 
-    public function setUser(string $user)
+    private function setUser(string $user)
     {
         $this->user = $user;
     }
@@ -125,7 +125,7 @@ class Config
         return $this->passwd;
     }
 
-    public function setPasswd(string $passwd)
+    private function setPasswd(string $passwd)
     {
         $this->passwd = (!empty($passwd) ? base64_encode($passwd) : null);
     }
@@ -146,15 +146,41 @@ class Config
         }
     }
 
-    public function save(): bool
+    public function save(string $data): bool
     {
-        $this->file[$this->local] = [
+        $file = (object) $this->getFile();
+        $this->setConfConnection($data);
+        parse_str($data, $data);
+        $connectionName = $data["connectionName"];
+        if(!empty($file->$connectionName)) {
+            $this->message = "<span class='warning'>Nome de conexão já existente</span>";
+            return false;
+        }
+
+        $file->$connectionName = [
             "dsn" => $this->getDsn(),
             "user" => $this->getUser(),
             "passwd" => $this->getPasswd()
         ];
 
-        $saved = $this->saveFile($this->file);
+        $saved = $this->saveFile((array) $file);
+        $this->message = ($saved ? "<span class='success'>Dados salvo com sucesso</span>" : "<span class='error'>Erro ao salvar</span>");
+        return $saved;
+    }
+
+    public function update(array $data): bool
+    {
+        $file = (object) $this->getFile();
+        $this->setConfConnection($data["data"]);
+        parse_str($data["data"], $data);
+        $connectionName = $data["connectionName"];
+
+        $file->$connectionName = [
+            "dsn" => $this->getDsn(),
+            "user" => $this->getUser()
+        ];
+
+        $saved = $this->saveFile((array) $file);
         $this->message = ($saved ? "<span class='success'>Dados salvo com sucesso</span>" : "<span class='error'>Erro ao salvar</span>");
         return $saved;
     }
@@ -194,7 +220,7 @@ class Config
         return $resp;
     }
 
-    public function message(): string
+    public function message(): ?string
     {
         return $this->message;
     }

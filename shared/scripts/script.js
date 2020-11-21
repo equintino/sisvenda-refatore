@@ -115,7 +115,7 @@ $(function($) {
         var title;
         var content;
         var tr = $(this).closest("tr");
-        connectionName = tr.find("td").eq(0).text();
+        connectionName = tr.find("td").eq(1).text();
         if(connectionName.indexOf("*") !== -1) {
             bootbox.alert({
                 message: "ESTA CONEXÃO ESTÁ ATIVA: <b>(" + connectionName + ")</b>",

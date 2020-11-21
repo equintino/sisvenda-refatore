@@ -76,10 +76,10 @@ function disabledTableLine(dom) {
     /** highlighting disabled user */
     $(dom).each(function() {
         var that = $(this);
-        var disabledItens = $(this).find("td:eq(3)").text();
+        var disabledItens = $(this).find("td:eq(4)").text();
         if(disabledItens !== "SIM") {
             that.find("td").each(function() {
-                if($(this).index() < 4) {
+                if($(this).index() > 0 && $(this).index() < 5) {
                     var text = $(this).text();
                     $(this)
                         .html("<strike>" + text + "</sctrike>")

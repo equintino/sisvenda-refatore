@@ -89,9 +89,11 @@ stap by stap
 - colocar background na configuração atual - ok
 - colocar background no login atual - ok
 - conferir acesso as telas pelo grupo cadastrado - ok
+- Initially select the group belonging to the logged-in user - ok
+- passar para o banco de dados as informações de configuração(.config.ini) - não viável
 - ajustar a altura do menu na tela de usuário(login) - ?
 - implementar grupo de rotas
 - remover seleção de dados para copia
 - ajustar telas responsivas
 - conferir se os dados da conexao apagam(ses)
-- Initially select the group belonging to the logged-in user
+

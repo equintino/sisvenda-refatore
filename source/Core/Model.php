@@ -51,7 +51,7 @@ abstract class Model
     public function bootstrap(array $data): ?object
     {
         foreach($data as $name => $value) {
-            if($name === "Senha") $value = $this->crypt($value);
+            if($name === "Senha" || $name === "passwd") $value = $this->crypt($value);
             $this->$name = $value;
         }
 
