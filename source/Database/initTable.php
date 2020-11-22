@@ -10,13 +10,13 @@ $creation->define("localMysql");
 $user = new Source\Models\User();
 var_dump($user->createThisTable());
 $data = [
-    "Nome" => "Edmilson",
-    "Logon" => "edmilson",
-    "Senha" => "123",
+    "Nome" => "Administrador",
+    "Logon" => "admin",
+    "Senha" => "admin932",
     "Email" => "edmquintino@gmail.com",
     "IDEmpresa" => 1,
     "Visivel" => 1,
-    "USUARIO" => "Edmilson",
+    "USUARIO" => "admin",
     "Group_id" => 1
 ];
 $user->bootstrap($data);

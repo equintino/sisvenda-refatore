@@ -175,9 +175,11 @@ class Config
         parse_str($data["data"], $data);
         $connectionName = $data["connectionName"];
 
+        $passwd = $file->$connectionName["passwd"];
         $file->$connectionName = [
             "dsn" => $this->getDsn(),
-            "user" => $this->getUser()
+            "user" => $this->getUser(),
+            "passwd" => $passwd
         ];
 
         $saved = $this->saveFile((array) $file);

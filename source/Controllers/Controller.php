@@ -15,17 +15,24 @@ abstract class Controller
         $this->view = new View(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/");
     }
 
-    protected function getPost($data) {
+    protected function getPost($data)
+    {
         foreach($data as $key => $value) {
             $params[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRIPPED);
         }
         return $params;
     }
 
-    protected function getGet($data) {
+    protected function getGet($data)
+    {
         foreach($data as $key => $value) {
             $params[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_STRIPPED);
         }
         return $params;
+    }
+
+    protected function seo(string $title, string $desc, string $url, string $img, bool $follow = false)
+    {
+        return compact("title","desc","url","img","follow");
     }
 }

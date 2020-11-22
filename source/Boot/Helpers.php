@@ -39,6 +39,11 @@ function url(string $path = "/"): string
     return CONF_URL_TEST . "/" . str_replace("/", "", $path);
 };
 
+function url_back(): string
+{
+    return $_SERVER["HTTP_REFERER"] ?? url();
+}
+
 function theme(string $path)
 {
     if(preg_match("/ops/", $_SERVER["REQUEST_URI"])) {

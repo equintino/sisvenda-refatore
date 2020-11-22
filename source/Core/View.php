@@ -38,7 +38,9 @@ class View
         }
 
         if(!strpos($this->path, "Modals") && !empty($this->access) && !in_array(" {$page}", $this->access)) {
-            return print("<h5 align='center' style='color: var(--cor-primary)'>Acesso Restrito</h5>");
+            if(!in_array(" *", $this->access)) {
+                return print("<h5 align='center' style='color: var(--cor-primary)'>Acesso Restrito</h5>");
+            }
         }
         require $this->path . "/{$page}.php";
     }

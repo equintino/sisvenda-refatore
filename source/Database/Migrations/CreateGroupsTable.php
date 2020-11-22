@@ -21,7 +21,7 @@ class CreateGroupsTable implements CreateTable
         $schema = Schema::create($entity, $this->type, function(Blueprint $table) {
             $table->increment("id");
             $table->string("name",100)->unique();
-            $table->string("access")->nullable()->default("home");
+            $table->string("access")->nullable()->default(" home, error");
             $table->bool("active")->nullable()->default(1);
             $table->timestamps();
             return $table->run();

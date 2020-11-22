@@ -17,8 +17,8 @@
     },
     "autoload": {
         "files": [
-            "source/Support/Helpers.php",
-            "source/Support/Minify.php"
+            "source/Boot/Helpers.php",
+            "source/Boot/Minify.php"
         ],
         "psr-4": {
             "Source\\": "source",

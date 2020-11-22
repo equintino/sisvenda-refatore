@@ -4,7 +4,7 @@ namespace Source\Controllers;
 
 use Source\Classes\Version;
 use Source\Config\Config;
-//use Source\Models\Group;
+
 use Source\Controllers\Traits\ConfigTrait;
 
 class Web extends Controller
@@ -34,12 +34,19 @@ class Web extends Controller
 
     public function home(): void
     {
+        $head = $this->seo(
+            CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
+            CONF_SITE_DESC,
+            url(),
+            theme("asset/img/loading.png")
+        );
+
         $title = [ "title" => "Sistema de Venda" ];
         $shortcut = [ "shortcut" => theme("asset/img/logo.png") ];
         $page = [ "page" => "home" ];
         $loading = [ "loading" => theme("asset/img/logo-menu.gif") ];
         $this->view->insertTheme(
-                compact("title","shortcut","page","loading")
+                compact("shortcut","page","loading","head")
             );
         $this->view->render("home");
     }
