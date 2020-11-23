@@ -98,4 +98,6 @@ stap by stap
 - conferir se os dados da conexao apagam(ses)
 - Reestruturando as pastas
 - Criar grupo administrador padrão
-- Remover o usuário admin da edição
+- Remover o usuário Administrador da edição - ok
+- Alterado o indice para edição de login - ok
+- Liberar acesso a todos usuários às telas home e error - ok

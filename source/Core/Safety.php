@@ -9,11 +9,16 @@ abstract class Safety
         return Connect::getConfConnection();
     }
 
-    public static function screens($path): ?array
+    /**
+     * @return array|null
+     * @var $path string
+     * @var $exceptions array
+     */
+    public static function screens($path, $exceptions = []): ?array
     {
-        $directory = dir($path);
+        $directory = dir(__DIR__ . "/../{$path}");
         while($file = $directory->read()) {
-            if(!preg_match("/^[.]/", $file) && !preg_match("/^[index]/", $file)) {
+            if(!preg_match("/^[.|index]/", $file) && !in_array($file, $exceptions)) {
                 $screens[] = substr($file, 0, -4);
             }
         }

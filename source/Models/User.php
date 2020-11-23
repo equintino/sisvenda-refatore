@@ -40,18 +40,18 @@ class User extends Model implements Models
     }
 
     /** @var $busca array|string */
-    public function find($busca, string $columns = "*")
+    public function find($search, string $columns = "*")
     {
-        $login = &$busca;
-        if(is_array($busca)) {
-            foreach($busca as $columnName => $value) {
+        $login = &$search;
+        if(is_array($search)) {
+            foreach($search as $columnName => $value) {
                 $params = "{$columnName}=:{$columnName}";
                 $terms = "{$columnName}={$value}";
             }
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params}", $terms);
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params} AND Nome != 'Administrador' ", $terms);
         }
-        elseif(filter_var($busca, FILTER_VALIDATE_EMAIL)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Email=:Email", "Email={$busca}");
+        elseif(filter_var($search, FILTER_VALIDATE_EMAIL)) {
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Email=:Email", "Email={$search}");
         }
         elseif(filter_var($login, FILTER_SANITIZE_STRIPPED)) {
             $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Logon=:Logon", "Logon={$login}");
@@ -65,7 +65,7 @@ class User extends Model implements Models
             return null;
         }
 
-        return (is_array($busca) ? $find->fetchAll(\PDO::FETCH_CLASS, __CLASS__) : $find->fetchObject(__CLASS__));
+        return (is_array($search) ? $find->fetchAll(\PDO::FETCH_CLASS, __CLASS__) : $find->fetchObject(__CLASS__));
     }
 
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array

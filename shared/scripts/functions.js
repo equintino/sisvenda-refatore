@@ -211,10 +211,10 @@ var insertCheck = function(screens, element, optionGreen, optionRed) {
 
 /** @return object */
 var getScreenAccess = function(element, check, groupName) {
-    var access = " home";
+    var access = "";
     element.each(function() {
         if($(this).find("i").hasClass(check)) {
-            access += "," + $(this).text();
+            access += (access.length === 0 ? $(this).text() : "," + $(this).text());
         }
     });
     var security = {

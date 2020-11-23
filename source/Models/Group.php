@@ -24,10 +24,10 @@ class Group extends Model implements Models
         return $load->fetchObject(__CLASS__);
     }
 
-    public function find(string $busca, string $columns = "*")
+    public function find(string $search, string $columns = "*")
     {
-        if(filter_var($busca, FILTER_SANITIZE_STRIPPED)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE name=:name ", "name={$busca}");
+        if(filter_var($search, FILTER_SANITIZE_STRIPPED)) {
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE name=:name ", "name={$search}");
         }
 
         if($this->fail || !$find->rowCount()) {

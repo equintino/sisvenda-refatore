@@ -16,16 +16,16 @@ class Shield extends Controller
         parent::__construct();
     }
 
-    public function list()
-    {
-        $groups["groups"] = (new Group())->all() ?? [];
-        $screens["screens"] = Safety::screens(__DIR__ . "/../pages");
-        $groupId["groupId"] = (new User())->find($_SESSION["login"]->Logon)->Group_id;
-        $params = [ $groups, $screens, $groupId ];
+    // public function list()
+    // {
+    //     $groups["groups"] = (new Group())->all() ?? [];
+    //     $screens["screens"] = Safety::screens(__DIR__ . "/../pages");
+    //     $groupId["groupId"] = (new User())->find($_SESSION["login"]->Logon)->Group_id;
+    //     $params = [ $groups, $screens, $groupId ];
 
-        $page = [ "page" => "shield" ];
-        $this->view->insertTheme([ $page ]);
-        $this->view->render("shield", $params);
-    }
+    //     $page = [ "page" => "shield" ];
+    //     $this->view->insertTheme([ $page ]);
+    //     $this->view->render("shield", $params);
+    // }
 
 }

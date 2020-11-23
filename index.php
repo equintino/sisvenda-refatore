@@ -27,8 +27,7 @@
         $router->post("/delete-login", "User:delete");
         $router->post("/reset-login", "User:reset");
 
-        $router->get("/seguranca", "Shield:list");
-
+        $router->get("/seguranca", "Group:list");
         $router->get("/add-group", "Group:add");
         $router->post("/load-group", "Group:load");
         $router->post("/save-group", "Group:save");

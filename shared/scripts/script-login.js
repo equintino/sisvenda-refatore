@@ -1,7 +1,7 @@
 function exhibition(element) {
     $(element).on("click", function() {
         var action = $(this).attr("title");
-        var login = $(this).closest("tr").find("td:eq(1)").text();
+        var login = $(this).closest("tr").find("td:eq(2)").text();
         var url = "edit-login&act=edit&login=" + login;
         if(action === "Edita") {
             $("#exhibition")

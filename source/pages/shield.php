@@ -18,10 +18,9 @@
         <div class="screen">
             <fieldset class="fieldset">
                 <legend>Telas<span></span></legend>
-                <?php foreach($screens as $screen):
-                    if($screen !== "home"): ?>
+                <?php foreach($screens as $screen): ?>
                     <span class="mr-2"><i class="fa fa-times" style="color: red"></i> <?= $screen ?></span>
-                    <?php endif; endforeach ?>
+                    <?php endforeach ?>
             </fieldset>
             <button class="button save" style="float: right" >Gravar</button>
         </div>
