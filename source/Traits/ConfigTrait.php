@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Controllers\Traits;
+namespace Source\Traits;
 
 use Source\Config\Config;
 

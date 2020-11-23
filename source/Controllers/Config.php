@@ -3,12 +3,12 @@
 namespace Source\Controllers;
 
 use Source\Core\View;
-use Source\Controllers\Traits\ConfigTrait;
+use Source\Traits\ConfigTrait;
 
 class Config extends Controller
 {
     use ConfigTrait;
-    
+
     protected $page = " config";
     private $config;
     private $types = [ "mysql", "sqlsrv" ];

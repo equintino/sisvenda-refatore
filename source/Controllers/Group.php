@@ -2,7 +2,7 @@
 
 namespace Source\Controllers;
 
-use Source\Controllers\Traits\GroupTrait;
+use Source\Traits\GroupTrait;
 use Source\Models\User;
 
 class Group extends Controller

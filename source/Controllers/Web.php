@@ -21,7 +21,6 @@ class Web extends Controller
         $version = new Version();
         $this->setConfig(new Config());
         $config = $this->getConfig();
-        //$connectionList = array_keys((new Config())->getFile());
         $connectionList = array_keys($config->getFile());
         $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
         $connectionName= filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
