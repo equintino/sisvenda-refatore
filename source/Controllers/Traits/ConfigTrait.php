@@ -6,15 +6,8 @@ use Source\Config\Config;
 
 trait ConfigTrait
 {
-    private $config;
-
-    public function getConfig(): Config
+    public function config(): Config
     {
-        return $this->config;
-    }
-
-    public function setConfig(Config $config)
-    {
-        $this->config = $config;
+        return new Config();
     }
 }

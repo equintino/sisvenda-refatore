@@ -8,13 +8,8 @@ trait GroupTrait
 {
     private $group;
 
-    public function setGroup(Group $group)
+    public function group()
     {
-        $this->group = $group;
-    }
-
-    public function getGroup(): ?Group
-    {
-        return $this->group;
+        return new Group();
     }
 }

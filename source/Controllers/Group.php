@@ -2,7 +2,6 @@
 
 namespace Source\Controllers;
 
-//use Source\Classes\AjaxTransaction;
 use Source\Controllers\Traits\GroupTrait;
 use Source\Models\User;
 
@@ -13,12 +12,11 @@ class Group extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->setGroup(new \Source\Models\Group());
     }
 
     public function list()
     {
-        $groups = ($this->getGroup())->all() ?? [];
+        $groups = $this->group()->all() ?? [];
         $exceptions = [ "home.php", "error.php" ];
         $screens = \Source\Core\Safety::screens("/pages", $exceptions);
         $groupId = (new User())->find($_SESSION["login"]->Logon)->Group_id;
@@ -32,7 +30,7 @@ class Group extends Controller
     {
         $groupName = filter_input(INPUT_GET, "groupName", FILTER_SANITIZE_STRIPPED);
 
-        $dGroup = $this->group->find($groupName);
+        $dGroup = $this->group()->find($groupName);
         $security["access"] = explode(",", $dGroup->access);
         return print(json_encode($security));
     }
@@ -45,16 +43,17 @@ class Group extends Controller
     public function save()
     {
         $params = $this->getPost($_POST);
+        $group = $this->group();
 
-        $this->group->bootstrap($params);
-        $this->group->save();
-        return print(json_encode($this->group->message()));
+        $group->bootstrap($params);
+        $group->save();
+        return print(json_encode($group->message()));
     }
 
     public function update()
     {
         $params = $this->getPost($_POST);
-        $group = $this->group->find($params["name"]);
+        $group = $this->group()->find($params["name"]);
 
         foreach($params as $key => $value) {
             $value = ($key === "access" ? " home, error," . $value : $value);
@@ -68,7 +67,7 @@ class Group extends Controller
     public function delete()
     {
         $params = $this->getPost($_POST);
-        $group = $this->group->find($params["name"]);
+        $group = $this->group()->find($params["name"]);
         $group->destroy();
         return print(json_encode($group->message()));
     }

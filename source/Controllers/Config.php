@@ -8,6 +8,7 @@ use Source\Controllers\Traits\ConfigTrait;
 class Config extends Controller
 {
     use ConfigTrait;
+    
     protected $page = " config";
     private $config;
     private $types = [ "mysql", "sqlsrv" ];
@@ -15,8 +16,7 @@ class Config extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->setConfig(new \Source\Config\Config());
-        $this->config = $this->getConfig();
+        $this->config = $this->config();
     }
 
     public function list()
