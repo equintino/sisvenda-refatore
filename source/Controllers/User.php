@@ -89,15 +89,15 @@ class User extends Controller
         return print(json_encode($user->message()));
     }
 
-    public function change()
-    {
-        $params = $this->getPost($_POST);
-        $user = (new \Source\Models\User())->find($params["Logon"]);
-        $user->Senha = $user->crypt($params["Senha"]);
-        $user->token = null;
-        $user->save();
-        return print(json_encode($user->message()));
-    }
+    // public function change()
+    // {
+    //     $params = $this->getPost($_POST);
+    //     $user = (new \Source\Models\User())->find($params["Logon"]);
+    //     $user->Senha = $user->crypt($params["Senha"]);
+    //     $user->token = null;
+    //     $user->save();
+    //     return print(json_encode($user->message()));
+    // }
 
     public function reset()
     {
@@ -117,9 +117,9 @@ class User extends Controller
 
     private function confSenha(array $params): ?array
     {
-        $senha = $params["Senha"];
-        $confSenha = $params["confSenha"];
-        if($senha !== $confSenha) {
+        $passwd = $params["Senha"];
+        $confPasswd = $params["confSenha"];
+        if($passwd !== $confPasswd) {
             print(json_encode("<span class='warning'>A senha não foi confirmada</span>"));
             die;
         }

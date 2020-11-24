@@ -183,19 +183,19 @@ class User extends Model implements Models
         return $this->group = null;
     }
 
-    public function crypt($passwd)
-    {
-        return base64_encode($passwd);
-        /** new project */
-        //return crypt($passwd, "rl");
-    }
+    // public function crypt($passwd)
+    // {
+    //     return base64_encode($passwd);
+    //     /** new project */
+    //     //return crypt($passwd, "rl");
+    // }
 
-    public function validate($passwd, $hash)
-    {
-        return $passwd === base64_decode($hash->Senha);
-        /** new project */
-        //return crypt($passwd, $hash) == $hash;
-    }
+    // public function validate($passwd, $hash)
+    // {
+    //     return $passwd === base64_decode($hash->Senha);
+    //     /** new project */
+    //     //return crypt($passwd, $hash) == $hash;
+    // }
 
     public function token()
     {
@@ -208,7 +208,7 @@ class User extends Model implements Models
             $this->message = "<span class='danger'>Erro ao resetar senha, tente novamente</span>";
             return null;
         }
-        $this->message = "<span class='success'>Nova senha será cadastrada no próximo login</span>";
+        $this->message = "<span class='warning'>Nova senha será cadastrada no próximo login</span>";
     }
 
 }

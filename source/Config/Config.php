@@ -3,9 +3,12 @@
 namespace Source\Config;
 
 use Source\Core\Connect;
+use Source\Traits\CryptoTrait;
 
 class Config
 {
+    use CryptoTrait;
+
     private $file;
     private $data;
     private $dsn;
@@ -127,7 +130,7 @@ class Config
 
     private function setPasswd(string $passwd)
     {
-        $this->passwd = (!empty($passwd) ? base64_encode($passwd) : null);
+        $this->passwd = (!empty($passwd) ? $this->crypt($passwd) : null);
     }
 
     private function decrypt(?string $passwd): ?string

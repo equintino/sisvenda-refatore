@@ -3,9 +3,12 @@
 namespace Source\Core;
 
 use Source\Config\Config;
+use Source\Traits\CryptoTrait;
 
 abstract class Model
 {
+    use CryptoTrait;
+
     /** @var array safe in cretated or updated */
     protected static $safe = [ "id", "created_at", "updated_at" ];
 

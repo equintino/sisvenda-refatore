@@ -63,9 +63,8 @@ function exhibition(element) {
                             value: login
                         }
                     ];
-                    if(saveData(url, data)) {
-                        modal.hide();
-                    }
+                    if(saveData(url, data)) {}
+                    modal.hide();
                 }
             });
         }

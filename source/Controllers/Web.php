@@ -5,7 +5,7 @@ namespace Source\Controllers;
 use Source\Classes\Version;
 use Source\Config\Config;
 
-use Source\Controllers\Traits\ConfigTrait;
+use Source\Traits\ConfigTrait;
 
 class Web extends Controller
 {
@@ -19,8 +19,7 @@ class Web extends Controller
     public function start(): void
     {
         $version = new Version();
-        $this->setConfig(new Config());
-        $config = $this->getConfig();
+        $config = $this->config();
         $connectionList = array_keys($config->getFile());
         $login = filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED);
         $connectionName= filter_input(INPUT_COOKIE, "connectionName", FILTER_SANITIZE_STRIPPED);
