@@ -3,10 +3,10 @@
     <head>
         <title><?= ( $title ?? "Sistema Estruturado de Venda" ) ?></title>
         <meta charset="UTF-8">
-        <link rel="shortcut icon" href="<?= theme("asset/img/logo.png") ?>" />
+        <link rel="shortcut icon" href="<?= theme("assets/img/logo.png") ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="<?= theme("asset/style.css") ?>" rel="stylesheet"/>
+        <link href="<?= theme("assets/style.css") ?>" rel="stylesheet"/>
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     </head>
     <body class="body">
@@ -17,7 +17,7 @@
         <!-- </header> -->
         <div class="content">
             <section class="loading">
-                <img class="schedule" src="<?= theme("asset/img/loading.png") ?>" alt="reading" height="50px"/>
+                <img class="schedule" src="<?= theme("assets/img/loading.png") ?>" alt="reading" height="50px"/>
                 <p class="text-loading">Texto da ação "loading"</p>
             </section>
 
@@ -47,6 +47,6 @@
 
         </div><!-- content -->
         <script>var page = "<?= $page ?>";</script>
-        <script type="text/javascript" src="<?= theme("asset/scripts.js") ?>" ></script>
+        <script type="text/javascript" src="<?= theme("assets/scripts.js") ?>" ></script>
     </body>
 </html>

@@ -13,9 +13,9 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
      /**
       * theme
       */
-    $cssDir = scandir(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/asset/css");
+    $cssDir = scandir(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/css");
     foreach($cssDir as $css) {
-        $cssFiles = __DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/asset/css/{$css}";
+        $cssFiles = __DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/css/{$css}";
         if(is_file($cssFiles) && pathinfo($cssFiles)["extension"] === "css") {
             $minCSS->add($cssFiles);
         }
@@ -24,7 +24,7 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
     /**
      * MinifyCss
      */
-    $minCSS->minify(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/asset/style.css");
+    $minCSS->minify(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/style.css");
 
     /**
      * js
@@ -43,9 +43,9 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
     /**
      * theme
      */
-    $jsDir = scandir(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/asset/js");
+    $jsDir = scandir(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/js");
     foreach($jsDir as $js) {
-        $jsFiles = __DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/asset/js/{$js}";
+        $jsFiles = __DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/js/{$js}";
         if(is_file($jsFiles) && pathinfo($jsFiles)["extension"] === "js") {
             $minJS->add($jsFiles);
         }
@@ -54,5 +54,5 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
     /**
      * MinifyCss
      */
-    $minJS->minify(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/asset/scripts.js");
+    $minJS->minify(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/scripts.js");
 }
