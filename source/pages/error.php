@@ -1,4 +1,4 @@
 <div class="container mt-5">
     <h1>Ops! Erro <?= $errcode ?? "falha ao carregar" ?></h1>
-    <button href="<?= url_back() ?>">Voltar</button>
+    <a href="<?= url_back() ?>"><button class="button">Voltar</button></a>
 </div>
