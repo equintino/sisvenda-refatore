@@ -2,7 +2,7 @@
 
 namespace Source\_App;
 
-use Source\Classes\Version;
+use Source\Support\Version;
 use Source\Config\Config;
 
 use Source\Traits\ConfigTrait;

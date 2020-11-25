@@ -28,7 +28,7 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 //$remember = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
 
 /** set constants */
-(new Source\Classes\FileTransation(".env"))->getConst();
+(new Source\Support\FileTransation(".env"))->getConst();
 
 /** url */
 function url(string $path = "/"): string

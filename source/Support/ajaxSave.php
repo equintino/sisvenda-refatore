@@ -13,5 +13,5 @@ $params = (getPost($_POST));
 
 if($params["act"] === "login") {
     $class = new Source\Models\User();
-    echo (new Source\Classes\AjaxTransaction($class, $params))->saveData();
+    echo (new Source\Support\AjaxTransaction($class, $params))->saveData();
 }
