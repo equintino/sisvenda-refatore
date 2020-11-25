@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Controllers;
+namespace Source\_App;
 
 use Source\Traits\GroupTrait;
 use Source\Models\User;

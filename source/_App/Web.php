@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Controllers;
+namespace Source\_App;
 
 use Source\Classes\Version;
 use Source\Config\Config;
@@ -36,13 +36,13 @@ class Web extends Controller
             CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
             CONF_SITE_DESC,
             url(),
-            theme("asset/img/loading.png")
+            theme("assets/img/loading.png")
         );
 
         $title = [ "title" => "Sistema de Venda" ];
-        $shortcut = [ "shortcut" => theme("asset/img/logo.png") ];
+        $shortcut = [ "shortcut" => theme("assets/img/logo.png") ];
         $page = [ "page" => "home" ];
-        $loading = [ "loading" => theme("asset/img/logo-menu.gif") ];
+        $loading = [ "loading" => theme("assets/img/logo-menu.gif") ];
         $this->view->insertTheme(
                 compact("shortcut","page","loading","head")
             );

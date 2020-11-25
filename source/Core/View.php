@@ -58,7 +58,7 @@ class View
             }
         }
         $access = $this->access;
-        require (!empty($path) ? $path : $this->theme . "/theme.php");
+        require (!empty($path) ? $path : $this->theme . "/_theme.php");
     }
 
     public function validate(): void

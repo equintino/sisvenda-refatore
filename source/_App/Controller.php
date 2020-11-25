@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Controllers;
+namespace Source\_App;
 
 use Source\Models\Group;
 use Source\Core\View;

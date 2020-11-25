@@ -5,7 +5,7 @@
 
     use CoffeeCode\Router\Router;
     use Source\Core\Session;
-    use Source\Controllers\Web;
+    use Source\_App\Web;
 
     $session = new Session();
     $router = new Router(url(), ":");
@@ -14,10 +14,11 @@
         /**
          * Web Routes
          */
-        $router->namespace("Source\Controllers");
+        $router->namespace("Source\_App");
         $router->get("/home", "Web:home");
         $router->get("/", "Web:home");
 
+        $router->namespace("Source\_App");
         $router->get("/login", "User:init");
         $router->get("/list-login", "User:list");
         $router->get("/add-login", "User:add");
@@ -27,6 +28,7 @@
         $router->post("/delete-login", "User:delete");
         $router->post("/reset-login", "User:reset");
 
+        $router->namespace("Source\_App");
         $router->get("/seguranca", "Group:list");
         $router->get("/add-group", "Group:add");
         $router->post("/load-group", "Group:load");
@@ -34,6 +36,7 @@
         $router->post("/update-group", "Group:update");
         $router->post("/delete-group", "Group:delete");
 
+        $router->namespace("Source\_App");
         $router->get("/configuracao", "Config:list");
         $router->get("/add-config", "Config:add");
         $router->get("/edit-config", "Config:edit");
@@ -49,7 +52,7 @@
         /**
          * Error Routes
          */
-        $router->namespace("Source\Controllers")->group("/ops");
+        $router->namespace("Source\_App")->group("/ops");
         $router->get("/{errcode}", "Web:error");
 
         /**
