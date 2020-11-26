@@ -5,7 +5,7 @@
         <input class="form-input" type="text" name="connectionName" required/>
     </div>
     <?php else: ?>
-        <input type="hidden" name=connectionName value="<?= $config->local ?>">
+        <input type="hidden" name=connectionName value="<?= ($config->local ?? null) ?>">
     <?php endif; ?>
     <div class="form-group">
         <label class="label" for="type" >Tipo: </label>

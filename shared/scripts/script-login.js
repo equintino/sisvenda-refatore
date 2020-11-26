@@ -1,8 +1,9 @@
 function exhibition(element) {
     $(element).on("click", function() {
         var action = $(this).attr("title");
-        var login = $(this).closest("tr").find("td:eq(2)").text();
-        var url = "edit-login&act=edit&login=" + login;
+        var tr = $(this).closest("tr");
+        var login = tr.find("td:eq(2)").text();
+        var url = "usuario/" + login;
         if(action === "Edita") {
             $("#exhibition")
                 .load(url)
@@ -12,7 +13,7 @@ function exhibition(element) {
                     var dataSet = $(this).find("form").serializeArray();
                     buttonName = $(this).text();
                     if(buttonName !== "Salvar") {
-                        url = "update-login";
+                        url = "usuario/update";
                         saveData(url, dataSet);
                     }
                 });
@@ -41,11 +42,11 @@ function exhibition(element) {
                     }
                 ];
                 if($(this).val() == 1) {
-                    var url = "delete-login";
+                    var url = "exclui/" + login;
                     saveData(url, dataSet, "Excluindo");
                     setTimeout(function() {
                         $("#boxe_main .close").trigger("click");
-                        window.location.reload();
+                        tr.remove();
                     }, setTime);
                 }
             });
@@ -56,7 +57,7 @@ function exhibition(element) {
                 message: "A nova senha será cadastrada no próximo login"
             }).on("click", function() {
                 if($(this).val() == 1) {
-                    var url = "reset-login";
+                    var url = "senha/reseta";
                     var data = [
                         {
                             name: "Logon",
@@ -68,7 +69,6 @@ function exhibition(element) {
                 }
             });
         }
-
     });
 }
 function disabledTableLine(dom) {
@@ -95,13 +95,28 @@ $(document).ready(function() {
     }
     $("select[name=NomeFantasia]").change(function() {
         var companyId = $(this).val();
-        var url = "login&companyId=" + companyId;
-        $(location).attr("href", url);
+        var url = "lista/usuarios/empresa/" + companyId;
+        if(companyId != "") {
+            $("#exhibition").load(url, function() {
+                exhibition("#exhibition table#tabList tbody td");
+                disabledTableLine("#exhibition table tbody tr");
+            });
+        }
+        else {
+            window.location.reload();
+        }
     });
     $(".header button").on("click", function() {
         var btnAction = $(this).text();
         var companyId = $("select[name=NomeFantasia]").val();
-        var url = "add-login&act=edit";
+        if(companyId == "") {
+            alertLatch("Selecione a EMPRESA", "var(--cor-warning)");
+            $(this).closest(".header")
+                .find("select")
+                .focus();
+            return false;
+        }
+        var url = "usuario/cadastro";
         if(btnAction === "Adicionar") {
             $("#exhibition")
                 .load(url)
@@ -114,7 +129,8 @@ $(document).ready(function() {
                             value: companyId
                         }
                     );
-                    var link = "save-login&act=login";
+                    //var link = "save-login&act=login";
+                    var link = "usuario/save";
                     var result = saveData(link, dataSet);
                     if(result) {
                         $("#exhibition form#login-register")
@@ -124,8 +140,7 @@ $(document).ready(function() {
             });
         }
         else {
-            var companyId = $(this).closest(".header").find("select :selected").val();
-            var url = "list-login&act=list&companyId=" + companyId;
+            var url = "lista/usuarios/empresa/" + companyId;
             $("#exhibition").load(url, function() {
                 exhibition("#exhibition table#tabList tbody td");
                 disabledTableLine("#exhibition table tbody tr");

@@ -5,7 +5,7 @@ function checkGroup() {
         .css("float","right");
 
     /** Mark accessible screens */
-    var url = "load-group&groupName=" + groupName;
+    var url = "grupo/" + groupName;
     var screens = security(groupName, url);
     if(screens.success) {
         insertCheck(screens.access, $(".screen span"), "fa fa-check", "fa fa-times");
@@ -13,7 +13,7 @@ function checkGroup() {
 }
 
 $(function($) {
-    checkGroup();
+    (page === "shield" ? checkGroup() : null);
     $(".btnAction").click(function() {
         var groupName = $(this).text();
         $(".screen legend span").text("Grupo: " + groupName)
@@ -23,7 +23,7 @@ $(function($) {
         $(this).addClass("active");
 
         /** Mark accessible screens */
-        var url = "load-group&groupName=" + groupName;
+        var url = "grupo/" + groupName;
         var screens = security(groupName, url);
         if(screens.success) {
             insertCheck(screens.access, $(".screen span"), "fa fa-check", "fa fa-times");
@@ -41,7 +41,7 @@ $(function($) {
         e.preventDefault();
         var btnName = this["innerText"];
         if(btnName === "Adicionar Grupo") {
-            var url = "add-group";
+            var url = "grupo/cadastro";
             var formGroup = modal.show({
                 title: "Cadastro de Grupo",
                 message: null,
@@ -51,7 +51,7 @@ $(function($) {
                 e.preventDefault();
                 var groupName = $("[name=group-name]").val();
                 if(groupName === "") return;
-                var url = "save-group";
+                var url = "grupo/save";
                 var data = {
                     name: groupName
                 };
@@ -66,7 +66,7 @@ $(function($) {
         else if(btnName === "Excluir Grupo") {
             if(!$(".btnAction").hasClass("active")) return;
             var groupName = $(".group .active").text();
-            var url = "delete-group";
+            var url = "grupo/exclui/" + groupName;
             var conf = bootbox.confirm({
                 message: "Deseja realmente excluir o grupo <span style='color:red; font-size: 1.1rem; margin-left: 5px'>" + groupName + "</span>",
                 buttons: {
@@ -93,7 +93,7 @@ $(function($) {
             if(!$(".btnAction").hasClass("active") || typeof(change) === "undefined") return;
             var groupName = $(".group .active").text();
             var security = getScreenAccess($(".screen span"), "fa fa-check", groupName);
-            var url = "update-group";
+            var url = "grupo/update";
 
             saveData(url, security);
         }

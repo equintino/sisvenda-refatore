@@ -5,7 +5,6 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
      * css
      */
     $minCSS = new MatthiasMullie\Minify\CSS();
-    ///$minCSS->add(__DIR__ . "/../../shared/styles/bootstrap.min.css.map");
     $minCSS->add(__DIR__ . "/../../shared/styles/datatables.css");
     $minCSS->add(__DIR__ . "/../../shared/styles/style-login.css");
     $minCSS->add(__DIR__ . "/../../shared/styles/style-security.css");
@@ -31,14 +30,13 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
      */
     $minJS = new MatthiasMullie\Minify\JS();
     $minJS->add(__DIR__ . "/../../shared/scripts/datatables.js");
-    //$minJS->add(__DIR__ . "/../../shared/scripts/bootstrap.min.js.map");
     $minJS->add(__DIR__ . "/../../shared/scripts/datatables.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/functions.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/script.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/bootbox.js");
-    //$minJS->add(__DIR__ . "/../../shared/scripts/jquery.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/script-login.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/script-security.js");
+    $minJS->add(__DIR__ . "/../../shared/scripts/script-config.js");
 
     /**
      * theme

@@ -101,3 +101,4 @@ stap by stap
 - remover seleção de dados para copia
 - ajustar telas responsivas
 - conferir se os dados da conexao apagam(ses)
+- passando parâmetros pela rota - ok

@@ -25,7 +25,7 @@
                 </div>
                 <div class="input-group">
                     <i class="fa fa-building icon-input"></i>
-                    <select id="connection-name" class="form-input" name="connection-name" placeholder="Conexão" required />
+                    <select id="connection-name" class="form-input" name="connection-name" placeholder="Conexão" required >
                     <option value=""></option>
                     <?php foreach($connectionList as $local):
                                     $selected = ($local === $connectionName ? "selected" : null)?>

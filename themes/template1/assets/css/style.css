@@ -69,6 +69,10 @@ section.loading, .text-loading {
     color: var(--cor-primary);
 }
 
+.uppercase {
+    text-transform: uppercase;
+}
+
 #top {
     background: var(--cor-primary);
 }

@@ -14,7 +14,7 @@ class Group extends Controller
         parent::__construct();
     }
 
-    public function list()
+    public function list(): void
     {
         $groups = $this->group()->all() ?? [];
         $exceptions = [ "home.php", "error.php" ];
@@ -26,31 +26,31 @@ class Group extends Controller
         $this->view->render("shield", [ compact("groups","screens","groupId") ]);
     }
 
-    public function load()
+    public function load(array $data): void
     {
-        $groupName = filter_input(INPUT_GET, "groupName", FILTER_SANITIZE_STRIPPED);
-
-        $dGroup = $this->group()->find($groupName);
-        $security["access"] = explode(",", $dGroup->access);
-        return print(json_encode($security));
+        $dGroup = $this->group()->find($data["groupName"]);
+        if($dGroup) {
+            $security["access"] = explode(",", $dGroup->access);
+            echo json_encode($security);
+        }
     }
 
-    public function add()
+    public function add(): void
     {
         ($this->view->setPath("Modals")->render("group"));
     }
 
-    public function save()
+    public function save(): void
     {
         $params = $this->getPost($_POST);
         $group = $this->group();
 
         $group->bootstrap($params);
         $group->save();
-        return print(json_encode($group->message()));
+        echo json_encode($group->message());
     }
 
-    public function update()
+    public function update(): void
     {
         $params = $this->getPost($_POST);
         $group = $this->group()->find($params["name"]);
@@ -61,14 +61,13 @@ class Group extends Controller
         }
 
         $group->save();
-        return print(json_encode($group->message()));
+        echo json_encode($group->message());
     }
 
-    public function delete()
+    public function delete(array $data): void
     {
-        $params = $this->getPost($_POST);
-        $group = $this->group()->find($params["name"]);
+        $group = $this->group()->find($data["name"]);
         $group->destroy();
-        return print(json_encode($group->message()));
+        echo json_encode($group->message());
     }
 }

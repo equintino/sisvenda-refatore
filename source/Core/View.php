@@ -26,6 +26,10 @@ class View
 
     public function render(string $page, array $params = [])
     {
+        if(empty($_SESSION["login"])) {
+            alertLatch("Necessário entrar novamente", "var(--cor-danger)");
+        }
+
         /** makes variables available to the page */
         if($params) {
             foreach($params as $var => $param) {
@@ -67,9 +71,8 @@ class View
             $login = $_SESSION["login"];
         }
         /** allows or prohibits access */
-        $group = new Group();
         if(!empty($login) && $login->Group_id) {
-            $this->access = explode(",", $group->load($login->Group_id)->access);
+            $this->access = explode(",", (new Group())->load($login->Group_id)->access);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-// require __DIR__ . "/../../vendor/autoload.php";
+// require __DIR__ . "/../../../vendor/autoload.php";
 
 // $groupName = filter_input(INPUT_POST, "groupName", FILTER_SANITIZE_STRIPPED);
 

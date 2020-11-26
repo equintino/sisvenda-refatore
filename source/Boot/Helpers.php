@@ -30,6 +30,11 @@ $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIP
 /** set constants */
 (new Source\Support\FileTransation(".env"))->getConst();
 
+/** message */
+function alertLatch(string $text, string $background) {
+    echo "<script>alertLatch('{$text}', '{$background}')</script>";
+}
+
 /** url */
 function url(string $path = "/"): string
 {

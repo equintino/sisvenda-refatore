@@ -19,7 +19,7 @@ class Config extends Controller
         $this->config = $this->config();
     }
 
-    public function list()
+    public function list(): void
     {
         $config = (object) $this->config;
         $activeConnection = \Source\Core\Connect::getConfConnection();
@@ -28,18 +28,16 @@ class Config extends Controller
         $this->view->render("config", [ compact("config","activeConnection") ]);
     }
 
-    public function add()
+    public function add(): void
     {
-        $data = $this->getGet($_GET);
         $types = $this->types;
-        $params = [ $data, compact("types") ];
+        $act = "add";
 
-        ($this->view->setPath("Modals")->render("config", $params));
+        ($this->view->setPath("Modals")->render("config", [ compact("act", "types") ]));
     }
 
-    public function edit()
+    public function edit(array $data): void
     {
-        $data = $this->getGet($_GET);
         $types = $this->types;
         $connectionName = $data["connectionName"];
         $config = $this->config;
@@ -48,7 +46,7 @@ class Config extends Controller
         ($this->view->setPath("Modals")->render("config", [ compact("config", "types") ]));
     }
 
-    public function save()
+    public function save(): void
     {
         $params = $this->getPost($_POST);
         $data = $params["data"];
@@ -56,7 +54,7 @@ class Config extends Controller
         echo json_encode($this->config->message());
     }
 
-    public function update()
+    public function update(): void
     {
         $params = $this->getPost($_POST);
         $data = $params["data"];
@@ -64,10 +62,9 @@ class Config extends Controller
         echo json_encode($this->config->message());
     }
 
-    public function delete()
+    public function delete(array $data): void
     {
-        $params = $this->getPost($_POST);
-        $this->config->delete($params["connectionName"]);
+        $this->config->delete($data["connectionName"]);
         echo json_encode($this->config->message());
     }
 }

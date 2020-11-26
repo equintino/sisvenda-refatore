@@ -39,21 +39,20 @@ class Web extends Controller
             theme("assets/img/loading.png")
         );
 
-        $title = [ "title" => "Sistema de Venda" ];
-        $shortcut = [ "shortcut" => theme("assets/img/logo.png") ];
-        $page = [ "page" => "home" ];
-        $loading = [ "loading" => theme("assets/img/logo-menu.gif") ];
-        $this->view->insertTheme(
+        $shortcut = theme("assets/img/logo.png");
+        $page = "home";
+        $loading = theme("assets/img/logo-menu.gif");
+        $this->view->insertTheme([
                 compact("shortcut","page","loading","head")
-            );
+            ]);
         $this->view->render("home");
     }
 
     public function error($data): void
     {
-        $errcode = [ "errcode" => $data["errcode"] ];
-        $title = [ "title" => "Erro ao carregar página" ];
-        $this->view->insertTheme(compact("title"));
-        $this->view->render("error", compact("errcode"));
+        $errcode = $data["errcode"];
+        $title = "Erro ao carregar página";
+        $this->view->insertTheme([ compact("title") ]);
+        $this->view->render("error", [ compact("errcode") ]);
     }
 }

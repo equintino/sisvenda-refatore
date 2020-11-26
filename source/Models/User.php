@@ -197,7 +197,7 @@ class User extends Model implements Models
     //     //return crypt($passwd, $hash) == $hash;
     // }
 
-    public function token()
+    public function token(string $login = null)
     {
         $userId = $this->id;
         if(!empty($userId)) {
@@ -208,7 +208,7 @@ class User extends Model implements Models
             $this->message = "<span class='danger'>Erro ao resetar senha, tente novamente</span>";
             return null;
         }
-        $this->message = "<span class='warning'>Nova senha será cadastrada no próximo login</span>";
+        $this->message = "<span class='warning'>Nova senha de <span class='uppercase'>{$login}</span> será cadastrada no próximo login</span>";
     }
 
 }

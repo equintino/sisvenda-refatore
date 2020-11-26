@@ -154,7 +154,6 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
             error: function(error) {
                 alertLatch(response, background);
                 setTimeout(function() {
-                    //$("#flashes").slideUp();
                     loading.hide();
                     $("#mask_main").fadeOut();
                 }, setTime);

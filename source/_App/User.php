@@ -16,25 +16,25 @@ class User extends Controller
         parent::__construct();
     }
 
-    public function init()
+    public function init(?array $data): void
     {
-        $companyId["companyId"] = filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-        $companys["companys"] = (new Company())->all();
-        $groups["groups"] = (new Group())->all();
-        $users["users"] = (new \Source\Models\User())->find(["IDEmpresa" => $companyId["companyId"]]);
-        $params = [ $companys, $groups, $companyId, $users ];
+        $companyId = $data["companyId"] ?? null;//filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
+        $companys = (new Company())->all();
+        $groups = (new Group())->all();
+        $users = (new \Source\Models\User())->find(["IDEmpresa" => $companyId]);
+        $params = [ compact("companys", "groups", "companyId", "users") ];
 
-        $loading = [ "loading" => theme("img/loading.png") ];
-        $page = [ "page" => "login" ];
+        $loading = theme("assets/img/loading.png");
+        $page = "login";
 
-        echo "<script>var companyId = '" . $companyId["companyId"] . "' </script>";
-        $this->view->insertTheme([ $page, $loading ]);
+        echo "<script>var companyId = '" . $companyId . "' </script>";
+        $this->view->insertTheme([ compact("page", "loading") ]);
         $this->view->render("login", $params);
     }
 
-    public function list()
+    public function list(?array $data): void
     {
-        $data = $this->getGet($_GET);
+        $data["act"] = "list";
         $login = $_SESSION["login"]->Logon;
         $users = (new \Source\Models\User())->find(["IDEmpresa" => $data["companyId"]]);
         $user = (new \Source\Models\User())->find($login);
@@ -45,18 +45,18 @@ class User extends Controller
         $this->view->setPath("Modals")->render("login", $params);
     }
 
-    public function add()
+    public function add(): void
     {
-        $data = $this->getGet($_GET);
+        $data["act"] = "edit";
         $groups = (new \Source\Models\Group())->all();
         $params = [ $data, compact("groups") ];
 
         $this->view->setPath("Modals")->render("login", $params);
     }
 
-    public function edit()
+    public function edit(array $data): void
     {
-        $data = $this->getGet($_GET);
+        $data["act"] = "edit";
         $user = (new \Source\Models\User())->find($data["login"]);
         $groups = (new \Source\Models\Group())->all();
         $params = [ $data, compact("user", "groups") ];
@@ -64,55 +64,40 @@ class User extends Controller
         $this->view->setPath("Modals")->render("login", $params);
     }
 
-    public function save()
+    public function save(array $data): void
     {
-        $params = $this->getPost($_POST);
-        $params["USUARIO"] = &$params["Logon"];
-        $params = $this->confSenha($params);
+        $data["USUARIO"] = &$data["Logon"];
+        $data = $this->confSenha($data);
         $user = new \Source\Models\User();
 
-        $user->bootstrap($params);
+        $user->bootstrap($data);
         $user->save();
-        return print(json_encode($user->message()));
+        echo json_encode($user->message());
     }
 
-    public function update()
+    public function update(array $data): void
     {
-        $params = $this->getPost($_POST);
-        $user = (new \Source\Models\User())->find($params["Logon"]);
-
-        foreach($params as $key => $value) {
+        $user = (new \Source\Models\User())->load($data["id"]);
+        foreach($data as $key => $value) {
             $user->$key = $value;
         }
 
         $user->save();
-        return print(json_encode($user->message()));
+        echo json_encode($user->message());
     }
 
-    // public function change()
-    // {
-    //     $params = $this->getPost($_POST);
-    //     $user = (new \Source\Models\User())->find($params["Logon"]);
-    //     $user->Senha = $user->crypt($params["Senha"]);
-    //     $user->token = null;
-    //     $user->save();
-    //     return print(json_encode($user->message()));
-    // }
-
-    public function reset()
+    public function reset(array $data): void
     {
-        $params = $this->getPost($_POST);
-        $user = (new \Source\Models\User())->find($params["Logon"]);
-        $user->token();
-        return print(json_encode($user->message()));
+        $user = (new \Source\Models\User())->find($data["Logon"]);
+        $user->token($data["Logon"]);
+        echo json_encode($user->message());
     }
 
-    public function delete()
+    public function delete(array $data): void
     {
-        $params = $this->getPost($_POST);
-        $user = (new \Source\Models\User())->find($params["Logon"]);
+        $user = (new \Source\Models\User())->find($data["Logon"]);
         $user->destroy();
-        return print(json_encode($user->message()));
+        echo json_encode($user->message());
     }
 
     private function confSenha(array $params): ?array

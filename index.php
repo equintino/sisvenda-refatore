@@ -18,36 +18,62 @@
         $router->get("/home", "Web:home");
         $router->get("/", "Web:home");
 
+        /**
+         * The Users' Screens
+         */
         $router->namespace("Source\_App");
         $router->get("/login", "User:init");
-        $router->get("/list-login", "User:list");
-        $router->get("/add-login", "User:add");
-        $router->get("/edit-login", "User:edit");
-        $router->post("/save-login", "User:save");
-        $router->post("/update-login", "User:update");
-        $router->post("/delete-login", "User:delete");
-        $router->post("/reset-login", "User:reset");
+        $router->get("/login/empresa/{companyId}", "User:init");
+        $router->get("/lista/usuarios/empresa/{companyId}", "User:list");
+        $router->get("/usuario/cadastro", "User:add");
+        $router->get("/usuario/{login}", "User:edit");
+        $router->post("/exclui/{login}", "User:delete");
+        $router->post("/senha/reseta", "User:reset");
+        $router->post("/usuario/update", "User:update");
+        $router->post("/usuario/save", "User:save");
 
+
+        /**
+         * The Groups' Screens
+         */
         $router->namespace("Source\_App");
         $router->get("/seguranca", "Group:list");
-        $router->get("/add-group", "Group:add");
-        $router->post("/load-group", "Group:load");
-        $router->post("/save-group", "Group:save");
-        $router->post("/update-group", "Group:update");
-        $router->post("/delete-group", "Group:delete");
+        $router->get("/grupo/cadastro", "Group:add");
+        $router->post("/grupo/{name}", "Group:load");
+        $router->post("/grupo/save", "Group:save");
+        $router->post("/grupo/exclui/{name}", "Group:delete");
+        $router->post("/grupo/update", "Group:update");
 
+
+        /**
+         * The Config's Screens
+         */
         $router->namespace("Source\_App");
         $router->get("/configuracao", "Config:list");
-        $router->get("/add-config", "Config:add");
-        $router->get("/edit-config", "Config:edit");
-        $router->post("/save-config", "Config:save");
-        $router->post("/update-config", "Config:update");
-        $router->post("/delete-config", "Config:delete");
+        $router->get("/configuracao/cadastro", "Config:add");
+        $router->get("/configuracao/editar/{connectionName}", "Config:edit");
+        $router->post("/configuracao/salvar", "Config:save");
+        $router->post("/configuracao/atualizar", "Config:update");
+        $router->post("/configuracao/excluir/{connectionName}", "Config:delete");
 
+
+        /**
+         * Enter
+         */
+        $router->namespace("Source\_App");
+        $router->get("/entrar", "Auth:login");
+        $router->get("/recuperar", "Auth:forget");
+        $router->get("/cadastrar", "Auth:register");
+
+
+        /**
+         * Logout
+         */
         $router->get("/sair", function() {
             (new Session())->destroy();
             echo "<script>window.location.assign('" . url() . "')</script>";
         });
+
 
         /**
          * Error Routes
