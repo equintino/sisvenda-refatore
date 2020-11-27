@@ -15,7 +15,7 @@ $connectionName = filter_input(INPUT_POST, "connection-name", FILTER_SANITIZE_ST
 $confEnv = (new FileTransation(".env"))->setLocal($connectionName);
 
 if($confEnv->getLocal()) {
-    $user = (new User())->find($login);
+    $user = (new User())->find($login, "*", false);
     if($user) {
         if(!empty($user->token)) {
             return print(json_encode(2));

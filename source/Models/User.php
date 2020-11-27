@@ -27,9 +27,9 @@ class User extends Model implements Models
         $this->Senha = $this->crypt($passwd);
     }
 
-    public function load(int $id, string $columns = "*"): ?User
+    public function load(int $id, string $columns = "*", bool $msgDb = false): ?User
     {
-        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE id=:id", "id={$id}");
+        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE id=:id", "id={$id}", $msgDb);
 
         if($this->fail || !$load->rowCount()) {
             $this->message = "<span class='warning'>Usuario não encontrado do id informado</span>";
@@ -40,7 +40,7 @@ class User extends Model implements Models
     }
 
     /** @var $busca array|string */
-    public function find($search, string $columns = "*")
+    public function find($search, string $columns = "*", bool $msgDb = false)
     {
         $login = &$search;
         if(is_array($search)) {
@@ -48,32 +48,34 @@ class User extends Model implements Models
                 $params = "{$columnName}=:{$columnName}";
                 $terms = "{$columnName}={$value}";
             }
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params} AND Nome != 'Administrador' ", $terms);
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params} AND Nome != 'Administrador' ", $terms, $msgDb);
         }
         elseif(filter_var($search, FILTER_VALIDATE_EMAIL)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Email=:Email", "Email={$search}");
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Email=:Email", "Email={$search}", $msgDb);
         }
         elseif(filter_var($login, FILTER_SANITIZE_STRIPPED)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Logon=:Logon", "Logon={$login}");
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Logon=:Logon", "Logon={$login}", $msgDb);
         }
         else {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Nome=:Nome", "Nome={$login}");
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Nome=:Nome", "Nome={$login}", $msgDb);
         }
 
         if($this->fail || !$find->rowCount()) {
-            $this->message = "<span class='warning'>Usuario não encontrado do email informado</span>";
+            if(!$msgDb) {
+                $this->message = "<span class='warning'>Usuario não encontrado do email informado</span>";
+            }
             return null;
         }
 
         return (is_array($search) ? $find->fetchAll(\PDO::FETCH_CLASS, __CLASS__) : $find->fetchObject(__CLASS__));
     }
 
-    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
+    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id", bool $msgDb = false): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "
             . self::$entity . " "
             . $this->order($order)
-            . $this->limit(), "limit={$limit}&offset={$offset}");
+            . $this->limit(), "limit={$limit}&offset={$offset}", $msgDb);
 
         if($this->fail || !$all->rowCount()) {
             $this->message = "<span class='warning'>Sua consulta não retornou usuários</span>";
@@ -83,7 +85,7 @@ class User extends Model implements Models
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function save(): ?User
+    public function save(bool $msgDb = false): ?User
     {
         if(!$this->required()) {
             return null;
@@ -101,7 +103,9 @@ class User extends Model implements Models
 
             $this->update(self::$entity, $this->safe(), "id = :id", "id={$userId}");
             if($this->fail()) {
-                $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>";
+                if(!$msgDb) {
+                    $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>";
+                }
                 return null;
             }
 
@@ -110,17 +114,22 @@ class User extends Model implements Models
 
         /** Create */
         if(empty($this->id)) {
-            if($this->find($this->Email)) {
+            if($this->find($this->Email, "*", $msgDb)) {
                 $this->message = "<span class='warning'>O e-mail informado já está cadastrado</span>";
                 return null;
             }
-            elseif($this->find($this->Logon)) {
+            elseif($this->find($this->Logon, "*", $msgDb)) {
                 $this->message = "<span class='warning'>O login informado já está cadastrado</span>";
                 return null;
             }
             $userId = $this->create(self::$entity, $this->safe());
             if($this->fail()) {
-                $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
+                if(!$msgDb) {
+                    $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
+                }
+                else {
+                    $this->message = $this->fail()->errorInfo[2];
+                }
                 return null;
             }
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";

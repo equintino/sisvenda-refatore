@@ -85,16 +85,16 @@ abstract class Model
         return $this->message;
     }
 
-    protected function create(string $entity, array $data)
+    protected function create(string $entity, array $data, bool $msgDb = false)
     {
         try {
             $columns = implode(", ", array_keys($data));
             $values = ":" . implode(", :", array_keys($data));
 
-            $stmt = Connect::getInstance()->prepare("INSERT INTO {$entity} ({$columns}) VALUES ({$values})");
+            $stmt = Connect::getInstance($msgDb)->prepare("INSERT INTO {$entity} ({$columns}) VALUES ({$values})");
 
             $stmt->execute($this->filter($data));
-            return Connect::getInstance()->lastInsertId();
+            return Connect::getInstance($msgDb)->lastInsertId();
         }
         catch(\PDOException $exception) {
             $this->fail = $exception;
@@ -102,10 +102,10 @@ abstract class Model
         }
     }
 
-    protected function read(string $select, string $params = null): ?\PDOStatement
+    protected function read(string $select, string $params = null, bool $msgDb = false): ?\PDOStatement
     {
         try {
-            $stmt = Connect::getInstance()->prepare($select);
+            $stmt = Connect::getInstance($msgDb)->prepare($select);
             if($params) {
                 parse_str($params, $params);
                 foreach($params as $key => $value) {
@@ -126,7 +126,7 @@ abstract class Model
         }
     }
 
-    protected function update(string $entity, array $data, string $terms, string $params): ?int
+    protected function update(string $entity, array $data, string $terms, string $params, bool $msgDb = false): ?int
     {
         try {
             $dataSet = [];
@@ -136,7 +136,7 @@ abstract class Model
             $dataSet = implode(", ", $dataSet);
             parse_str($params, $params);
 
-            $stmt = Connect::getInstance()->prepare("UPDATE {$entity} SET {$dataSet} WHERE {$terms}");
+            $stmt = Connect::getInstance($msgDb)->prepare("UPDATE {$entity} SET {$dataSet} WHERE {$terms}");
             $stmt->execute($this->filter(array_merge($data, $params)));
 
             return ($stmt->rowCount ?? 1);
@@ -147,10 +147,10 @@ abstract class Model
         }
     }
 
-    protected function delete(string $entity, string $terms, string $params): ?int
+    protected function delete(string $entity, string $terms, string $params, bool $msgDb): ?int
     {
         try {
-            $stmt = Connect::getInstance()->prepare("DELETE FROM {$entity} WHERE {$terms}");
+            $stmt = Connect::getInstance($msgDb)->prepare("DELETE FROM {$entity} WHERE {$terms}");
             parse_str($params, $params);
             $stmt->execute($params);
             return ($stmt->rowCount() ?? 1);

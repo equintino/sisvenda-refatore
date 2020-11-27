@@ -24,8 +24,6 @@ $cookie = filter_input(INPUT_COOKIE, "svlogin", FILTER_SANITIZE_STRIPPED);
 parse_str($cookie, $cookie);
 
 $login = base64_decode(filter_input(INPUT_COOKIE, "login", FILTER_SANITIZE_STRIPPED));
-//$password = base64_decode(filter_input(INPUT_COOKIE, "password", FILTER_SANITIZE_STRIPPED));
-//$remember = filter_input(INPUT_COOKIE, "remember", FILTER_SANITIZE_STRIPPED);
 
 /** set constants */
 (new Source\Support\FileTransation(".env"))->getConst();

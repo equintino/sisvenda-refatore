@@ -23,7 +23,7 @@ class Connect
     /**
      * return PDO
      */
-    public static function getInstance(): PDO
+    public static function getInstance(bool $msgDb = false): PDO
     {
         $config = self::getData();
         if(empty(self::$instance)) {
@@ -36,8 +36,10 @@ class Connect
                 );
             }
             catch (\PDOException $exception) {
+                if($msgDb) {
+                    die("<i style='font-size: .7em'>" . $exception->getMessage() . "</i>)");
+                }
                 die("<div>Whoops, houve algum erro ao conectar com o banco!</div>");
-                //die("<i style='font-size: .7em'>" . $exception->getMessage() . "</i>)");
             }
         }
 

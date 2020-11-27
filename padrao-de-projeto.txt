@@ -96,9 +96,10 @@ stap by stap
 - Liberar acesso a todos usuários às telas home e error - ok
 - Criar grupo administrador padrão - ok
 - Reestruturando as pastas - ok
+- passando parâmetros pela rota - ok
 - ajustar a altura do menu na tela de usuário(login) - ?
 - implementar grupo de rotas
 - remover seleção de dados para copia
 - ajustar telas responsivas
 - conferir se os dados da conexao apagam(ses)
-- passando parâmetros pela rota - ok
+- ajustar a classe Config para receber os tipos(dsn) para configuração do banco
