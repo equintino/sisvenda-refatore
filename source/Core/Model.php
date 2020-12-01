@@ -147,7 +147,7 @@ abstract class Model
         }
     }
 
-    protected function delete(string $entity, string $terms, string $params, bool $msgDb): ?int
+    protected function delete(string $entity, string $terms, string $params, bool $msgDb = false): ?int
     {
         try {
             $stmt = Connect::getInstance($msgDb)->prepare("DELETE FROM {$entity} WHERE {$terms}");

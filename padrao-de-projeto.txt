@@ -97,6 +97,7 @@ stap by stap
 - Criar grupo administrador padrão - ok
 - Reestruturando as pastas - ok
 - passando parâmetros pela rota - ok
+- forçar a primeira entrada no sistema ser a pagina home - ok
 - ajustar a altura do menu na tela de usuário(login) - ?
 - implementar grupo de rotas
 - remover seleção de dados para copia

@@ -64,6 +64,9 @@ class User extends Model implements Models
             if(!$msgDb) {
                 $this->message = "<span class='warning'>Usuario não encontrado do email informado</span>";
             }
+            else {
+                $this->message = $this->fail()->errorInfo[2];
+            }
             return null;
         }
 
@@ -105,6 +108,9 @@ class User extends Model implements Models
             if($this->fail()) {
                 if(!$msgDb) {
                     $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>";
+                }
+                else {
+                    $this->message = $this->fail()->errorInfo[2];
                 }
                 return null;
             }
@@ -191,20 +197,6 @@ class User extends Model implements Models
         }
         return $this->group = null;
     }
-
-    // public function crypt($passwd)
-    // {
-    //     return base64_encode($passwd);
-    //     /** new project */
-    //     //return crypt($passwd, "rl");
-    // }
-
-    // public function validate($passwd, $hash)
-    // {
-    //     return $passwd === base64_decode($hash->Senha);
-    //     /** new project */
-    //     //return crypt($passwd, $hash) == $hash;
-    // }
 
     public function token(string $login = null)
     {

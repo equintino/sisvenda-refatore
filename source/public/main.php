@@ -17,9 +17,11 @@ $confEnv = (new FileTransation(".env"))->setLocal($connectionName);
 if($confEnv->getLocal()) {
     $user = (new User())->find($login, "*", false);
     if($user) {
+        /** password reseted */
         if(!empty($user->token)) {
             return print(json_encode(2));
         }
+        /** password validated */
         if($user->validate($password, $user)) {
             $names = [ "user", "login", "connectionName", "remember" ];
             $data = [ "id", "Nome", "Logon", "Email" ];
