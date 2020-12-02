@@ -2,6 +2,29 @@
     max-width: 60%;
     margin: auto;
 }
+
+@media screen and (max-width: 900px) {
+    .header, #exhibition {
+        max-width: 90%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .header, #exhibition {
+        margin: auto;
+    }
+
+    #login-register .fieldset {
+        width: 100%;
+        margin: auto;
+    }
+
+    #exhibition fieldset {
+        overflow-x: scroll;
+        padding-right: 50px;
+    }
+}
+
 .header div {
     text-align: center;
 }

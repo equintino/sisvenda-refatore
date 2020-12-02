@@ -86,7 +86,6 @@ $(function($) {
                 }
             },
             error: function(error) {
-                //alertLatch("Ops! Algo deu errado ", "var(--cor-danger)");
                 alertLatch(error["responseText"], "var(--cor-danger)");
             },
             complete: function(response) {

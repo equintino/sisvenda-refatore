@@ -13,7 +13,7 @@ function checkGroup() {
 }
 
 $(function($) {
-    (page === "shield" ? checkGroup() : null);
+    (typeof(page) !== "undefined" && page === "shield" ? checkGroup() : null);
     $(".btnAction").click(function() {
         var groupName = $(this).text();
         $(".screen legend span").text("Grupo: " + groupName)

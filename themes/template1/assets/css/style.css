@@ -179,11 +179,41 @@ section.loading, .text-loading {
 }
 
 main .form-signin {
-    width: 350px;
+    max-width: 350px;
     margin: -20px auto;
     padding: 30px 35px 5px;
     border-radius: 5px;
     box-shadow: 4px 4px 4px gray;
+}
+
+@media screen and (max-width: 900px) {
+    main .form-input {
+        height: 40px;
+    }
+    
+    nav li {
+        padding: 10px;
+    }
+
+    .navbar {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .logo {
+        margin-top: 0px;
+    }
+
+    main .form-signin {
+        max-width: 300px;
+    }
 }
 
 #form-token, #form-token input {
