@@ -62,8 +62,7 @@ $(function($) {
                     }, 1000);
                 }
             });
-        }
-        else if(btnName === "Excluir Grupo") {
+        } else if(btnName === "Excluir Grupo") {
             if(!$(".btnAction").hasClass("active")) return;
             var groupName = $(".group .active").text();
             var url = "grupo/exclui/" + groupName;
@@ -88,8 +87,7 @@ $(function($) {
                     }
                 }
             });
-        }
-        else if(btnName === "Gravar") { /** parte ok */
+        } else if(btnName === "Gravar") { /** parte ok */
             if(!$(".btnAction").hasClass("active") || typeof(change) === "undefined") return;
             var groupName = $(".group .active").text();
             var security = getScreenAccess($(".screen span"), "fa fa-check", groupName);

@@ -2,5 +2,5 @@
 /nbproject/
 /.env
 /vendor/
-/source/Config/.config.ini
-/source/ses/
+/src/Config/.config.ini
+/src/ses/

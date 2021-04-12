@@ -28,7 +28,7 @@ $(function($) {
         e.preventDefault();
         $("main button").html("<i class='fa fa-sync-alt schedule'></i>");
         var data = $("form.form-signin").serialize();
-        var url = "source/public/main.php";
+        var url = "src/public/main.php";
 
         $.ajax({
             url: url,
@@ -38,15 +38,14 @@ $(function($) {
             success: function(response) {
                 if(response === 1) {
                     $(location).attr("href","home");
-                }
-                else if(response === 2) {
-                    var link = "source/Support/Ajax/save.php";
+                } else if(response === 2) {
+                    var link = "src/Support/Ajax/save.php";
                     var login = $("main form [name=login]").val();
-                    var url = "source/Modals/token.php?act=token&login=" + login;
+                    var lkToken = "src/Modals/token.php?act=token&login=" + login;
 
                     $("#boxe_main, #mask_main").show();
                     $("#boxe_main")
-                        .load(url, function() {
+                        .load(lkToken, function() {
                             $("#form-token").find("[name=Senha]").focus();
                         })
                         .on("submit", function(e) {
@@ -68,8 +67,7 @@ $(function($) {
                             );
                             if(dataSet[0]["value"] !== dataSet[1]["value"]) {
                                 alertLatch("As senhas não conferem", "var(--cor-warning)");
-                            }
-                            else {
+                            } else {
                                 if(saveData(link, dataSet, "Salvando")) {
                                     setTimeout(function() {
                                         $("#boxe_main, #mask_main").fadeOut();
@@ -80,8 +78,7 @@ $(function($) {
                             top: "20%",
                             "padding": "30px"
                         });
-                }
-                else {
+                } else {
                     alertLatch(response, "var(--cor-warning)");
                 }
             },

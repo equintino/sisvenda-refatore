@@ -13,9 +13,23 @@
                 </a>
             </li>
             <li class="dropdown" >
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" >Cadastro</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false" >
+                    Cadastro
+                </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a href="cadastro" class="dropdown-item" >Cliente</a>
+                    <a href="<?= url("cadastro") ?>" class="dropdown-item" >
+                        Cliente
+                    </a>
+                    <?php if (in_array('fornecedor', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("cadastro/fornecedor") ?>" class="dropdown-item" >
+                            Fornecedor
+                        </a>
+                    <?php endif; ?>
+                    <?php if (in_array('transportadora', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("cadastro/transportadora") ?>" class="dropdown-item" >
+                            Transportadora
+                        </a>
+                    <?php endif; ?>
                 </div>
             </li>
             <li class="dropdown" >
@@ -23,25 +37,30 @@
                     Gerenciamento
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <?php if (!empty($access) && in_array(' gerenciamento-orcamento', $access)): ?>
-                    <a href="<?= url("/orcamento") ?>" class="dropdown-item" >
-                         Orçamento
-                    </a>
+                    <?php if (!empty($access) && in_array('gerenciamento-orcamento', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("/orcamento") ?>" class="dropdown-item" >
+                            Orçamentos
+                        </a>
                     <?php endif ?>
-                    <?php if (!empty($access) && in_array(' venda', $access)): ?>
-                    <a href="<?= url("/gerenciamento") ?>" class="dropdown-item" >
-                        Venda
-                    </a>
+                    <?php if (!empty($access) && in_array('venda', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("/gerenciamento") ?>" class="dropdown-item" >
+                            Vendas
+                        </a>
                     <?php endif; ?>
-                    <?php if (!empty($access) && in_array(' gerEntrega', $access)): ?>
-                    <a href="<?= url("/entrega") ?>" class="dropdown-item" >
-                        Entrega de Produtos
-                    </a>
+                    <?php if (!empty($access) && in_array('gerEntrega', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("/entrega") ?>" class="dropdown-item" >
+                            Entrega de Produtos
+                        </a>
                     <?php endif; ?>
-                    <?php if (!empty($access) && in_array(' preco', $access)): ?>
-                    <a href="<?= url("/preco") ?>" class="dropdown-item" >
-                        Preço
-                    </a>
+                    <?php if (!empty($access) && in_array('preco', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("/preco") ?>" class="dropdown-item" >
+                            Altera Preços
+                        </a>
+                    <?php endif; ?>
+                    <?php if (in_array('estoque', $access) || in_array("*", $access)): ?>
+                        <a href="../web/index.php?pagina=estoque" class="dropdown-item" >
+                            Tempo no Estoque
+                        </a>
                     <?php endif; ?>
                 </div>
             </li>
@@ -53,21 +72,21 @@
         </ul>
         <div class="navbar navbar-right config">
             <ul class="nav navbar">
-                <?php if(!empty($access) && (in_array(" login", $access) || in_array(" *", $access))): ?>
+                <?php if(!empty($access) && (in_array("login", $access) || in_array("*", $access))): ?>
                     <li>
                         <a id="login" class="nav-link icon-login" href="<?= url("login") ?>" >
                             <i class="fa fa-id-card" title="Cadastro de Login"></i>
                         </a>
                     </li>
                 <?php endif; ?>
-                <?php if(!empty($access) && (in_array(" shield", $access) || in_array(" *", $access))): ?>
+                <?php if(!empty($access) && (in_array("shield", $access) || in_array("*", $access))): ?>
                     <li>
                         <a id="shield" class="nav-link icon-shield" href="<?= url("seguranca") ?>" >
                             <i class="fa fa-shield" title="Segurança" ></i>
                         </a>
                     </li>
                 <?php endif ?>
-                <?php if(!empty($access) && (in_array(" config", $access) || in_array(" *", $access))): ?>
+                <?php if(!empty($access) && (in_array("config", $access) || in_array("*", $access))): ?>
                     <li>
                         <a id="config" class="nav-link icon-config" href="<?= url("configuracao") ?>">
                             <i class="fa fa-cog" title="Configuração" ></i>

@@ -140,8 +140,7 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
                 if(response.indexOf("success") !== -1) {
                     background = "var(--cor-success)";
                     success = true;
-                }
-                else {
+                } else {
                     background = "var(--cor-warning)";
                     success = false;
                 }

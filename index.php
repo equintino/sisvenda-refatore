@@ -4,8 +4,8 @@
     require __DIR__ . "/vendor/autoload.php";
 
     use CoffeeCode\Router\Router;
-    use Source\Core\Session;
-    use Source\_App\Web;
+    use Core\Session;
+    use _App\Web;
 
     $session = new Session();
     $router = new Router(url(), ":");
@@ -14,14 +14,15 @@
         /**
          * Web Routes
          */
-        $router->namespace("Source\_App");
+        $router->namespace("_App");
         $router->get("/home", "Web:home");
         $router->get("/", "Web:home");
+
 
         /**
          * The Users' Screens
          */
-        $router->namespace("Source\_App");
+        $router->namespace("_App");
         $router->get("/login", "User:init");
         $router->get("/login/empresa/{companyId}", "User:init");
         $router->get("/lista/usuarios/empresa/{companyId}", "User:list");
@@ -36,7 +37,7 @@
         /**
          * The Groups' Screens
          */
-        $router->namespace("Source\_App");
+        $router->namespace("_App");
         $router->get("/seguranca", "Group:list");
         $router->get("/grupo/cadastro", "Group:add");
         $router->post("/grupo/{name}", "Group:load");
@@ -48,7 +49,7 @@
         /**
          * The Config's Screens
          */
-        $router->namespace("Source\_App");
+        $router->namespace("_App");
         $router->get("/configuracao", "Config:list");
         $router->get("/configuracao/cadastro", "Config:add");
         $router->get("/configuracao/editar/{connectionName}", "Config:edit");
@@ -58,9 +59,27 @@
 
 
         /**
+         * The Register's Screens
+         */
+        $router->namespace("_App");
+        $router->get("/cadastro", "Register:init");
+        $router->post("/cadastro/{}", "Register:load");
+        $router->post("/cadastro/atualizar", "Register:update");
+        $router->post("/cadastro/salvar", "Register:save");
+        $router->get("/cadastro/transportadora", "Register:transport");
+        $router->post("/cadastro/transportadora/{}", "Register:loadTransport");
+        $router->post("/cadastro/transportadora/atualizar", "Register:updateTransport");
+        $router->post("/cadastro/transportadora/salvar", "Register:saveTransport");
+        $router->get("/cadastro/fornecedor", "Register:supplier");
+        $router->post("/cadastro/fornecedor/{}", "Register:loadSupplier");
+        $router->post("/cadastro/fornecedor/atualizar", "Register:updateSupplier");
+        $router->post("/cadastro/fornecedor/salvar", "Register:saveSupplier");
+
+
+        /**
          * Enter
          */
-        $router->namespace("Source\_App");
+        $router->namespace("_App");
         $router->get("/entrar", "Auth:login");
         $router->get("/recuperar", "Auth:forget");
         $router->get("/cadastrar", "Auth:register");
@@ -78,13 +97,15 @@
         /**
          * Error Routes
          */
-        $router->namespace("Source\_App")->group("/ops");
+        $router->namespace("_App")->group("/ops");
         $router->get("/{errcode}", "Web:error");
+
 
         /**
          * Routes
          */
         $router->dispatch();
+
 
         /**
          * Error Redirect
@@ -92,9 +113,7 @@
         if($router->error()) {
             $router->redirect("/ops/{$router->error()}");
         }
-    }
-    else{
+    } else {
         (new Web())->start();
     }
-
     ob_end_flush();

@@ -17,12 +17,20 @@
     },
     "autoload": {
         "files": [
-            "source/Boot/Helpers.php",
-            "source/Boot/Minify.php"
+            "src/Boot/Helpers.php",
+            "src/Boot/Minify.php"
         ],
         "psr-4": {
-            "Source\\": "source",
-            "Test\\": "test"
+            "_App\\": "src/_App",
+            "Boot\\": "src/Boot",
+            "Config\\": "src/Config",
+            "Core\\": "src/Core",
+            "Database\\": "src/Database",
+            "Modals\\": "src/Modals",
+            "Models\\": "src/Models",
+            "Support\\": "src/Support",
+            "Traits\\": "src/Traits",
+            "Test\\": "Test"
         }
     }
 }

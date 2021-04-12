@@ -1,0 +1,91 @@
+.marginForm {
+    margin-top: 44px;
+}
+
+.preForm {
+    margin-top: 30px;
+    margin-bottom: 25px;
+}
+
+.preForm select {
+    border-radius: 5px;
+    font-size: .7em;
+}
+
+.form {
+    display: none;
+}
+
+form label, label {
+    font-size: 13px;
+    color: var(--cor-primary);
+}
+
+.formCad {
+    margin: -10px 25px 0 25px;
+}
+
+.form-control, #cepBusca, #cepBuscaPJ {
+    height: 25px;
+    font-size: 13px;
+}
+
+.form-control {
+    margin-top: -10px;
+}
+
+.searchCnpj, .searchCep, .searchCpf {
+    cursor: pointer;
+}
+
+#cepBusca {
+    margin-top: 5px;
+}
+
+.botao span:hover {
+    cursor: pointer;
+}
+
+.botao span {
+    box-shadow: 2px 2px 2px gray;
+}
+
+.botao {
+    float: right;
+}
+
+.botao button {
+    margin-top: 1px;
+    border-radius: 0 0 5px 5px;
+    cursor: pointer;
+    height: 28px;
+}
+
+.formCad fieldset label {
+    position: relative;
+    top: -10px;
+}
+
+/* login */
+#cadLogin {
+    width: 600px;
+    margin: auto;
+}
+
+#editar {
+    width: 60%;
+    margin: auto;
+}
+
+fieldset {
+    padding-top: 15px;
+    border-radius: 10px;
+    background: #ecf2e6;
+    box-shadow: 2px 2px 2px gray;
+    /*max-height: 380px;
+    overflow-y: scroll;*/
+}
+
+form {
+    padding-bottom: 50px;
+}

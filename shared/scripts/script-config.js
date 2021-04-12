@@ -42,8 +42,7 @@ $(document).ready(function() {
                 content: content
             });
             saveForm("connection", "edit", connectionName, url);
-        }
-        else if($(this).hasClass("delete")) {
+        } else if($(this).hasClass("delete")) {
             title = "Modo de Exclusão de (" + connectionName + ")";
             message = "VOCÊ ESTÁ PRESTE A EXCLUIR A CONFIGURAÇÃO: <b style='color: red; margin-left: 5px'>(" + connectionName + ")</b>";
             bootbox.confirm({
@@ -74,8 +73,7 @@ $(document).ready(function() {
                     }
                 }
             });
-        }
-        else {
+        } else {
             return false;
         }
     });

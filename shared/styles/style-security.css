@@ -27,8 +27,7 @@ body {
     flex: 1;
 }
 
-.shield > div
-{
+.shield > div {
     display: flex;
     padding: 30px 200px;
     margin: auto;

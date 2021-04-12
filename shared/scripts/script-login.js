@@ -17,8 +17,7 @@ function exhibition(element) {
                         saveData(url, dataSet);
                     }
                 });
-        }
-        else if(action === "Exclui") {
+        } else if(action === "Exclui") {
             var logged = $(".identification").text().split(":")[1].trim().toLowerCase();
             if(logged === login) {
                 bootbox.alert({
@@ -50,8 +49,7 @@ function exhibition(element) {
                     }, setTime);
                 }
             });
-        }
-        else if(action === "Reseta") {
+        } else if(action === "Reseta") {
             modal.confirm({
                 title: "A senha será excluída",
                 message: "A nova senha será cadastrada no próximo login"
@@ -101,8 +99,7 @@ $(document).ready(function() {
                 exhibition("#exhibition table#tabList tbody td");
                 disabledTableLine("#exhibition table tbody tr");
             });
-        }
-        else {
+        } else {
             window.location.reload();
         }
     });
@@ -138,8 +135,7 @@ $(document).ready(function() {
                             .trigger("click");
                     }
             });
-        }
-        else {
+        } else {
             var url = "lista/usuarios/empresa/" + companyId;
             $("#exhibition").load(url, function() {
                 exhibition("#exhibition table#tabList tbody td");
