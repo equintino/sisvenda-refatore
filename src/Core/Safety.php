@@ -4,6 +4,9 @@ namespace Core;
 
 abstract class Safety
 {
+    static $exceptions = [ "home.php", "error.php" ];
+    static $includes = [ "Transportadora", "Fornecedor"];
+
     public static function dataConnection(): ?string
     {
         return Connect::getConfConnection();
@@ -14,15 +17,15 @@ abstract class Safety
      * @var $path string
      * @var $exceptions array
      */
-    public static function screens($path, $exceptions = []): ?array
+    public static function screens($path): ?array
     {
         $directory = dir(__DIR__ . "/../{$path}");
         while($file = $directory->read()) {
-            if(!preg_match("/^[.|index]/", $file) && !in_array($file, $exceptions)) {
-                $screens[] = substr($file, 0, -4);
+            if(!preg_match("/^[.|index]/", $file) && !in_array($file, self::$exceptions)) {
+                $screens[] = self::renameScreen(substr($file, 0, -4));
             }
         }
-        return $screens;
+        return array_merge($screens, self::$includes);
     }
 
     public static function crypt(string $passwd): ?string
@@ -70,5 +73,17 @@ abstract class Safety
 
         //now do the actual hashing
         return crypt($password,$param);
+    }
+
+    public static function renameScreen(string $key)
+    {
+        $screens = [
+            "config" => "Configuração",
+            "login" => "Login de Acesso",
+            "register" => "Cadastro",
+            "shield" => "Segurança"
+        ];
+        $key = trim($key);
+        return (array_key_exists($key, $screens) ? $screens[$key] : $key);
     }
 }

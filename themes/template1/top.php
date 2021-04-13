@@ -20,12 +20,12 @@
                     <a href="<?= url("cadastro") ?>" class="dropdown-item" >
                         Cliente
                     </a>
-                    <?php if (in_array('fornecedor', $access) || in_array("*", $access)): ?>
+                    <?php if (in_array('Fornecedor', $access) || in_array("*", $access)): ?>
                         <a href="<?= url("cadastro/fornecedor") ?>" class="dropdown-item" >
                             Fornecedor
                         </a>
                     <?php endif; ?>
-                    <?php if (in_array('transportadora', $access) || in_array("*", $access)): ?>
+                    <?php if (in_array('Transportadora', $access) || in_array("*", $access)): ?>
                         <a href="<?= url("cadastro/transportadora") ?>" class="dropdown-item" >
                             Transportadora
                         </a>
@@ -72,21 +72,21 @@
         </ul>
         <div class="navbar navbar-right config">
             <ul class="nav navbar">
-                <?php if(!empty($access) && (in_array("login", $access) || in_array("*", $access))): ?>
+                <?php if(!empty($access) && (in_array("Login de Acesso", $access) || in_array("*", $access))): ?>
                     <li>
                         <a id="login" class="nav-link icon-login" href="<?= url("login") ?>" >
                             <i class="fa fa-id-card" title="Cadastro de Login"></i>
                         </a>
                     </li>
                 <?php endif; ?>
-                <?php if(!empty($access) && (in_array("shield", $access) || in_array("*", $access))): ?>
+                <?php if(!empty($access) && (in_array("Segurança", $access) || in_array("*", $access))): ?>
                     <li>
                         <a id="shield" class="nav-link icon-shield" href="<?= url("seguranca") ?>" >
                             <i class="fa fa-shield" title="Segurança" ></i>
                         </a>
                     </li>
                 <?php endif ?>
-                <?php if(!empty($access) && (in_array("config", $access) || in_array("*", $access))): ?>
+                <?php if(!empty($access) && (in_array("Configuração", $access) || in_array("*", $access))): ?>
                     <li>
                         <a id="config" class="nav-link icon-config" href="<?= url("configuracao") ?>">
                             <i class="fa fa-cog" title="Configuração" ></i>

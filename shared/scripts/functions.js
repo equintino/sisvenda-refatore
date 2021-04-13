@@ -49,8 +49,7 @@
             return this.content.find("button").on("button click", function() {
                 if($(this).val() == 0) {
                     $("#boxe_main .close").trigger("click");
-                }
-                else {
+                } else {
                     return $(this).val();
                 }
             });
@@ -70,9 +69,9 @@ var loading = {
         $("#mask_main").css("z-index","3");
         $("section.loading")
             .css({
-                display: "flex"
+                display: "block"
             });
-        $(".text-loading").text(text + "...").css("display","flex");
+        $(".text-loading").text(text + "...").css("display","block");
         return this;
     },
     hide: function() {
@@ -196,11 +195,11 @@ var security = function(groupName, url = null ) {
 var insertCheck = function(screens, element, optionGreen, optionRed) {
     element.find("i").removeClass();
     element.each(function() {
-        if(screens == " *" || screens.indexOf($(this).text()) !== -1) {
+        console.log($(this).text().trim());
+        if(screens == " *" || screens.indexOf($(this).text().trim()) !== -1) {
             $(this).find("i").addClass(optionGreen)
                 .css("color","green");
-        }
-        else {
+        } else {
             $(this).find("i").addClass(optionRed)
                 .css("color","red");
         }
@@ -232,8 +231,7 @@ var changeCheck = function(element, optionGreen, optionRed) {
     if(currentOption === optionRed) {
         element.addClass(optionGreen)
             .css("color","green");
-    }
-    else {
+    } else {
         element.addClass(optionRed)
             .css("color","red");
     }
@@ -262,11 +260,9 @@ var saveData = function(link, data, msg = "Salvando") {
             if(response.indexOf("success") !== -1) {
                 background = "var(--cor-success)";
                 success = true;
-            }
-            else if(response.indexOf("danger") !== -1) {
+            } else if(response.indexOf("danger") !== -1) {
                 background = "var(--cor-danger)";
-            }
-            else {
+            } else {
                 background = "var(--cor-warning";
             }
             alertLatch(response, background);

@@ -18,7 +18,7 @@ function exhibition(element) {
                     }
                 });
         } else if(action === "Exclui") {
-            var logged = $(".identification").text().split(":")[1].trim().toLowerCase();
+            //var logged = $(".identification").text().split(":")[1].trim().toLowerCase();
             if(logged === login) {
                 bootbox.alert({
                     message: "Usuário logado, não é permitido excluí-lo",

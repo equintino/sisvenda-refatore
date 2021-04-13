@@ -18,11 +18,11 @@ class Group extends Controller
     public function list(): void
     {
         $groups = $this->group()->all() ?? [];
-        $exceptions = [ "home.php", "error.php" ];
-        $screens = Safety::screens("/pages", $exceptions);
+        $screens = Safety::screens("/pages");
         $groupId = (new User())->find($_SESSION["login"]->Logon)->Group_id;
 
         $page = "shield";
+        echo "<script>var identification = 'GRUPO DE ACESSOS'</script>";
         $this->view->insertTheme([ compact("page") ]);
         $this->view->render("shield", [ compact("groups","screens","groupId") ]);
     }
@@ -31,7 +31,10 @@ class Group extends Controller
     {
         $dGroup = $this->group()->find($data["groupName"]);
         if($dGroup) {
-            $security["access"] = explode(",", $dGroup->access);
+            $security["access"] = [];//explode(",", $dGroup->access);
+            foreach(explode(",", $dGroup->access) as $screen) {
+                array_push($security["access"], Safety::renameScreen($screen));
+            }
             echo json_encode($security);
         }
     }

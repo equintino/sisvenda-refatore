@@ -14,7 +14,7 @@ function checkGroup() {
 
 $(function($) {
     (typeof(page) !== "undefined" && page === "shield" ? checkGroup() : null);
-    $(".btnAction").click(function() {
+    $(".btnAction").on("click", function() {
         var groupName = $(this).text();
         $(".screen legend span").text("Grupo: " + groupName)
             .css("float","right");

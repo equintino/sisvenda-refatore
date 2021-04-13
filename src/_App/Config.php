@@ -25,6 +25,7 @@ class Config extends Controller
         $config = (object) $this->config;
         $activeConnection = Connect::getConfConnection();
         $page = "config";
+        echo "<script>var identification = 'CONFIGURAÇÃO DO BANCO'</script>";
         $this->view->insertTheme( [ compact("page") ] );
         $this->view->render("config", [ compact("config","activeConnection") ]);
     }

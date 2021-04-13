@@ -8,7 +8,7 @@ use Models\Group;
 class View
 {
     private $path;
-    private $access;
+    private $access = [];
     public $theme;
 
     public function __construct(string $theme = null)
@@ -26,8 +26,11 @@ class View
 
     public function render(string $page, array $params = [])
     {
-        if(empty($_SESSION["login"])) {
+        $logged = $_SESSION["login"]->Logon ?? null;
+        if(empty($logged)) {
             alertLatch("Necessário entrar novamente", "var(--cor-danger)");
+        } else {
+            echo "<script>var logged = '{$logged}'</script>";
         }
 
         /** makes variables available to the page */
@@ -72,20 +75,20 @@ class View
         }
         /** allows or prohibits access */
         if(!empty($login) && $login->Group_id) {
-            $screens = str_replace(" ","",(new Group())->load($login->Group_id)->access);
-            $this->access = explode(",", $screens);
+            //$screens = str_replace(" ","",(new Group())->load($login->Group_id)->access);
+            $screens = (new Group())->load($login->Group_id)->access;
+            foreach(explode(",", $screens) as $screen) {
+                array_push($this->access, trim($screen));
+            }
+            //$this->access = explode(",", $screens);
         }
     }
 
     private function restrictAccess(string $page): bool
     {
-        if(in_array("*", $this->access) || $page === "home" || $page === "error") {
+        if(in_array("*", $this->access) || $page === "home" || $page === "error" || in_array(Safety::renameScreen($page), $this->access)) {
             return true;
         }
-        foreach($this->access as $screen) {
-            if(trim($page) !== $screen) {
-                return false;
-            }
-        }
+        return false;
     }
 }
