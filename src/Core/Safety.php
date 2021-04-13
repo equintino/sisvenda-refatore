@@ -80,7 +80,7 @@ abstract class Safety
         $screens = [
             "config" => "Configuração",
             "login" => "Login de Acesso",
-            "register" => "Cadastro",
+            "register" => "Cadastro de Cliente",
             "shield" => "Segurança"
         ];
         $key = trim($key);
