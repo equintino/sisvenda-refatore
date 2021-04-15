@@ -82,6 +82,7 @@ class Client extends Model implements Models
 
     private function update_()
     {
+        static::$safe = ["created_at","DataReg","ID_PFISICA","Salário","Situação","Crédito","Sexo","EstCivil","Bloqueio","Conceito","Vendedor","Revenda","ECF","StatusAtivo"];
         if(!empty($this->ID_PFISICA)) {
             $this->otherCompanies(["CPF" => $this->CPF]);
         } elseif(!empty($this->ID_PJURIDICA)) {
@@ -143,7 +144,7 @@ class Client extends Model implements Models
             $client = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
             $this->data->IDEmpresa = $company->ID;
 
-            ( !$client->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa=:IDEmpresa", "{$params}") );
+            ( !$client->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
         }
         return $id ?? null;
     }

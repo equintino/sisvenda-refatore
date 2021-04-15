@@ -24,20 +24,22 @@ class CreateClientsTable implements CreateTable
             $table->string("Nome,CPF")->nullable();
                 //$table->string("CNPJ",50)->unique();
             $table->string("Rua,Num,Complemento,CEP,Bairro,Cidade")->nullable();
+            $table->string("Sexo,EstCivil,Salário,Bloqueio,Conceito,Revenda,Crédito,ECF")->nullable();
+            $table->string("Situação")->default("BOM");
             $table->string("UF",2)->nullable();
             $table->string("TelResid,Celular,Email")->nullable();
                 //$table->decimal(18,2)->nullable();
-                //$table->bool("ATIVO")->nullable()->default(1);
-                //$table->int("COD_EXTERNO_SCWEB, ID_Empresa_Central")->nullable();
+            $table->bool("StatusAtivo")->nullable()->default(1);
             $table->int("IDEmpresa")->default(1);
+            $table->int("IDTransportadora")->nullable();
+            $table->int("Vendedor")->nullable();
                 //$table->tynyint("IND_INTEGRA_SCWEB")->nullable();
             $table->date("DataNasc")->nullable();
             $table->timestamps();
             return $table->run();
         });
-        //   'IDTransportadora' => string '' (length=0)
-        //   'IDEmpresa' => string '' (length=0)
-        //   'Cnpj' => string '' (length=0)
+
+        //'DataReg' => string '2020-06-27 11:50:00' (length=19)
 
         return $schema;
     }

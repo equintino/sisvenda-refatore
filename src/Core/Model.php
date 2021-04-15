@@ -97,7 +97,6 @@ abstract class Model
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {
             $this->fail = $exception;
-            var_dump($this->fail);
             return null;
         }
     }
@@ -128,23 +127,17 @@ abstract class Model
 
     protected function update(string $entity, array $data, string $terms, string $params, bool $msgDb = false): ?int
     {
-        try {
-            $dataSet = [];
-            foreach($data as $bind => $value) {
-                $dataSet[] = "{$bind} = :" . removeAccent($bind);
-            }
-            $dataSet = implode(", ", $dataSet);
-            parse_str($params, $params);
-
-            $sql = "UPDATE {$entity} SET {$dataSet} WHERE {$terms}";
-            $params = array_merge($data, $params);
-
-            $this->execute($sql, $params);
-            return ($stmt->rowCount ?? 1);
-        } catch(\PDOException $exception) {
-            $this->fail = $exception;
-            return null;
+        foreach($data as $bind => $value) {
+            //$dataSet[] = "{$bind} = :" . removeAccent($bind);
+            $dataSet[] = "{$bind} = '{$value}'";
         }
+        $dataSet = implode(", ", $dataSet);
+        parse_str($params, $params);
+
+        $sql = "UPDATE {$entity} SET {$dataSet} WHERE {$terms}";
+
+        $this->execute($sql, $params);
+        return ($stmt->rowCount ?? 1);
     }
 
     protected function delete(string $entity, string $terms, string $params, bool $msgDb = false): ?int
@@ -194,7 +187,7 @@ abstract class Model
         return (new sqlParams())->limitParams($type);
     }
 
-    protected function createTable(string $sql): ?bool
+    protected function createTable(string $sql): \PDOStatement
     {
         return $this->execute($sql);
     }
@@ -204,16 +197,25 @@ abstract class Model
         return $this->execute($sql);
     }
 
-    private function execute(string $sql, array $params = []): ?bool
+    private function execute(string $sql, array $params = []): \PDOStatement
     {
         $stmt = Connect::getInstance()->prepare($sql);
         try {
-            $stmt->execute($this->filter(removeAccentArray($params)));
-            //$stmt->execute($this->filter($params));
-            return true;
+            if($params) {
+                $params = $this->filter(removeAccentArray($params));
+                foreach($params as $key => $value) {
+                    $type = \PDO::PARAM_STR;
+                    if(is_numeric($value)) {
+                        $type = \PDO::PARAM_INT;
+                        $value = (int) $value;
+                    }
+                    $stmt->bindValue(":{$key}", $value, $type);
+                }
+            }
+            $stmt->execute();
         } catch(PDOException $exception) {
             $this->fail = $exception;
-            return null;
         }
+        return $stmt;
     }
 }
