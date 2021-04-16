@@ -41,7 +41,8 @@ class Company extends Model implements Models
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "
-            . self::$entity . " WHERE ATIVO=1 "
+            //. self::$entity . " WHERE ATIVO=1 "
+            . self::$entity . " WHERE 1=1 "
             . $this->order($order)
             . $this->limit(), "limit={$limit}&offset={$offset}");
 

@@ -104,7 +104,7 @@ var_dump(
     $transport->message()
 );
 
-/** init table Transportadora */
+/** init table Fornecedor */
 $supplier = new Models\Supplier();
 var_dump(
     $supplier->createThisTable()

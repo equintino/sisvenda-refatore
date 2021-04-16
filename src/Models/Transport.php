@@ -92,7 +92,7 @@ class Transport extends Model implements Models
         } elseif($this->fail()) {
             $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
         } else {
-            $id = $this->otherCompanies(["Cnpj" => $this->CNPJ]);
+            $id = $this->otherCompanies(["Cnpj" => $this->Cnpj]);
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
             $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTransportadora={$id}")->fetch();
@@ -102,7 +102,7 @@ class Transport extends Model implements Models
 
     protected function otherCompanies(array $where=[])
     {
-        $this->data->Cnpj = $this->data->CNPJ;
+        $this->data->Cnpj = (empty($this->data->CNPJ) ?: $this->data->CNPJ);
         $this->data->ATIVO = (empty($this->data->StatusAtivo) ?: $this->data->StatusAtivo);
         unset($this->data->CNPJ, $this->data->NomeFantasia, $this->data->StatusAtivo, $this->data->Atividade);
         //InscEsdatual, Fax, Tel02, HomePage
@@ -123,7 +123,7 @@ class Transport extends Model implements Models
 
             $this->data->IDEmpresa = $company->ID;
 
-            ( !$transport->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa=:IDEmpresa", "{$params}") );
+            ( !$transport->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
         }
         return $id ?? null;
     }

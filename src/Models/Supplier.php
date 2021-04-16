@@ -122,7 +122,7 @@ class Supplier extends Model implements Models
 
             $this->data->IDEmpresa = $company->ID;
 
-            ( !$supplier->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa=:IDEmpresa", "{$params}") );
+            ( !$supplier->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
         }
         return $id ?? null;
     }

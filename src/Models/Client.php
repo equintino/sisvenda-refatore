@@ -82,7 +82,7 @@ class Client extends Model implements Models
 
     private function update_()
     {
-        static::$safe = ["created_at","DataReg","ID_PFISICA","Salário","Situação","Crédito","Sexo","EstCivil","Bloqueio","Conceito","Vendedor","Revenda","ECF","StatusAtivo"];
+        static::$safe = ["created_at","DataReg","ID_PFISICA","ID_PJURIDICA","Salário","Situação","Crédito","Sexo","EstCivil","Bloqueio","Conceito","Vendedor","Revenda","ECF","StatusAtivo"];
         if(!empty($this->ID_PFISICA)) {
             $this->otherCompanies(["CPF" => $this->CPF]);
         } elseif(!empty($this->ID_PJURIDICA)) {
