@@ -62,6 +62,9 @@ class Supplier extends Model implements Models
             return null;
         }
 
+        /** Validate Fiels */
+        $this->validateFields();
+
         /** Update */
         if($this->ID) {
             return $this->update_();
@@ -77,7 +80,10 @@ class Supplier extends Model implements Models
     private function update_()
     {
         if(!empty($this->ID)) {
-            $this->otherCompanies(["CNPJ" => $this->CNPJ]);
+            /** increment false in LOJASCOM_N */
+            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
+
+            $this->otherCompanies(["CNPJ" => $this->CNPJ], $false);
         }
 
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
@@ -92,7 +98,10 @@ class Supplier extends Model implements Models
         } elseif($this->fail()) {
             $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
         } else {
-            $id = $this->otherCompanies(["CNPJ" => $this->CNPJ]);
+            /** increment false in LOJASCOM_N */
+            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
+
+            $id = $this->otherCompanies(["CNPJ" => $this->CNPJ], $false);
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
             $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID=:ID", "ID={$id}")->fetch();
@@ -100,7 +109,7 @@ class Supplier extends Model implements Models
         return null;
     }
 
-    protected function otherCompanies(array $where=[])
+    protected function otherCompanies(array $where=[], bool $autoincrement = true)
     {
         $this->data->Cep = $this->data->CEP;
         unset($this->data->StatusAtivo, $this->data->CEP, $this->data->cep);
@@ -118,15 +127,29 @@ class Supplier extends Model implements Models
         $terms = substr($terms, 0, -1);
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
+            static::$safe = ["ID","created_at","updated_at"];
             $supplier = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
 
             $this->data->IDEmpresa = $company->ID;
 
-            ( !$supplier->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
+            if(!$supplier->fetch()) {
+                if(!$autoincrement) {
+                    static::$safe = ["created_at","updated_at"];
+                    $this->data->ID = $this->lastId();
+                }
+                $id = $this->create(self::$entity, $this->safe());
+            } else {
+                $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
+            }
         }
         return $id ?? null;
     }
 
+    private function lastId(): int
+    {
+        $lastData = $this->all(1,0,"*","ID DESC");
+        return ($lastData ? $lastData[0]->ID + 1 : 1);
+    }
 
     public function destroy()
     {
@@ -142,6 +165,13 @@ class Supplier extends Model implements Models
         $this->data = null;
 
         return $this;
+    }
+
+    private function validateFields(): void
+    {
+        if(!empty($this->data->Atividade)) {
+            $this->data->Atividade = substr($this->data->Atividade, 0, 19);
+        }
     }
 
     public function required(): bool

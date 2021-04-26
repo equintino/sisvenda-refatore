@@ -90,12 +90,11 @@ abstract class Model
         try {
             $columns = implode(", ", array_keys($data));
             $values = ":" . implode(", :", array_keys($data));
-
             $stmt = Connect::getInstance($msgDb)->prepare("INSERT INTO {$entity} ({$columns}) VALUES ({$values})");
-
             $stmt->execute($this->filter($data));
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {
+            //var_dump($exception);
             $this->fail = $exception;
             return null;
         }

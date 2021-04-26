@@ -19,7 +19,9 @@ class CreateClientsTable implements CreateTable
     public function up(string $entity): string
     {
         $schema = Schema::create($entity, $this->type, function(Blueprint $table) {
-            $table->increment("ID_PFISICA");
+            //$table->increment("ID_PFISICA");
+            $table->increment("id");
+            $table->int("ID_PFISICA");
                 //$table->string("RasãoSocial",100)->unique();
             $table->string("Nome,CPF")->nullable();
                 //$table->string("CNPJ",50)->unique();

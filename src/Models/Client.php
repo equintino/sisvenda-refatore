@@ -62,10 +62,13 @@ class Client extends Model implements Models
 
     public function save()
     {
-        static::$safe = ["ID_PFISICA","ID_PJURIDICA","id","created_at","updated_at"];
+        static::$safe = ["ID_PJURIDICA","id","created_at","updated_at"];
         if(!$this->required()) {
             return null;
         }
+
+        /** Validate fields */
+        $this->validateFields();
 
         /** Update */
         if($this->ID_PFISICA || $this->ID_PJURIDICA) {
@@ -82,7 +85,6 @@ class Client extends Model implements Models
 
     private function update_()
     {
-        static::$safe = ["created_at","DataReg","ID_PFISICA","ID_PJURIDICA","Salário","Situação","Crédito","Sexo","EstCivil","Bloqueio","Conceito","Vendedor","Revenda","ECF","StatusAtivo"];
         if(!empty($this->ID_PFISICA)) {
             $this->otherCompanies(["CPF" => $this->CPF]);
         } elseif(!empty($this->ID_PJURIDICA)) {
@@ -103,29 +105,32 @@ class Client extends Model implements Models
             } elseif($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
             } else {
-                $id = $this->otherCompanies(["CPF" => $this->CPF]);
+                $this->otherCompanies(["CPF" => $this->CPF]);
                 $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
-                $data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_PFISICA=:ID_PFISICA", "ID_PFISICA={$id}");
-                $this->data = ($data? $data->fetch() : null);
+                //$data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_PFISICA=:ID_PFISICA", "ID_PFISICA={$id}");
+                //$this->data = ($data? $data->fetch() : null);
             }
-            return null;
+            return $this->data;
         } elseif($this->CNPJ) {
             if($this->find($this->CNPJ)) {
                 $this->message = "<span class='warning'>Cliente informado já está cadastrado</span>";
             } elseif($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
             } else {
-                $id = $this->otherCompanies(["CNPJ" => $this->CNPJ]);
+                $this->otherCompanies(["CNPJ" => $this->CNPJ]);
                 $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
-                $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_PJURIDICA=:ID_PJURIDICA", "ID_PJURIDICA={$id}")->fetch();
+                //$this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_PJURIDICA=:ID_PJURIDICA", "ID_PJURIDICA={$id}")->fetch();
             }
-            return null;
+            //return $this->data;
         }
     }
 
-    protected function otherCompanies(array $where=[])
+    /**
+     * @var $where array
+     */
+    protected function otherCompanies(array $where = [])
     {
         unset($this->data->cep);
 
@@ -142,11 +147,37 @@ class Client extends Model implements Models
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
             $client = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
+            $this->setSafe("id,created_at,DataReg,ID_PFISICA,ID_PJURIDICA,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo");
             $this->data->IDEmpresa = $company->ID;
 
-            ( !$client->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
+            if($client->fetch()) {
+                $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
+            } else {
+                $this->setSafe("id,created_at,DataReg,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo");
+                $cpfCnpj = (!empty($this->data->CPF) ? "ID_PFISICA" : "ID_PJURIDICA");
+                $this->data->$cpfCnpj = $this->lastId();
+
+                $this->create(self::$entity, $this->safe());
+            }
         }
-        return $id ?? null;
+        //return $id ?? null;
+    }
+
+    private function setSafe(string $safe)
+    {
+        static::$safe = explode(",",$safe);
+    }
+
+    private function lastId(): int
+    {
+        if(!empty($this->data->CPF)) {
+            $lastData = $this->all(1,0,"*","ID_PFISICA DESC");
+            $lastId = ($lastData ? $lastData[0]->ID_PFISICA + 1 : 1);
+        } else {
+            $lastData = $this->all(1,0,"*","ID_PJURIDICA DESC");
+            $lastId = ($lastData ? $lastData[0]->ID_PJURIDICA + 1 : 1);
+        }
+        return $lastId;
     }
 
     public function destroy()
@@ -175,6 +206,13 @@ class Client extends Model implements Models
         }
 
         return true;
+    }
+
+    private function validateFields(): void
+    {
+        if(!empty($this->data->Atividade)) {
+            $this->data->Atividade = substr($this->data->Atividade, 0, 29);
+        }
     }
 
     public function createThisTable()

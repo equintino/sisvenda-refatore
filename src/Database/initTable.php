@@ -1,7 +1,6 @@
 <?php
 
 /** table creation file */
-//require __DIR__ . "/../Boot/Helpers.php";
 require __DIR__ . "/../autoload.php";
 
 $creation = new Database\CreationProcess();

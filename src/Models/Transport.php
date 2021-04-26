@@ -77,7 +77,9 @@ class Transport extends Model implements Models
     private function update_()
     {
         if(!empty($this->IDTransportadora)) {
-            $this->otherCompanies(["Cnpj" => $this->CNPJ]);
+            /** increment false in LOJASCOM_N */
+            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
+            $this->otherCompanies(["Cnpj" => $this->CNPJ], $false);
         }
 
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
@@ -92,7 +94,9 @@ class Transport extends Model implements Models
         } elseif($this->fail()) {
             $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
         } else {
-            $id = $this->otherCompanies(["Cnpj" => $this->Cnpj]);
+            /** increment false in LOJASCOM_N */
+            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
+            $id = $this->otherCompanies(["Cnpj" => $this->Cnpj], $false);
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
             $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTransportadora={$id}")->fetch();
@@ -100,7 +104,7 @@ class Transport extends Model implements Models
         return null;
     }
 
-    protected function otherCompanies(array $where=[])
+    protected function otherCompanies(array $where=[], bool $autoincrement = true)
     {
         $this->data->Cnpj = (empty($this->data->CNPJ) ?: $this->data->CNPJ);
         $this->data->ATIVO = (empty($this->data->StatusAtivo) ?: $this->data->StatusAtivo);
@@ -119,11 +123,22 @@ class Transport extends Model implements Models
         $terms = substr($terms, 0, -1);
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
+            static::$safe = ["IDTransportadora","created_at","updated_at"];
             $transport = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
 
             $this->data->IDEmpresa = $company->ID;
 
-            ( !$transport->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
+            if(!$transport->fetch()) {
+                if(!$autoincrement) {
+                    static::$safe = ["created_at","updated_at"];
+                    $this->data->IDTransportadora = $this->lastId();
+                }
+                $id = $this->create(self::$entity, $this->safe());
+            } else {
+                $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
+            }
+
+            //( !$transport->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
         }
         return $id ?? null;
     }
@@ -142,6 +157,12 @@ class Transport extends Model implements Models
         $this->data = null;
 
         return $this;
+    }
+
+    private function lastId()
+    {
+        $lastData = $this->all(1, 0, "IDTransportadora", "IDTransportadora DESC");
+        return ($lastData ? $lastData[0]->IDTransportadora + 1 : 1);
     }
 
     public function required(): bool

@@ -8,6 +8,7 @@ class LegalPerson extends Client
 {
     public function __construct()
     {
+        parent::__construct();
         static::$entity = "PJuridica";
     }
 

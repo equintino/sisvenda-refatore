@@ -143,8 +143,7 @@ class Config
         if(array_key_exists($this->local, $this->file)) {
             $this->message = "<span class=warning >O nome de conexão já existe</span>";
             return false;
-        }
-        else {
+        } else {
             return $this->save();
         }
     }
@@ -196,8 +195,7 @@ class Config
         if($this->saveFile($this->file)) {
             $this->message = "<span class='success'>Dados excluídos com sucesso</span>";
             return true;
-        }
-        else {
+        } else {
             $this->message = "<span class='warnig'>Não foi possível excluir dados</span>";
             return false;
         }

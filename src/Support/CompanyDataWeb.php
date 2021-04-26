@@ -41,9 +41,9 @@ class CompanyDataWeb
         $legalPerson = new stdClass();
 
         if(!empty($data)) {
-            $legalPerson->RasSocial = $data->nome;
-            $legalPerson->UF = $data->uf;
-            $telephone = trim(strstr($data->telefone, "/", true));
+            $legalPerson->RasSocial = (empty($data->nome) ? null : $data->nome);
+            $legalPerson->UF = (empty($data->uf) ? null : $data->uf);
+            $telephone = (empty($data->telefone) ? null : trim(strstr($data->telefone, "/", true)));
 
             $legalPerson->Tel01 = $telephone;
 
@@ -53,16 +53,16 @@ class CompanyDataWeb
             $statusAtivo = strtolower($data->status) === "ok" ? "1" : "0";
             $legalPerson->StatusAtivo = $statusAtivo;
             $legalPerson->Situacao = "BOM";
-            $legalPerson->Bairro = $data->bairro;
-            $legalPerson->Rua = $data->logradouro;
-            $legalPerson->Num = $data->numero;
-            $legalPerson->CEP = $data->cep;
-            $legalPerson->Cidade = $data->municipio;
-            $legalPerson->NomeFantasia = $data->fantasia;
-            $legalPerson->CNPJ = $data->cnpj;
-            $legalPerson->Complemento = $data->complemento;
-            $legalPerson->Email = $data->email;
-            $legalPerson->Atividade = $data->atividade_principal[0]->text;
+            $legalPerson->Bairro = (empty($data->bairro) ? null : $data->bairro);
+            $legalPerson->Rua = (empty($data->logradouro) ? null : $data->logradouro);
+            $legalPerson->Num = (empty($data->numero) ? null : $data->numero);
+            $legalPerson->CEP = (empty($data->cep) ? null : $data->cep);
+            $legalPerson->Cidade = (empty($data->municipio) ? null : $data->municipio);
+            $legalPerson->NomeFantasia = (empty($data->fantasia) ? null : $data->fantasia);
+            $legalPerson->CNPJ = (empty($data->cnpj) ? null : $data->cnpj);
+            $legalPerson->Complemento = (empty($data->complemento) ? null : $data->complemento);
+            $legalPerson->Email = (empty($data->email) ? null : $data->email);
+            $legalPerson->Atividade = (empty($data->atividade_principal) ? null : $data->atividade_principal[0]->text);
         }
 
         $this->dataWeb = $legalPerson;
