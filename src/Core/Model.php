@@ -94,7 +94,6 @@ abstract class Model
             $stmt->execute($this->filter($data));
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {
-            //var_dump($exception);
             $this->fail = $exception;
             return null;
         }

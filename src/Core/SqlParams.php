@@ -15,10 +15,11 @@ class SqlParams extends Model
     {
         switch($type) {
             case "sqlsrv":
-                return $this->sql .= " OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY";
+                $this->sql .= " OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY";
                 break;
             case "mysql":
-                return $this->sql .= " LIMIT :limit OFFSET :offset";
+                $this->sql .= " LIMIT :limit OFFSET :offset";
         }
+        return $this->sql;
     }
 }

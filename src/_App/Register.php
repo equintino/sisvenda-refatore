@@ -310,6 +310,7 @@ class Register extends Controller
         $supplierDb = $supplier->find($data["CNPJ"]);
         if($supplierDb) {
             foreach($data as $key => $value) {
+                ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
                 $supplierDb->$key = $value;
             }
 
