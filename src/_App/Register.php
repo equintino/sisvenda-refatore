@@ -270,6 +270,7 @@ class Register extends Controller
         $transport = new Transport();
         $transport::$entity = "Transportadora";
         foreach($data as $key => $value) {
+            ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
             $transport->$key = $value;
         }
         $transport->save();
@@ -283,6 +284,7 @@ class Register extends Controller
         $transportDb = $transport->find($data["CNPJ"]);
         if($transportDb) {
             foreach($data as $key => $value) {
+                ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
                 $transportDb->$key = $value;
             }
 
@@ -297,6 +299,7 @@ class Register extends Controller
         $data = array_filter($data);
         $supplier = new Supplier();
         foreach($data as $key => $value) {
+            ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
             $supplier->$key = $value;
         }
         $supplier->save();
