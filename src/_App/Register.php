@@ -255,9 +255,9 @@ class Register extends Controller
             $client::$entity = "PFisica";
         }
         foreach($data as $key => $value) {
-            if($key === "DataNasc") {
-                $value = dateFormat($value);
-            }
+            // if($key === "DataNasc") {
+            //     $value = dateFormat($value);
+            // }
             $client->$key = $value;
         }
         $client->save();

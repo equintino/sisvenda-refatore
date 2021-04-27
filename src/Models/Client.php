@@ -87,6 +87,7 @@ class Client extends Model implements Models
     {
         if(!empty($this->ID_PFISICA)) {
             $this->otherCompanies(["CPF" => $this->CPF]);
+
         } elseif(!empty($this->ID_PJURIDICA)) {
             $this->otherCompanies(["CNPJ" => $this->CNPJ]);
         }
@@ -102,10 +103,12 @@ class Client extends Model implements Models
         if($this->CPF) {
             if($this->find($this->CPF)) {
                 $this->message = "<span class='warning'>Cliente informado já está cadastrado</span>";
-            } elseif($this->fail()) {
-                $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
             } else {
                 $this->otherCompanies(["CPF" => $this->CPF]);
+                if($this->fail()) {
+                    $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
+                    return null;
+                }
                 $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
                 //$data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_PFISICA=:ID_PFISICA", "ID_PFISICA={$id}");
@@ -115,10 +118,12 @@ class Client extends Model implements Models
         } elseif($this->CNPJ) {
             if($this->find($this->CNPJ)) {
                 $this->message = "<span class='warning'>Cliente informado já está cadastrado</span>";
-            } elseif($this->fail()) {
-                $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
             } else {
                 $this->otherCompanies(["CNPJ" => $this->CNPJ]);
+                if($this->fail()) {
+                    $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
+                    return null;
+                }
                 $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
                 //$this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_PJURIDICA=:ID_PJURIDICA", "ID_PJURIDICA={$id}")->fetch();
@@ -212,6 +217,9 @@ class Client extends Model implements Models
     {
         if(!empty($this->data->Atividade)) {
             $this->data->Atividade = substr($this->data->Atividade, 0, 29);
+        }
+        if(!empty($this->data->DataNasc)) {
+            $this->data->DataNasc = dateFormat($this->data->DataNasc);
         }
     }
 

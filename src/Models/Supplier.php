@@ -95,13 +95,15 @@ class Supplier extends Model implements Models
     {
         if($this->find($this->CNPJ)) {
             $this->message = "<span class='warning'>Fornecedor informado já está cadastrado</span>";
-        } elseif($this->fail()) {
-            $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
         } else {
             /** increment false in LOJASCOM_N */
             $false = ($this->connectionDetails->local !== "lojascom" ?: false);
 
             $id = $this->otherCompanies(["CNPJ" => $this->CNPJ], $false);
+            if($this->fail()) {
+                $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
+                return null;
+            }
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
             $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID=:ID", "ID={$id}")->fetch();

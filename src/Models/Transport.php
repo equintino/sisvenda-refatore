@@ -62,6 +62,8 @@ class Transport extends Model implements Models
             return null;
         }
 
+        $this->validateFields();
+
         /** Update */
         if($this->IDTransportadora) {
             return $this->update_();
@@ -91,12 +93,14 @@ class Transport extends Model implements Models
     {
         if($this->find($this->CNPJ)) {
             $this->message = "<span class='warning'>Transporttadora informada já está cadastrada</span>";
-        } elseif($this->fail()) {
-            $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
         } else {
             /** increment false in LOJASCOM_N */
             $false = ($this->connectionDetails->local !== "lojascom" ?: false);
             $id = $this->otherCompanies(["Cnpj" => $this->Cnpj], $false);
+            if($this->fail()) {
+                $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
+                return null;
+            }
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
             $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTransportadora={$id}")->fetch();
@@ -163,6 +167,13 @@ class Transport extends Model implements Models
     {
         $lastData = $this->all(1, 0, "IDTransportadora", "IDTransportadora DESC");
         return ($lastData ? $lastData[0]->IDTransportadora + 1 : 1);
+    }
+
+    private function validateFields()
+    {
+        if(!empty($this->data->cep)) {
+            unset($this->data->cep);
+        }
     }
 
     public function required(): bool
