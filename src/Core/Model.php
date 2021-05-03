@@ -115,12 +115,10 @@ abstract class Model
                 }
             }
             $stmt->execute();
-            return $stmt;
-        }
-        catch(\PDOException $exception) {
+        } catch(\PDOException $exception) {
             $this->fail = $exception;
-            return null;
         }
+        return $stmt;
     }
 
     protected function update(string $entity, array $data, string $terms, string $params, bool $msgDb = false): ?int

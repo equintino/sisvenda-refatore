@@ -91,6 +91,7 @@ $(document).ready(function() {
 
         if(ok !== 0) {
             var data = $("form[id=" + formAtivo + "]").serialize();
+            console.log(data);
             var actButton = $(this).text().toLowerCase();
             saveAjaxData(data, actButton);
         }
@@ -114,25 +115,26 @@ $(document).ready(function() {
     //     }
     // });
 
-    $('select[id=transp]').change(function() {
-        var transportId = $(this).val();/* cnpj */
-        var companyId;
-        var cnpj;
-        $(this).children("option").each(function() {
-            if($(this).attr("value") === transportId) {
-                companyId = $(this).attr("data-companyId");
-                cnpj = $(this).attr("data-cnpj");
-            }
-        });
-        $('input[type=hidden]').each(function() {
-            if($(this).attr('name') === 'IDTransportadora') {
-                $(this).val(transportId);
-            } else if($(this).attr('name') === 'IDEmpresa') {
-                $(this).val(companyId);
-            } else if($(this).attr('name') === 'Cnpj') {
-                $(this).val(cnpj);
-            }
-        });
+    $('select[id=transp]').on("change", function() {
+        hiddenFields('select[id=transp]');
+        // var transpId = $(this).val();/* cnpj */
+        // var companyId;
+        // var transpCnpj;
+        // $(this).children("option").each(function() {
+        //     if($(this).attr("value") === transpId) {
+        //         companyId = $(this).attr("data-companyId");
+        //         transpCnpj = $(this).attr("data-transpCnpj");
+        //     }
+        // });
+        // $('input[type=hidden]').each(function() {
+        //     if($(this).attr('name') === 'IDTransportadora') {
+        //         $(this).val(transpId);
+        //     } else if($(this).attr('name') === 'transpCompanyId') {
+        //         $(this).val(companyId);
+        //     } else if($(this).attr('name') === 'transpCnpj') {
+        //         $(this).val(transpCnpj);
+        //     }
+        // });
     });
 
     $(document).submit(function(e) {
@@ -239,6 +241,28 @@ $(document).ready(function() {
     selectForm(formAtivo);
 });
 
+function hiddenFields(element) {
+    element = $(element);
+    var transpId = element.val();/* cnpj */
+    var companyId;
+    var transpCnpj;
+    element.children("option").each(function() {
+        if($(this).attr("value") === transpId) {
+            companyId = $(this).attr("data-companyId");
+            transpCnpj = $(this).attr("data-transpCnpj");
+        }
+    });
+    $('input[type=hidden]').each(function() {
+        if($(this).attr('name') === 'IDTransportadora') {
+            $(this).val(transpId);
+        } else if($(this).attr('name') === 'transpCompanyId') {
+            $(this).val(companyId);
+        } else if($(this).attr('name') === 'transpCnpj') {
+            $(this).val(transpCnpj);
+        }
+    });
+}
+
 /** hidden form */
 function selectForm(formActive) {
     if(formActive === 'pf') {
@@ -331,6 +355,30 @@ function buscaCpf(formAtivo, cpf) {
                 $("form#" + formAtivo).find("input:not([name=CPF])").val("");
                 submit.text("Salvar");
             }
+            if(response["IDTransportadora"]){
+                $.ajax({
+                    url: "transport/id/" + response["IDTransportadora"],
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        id: response["IDTransportadora"]
+                    },
+                    success: function(listIds) {
+                        $(".preForm select[id=transp]").children("option").each(function() {
+                            var value = $(this).val();
+                            if(listIds.indexOf(value) !== -1) {
+                                $(".preForm select[id=transp]").val(value);
+                            }
+                            if(listIds.length === 0 && $(this).text() === "SEM FRETE") {
+                                $(".preForm select[id=transp]").val(value);
+                                $(".preForm select[id=transp]").trigger("change");
+                            }
+                        });
+                    }
+                });
+            }
+            /** defining hidden carrier fields */
+            hiddenFields('select[id=transp]');
         }
     }).fail(function(error){
         alertLatch("Nenhum dado encontrado", "var(--cor-warning)");
@@ -376,6 +424,30 @@ function buscaCnpj (formAtivo, cnpj) {
                     }
                     $("form#" + formAtivo + " [name=" + i_ + "]").val(response[i]);
                 }
+                if(response["IDTransportadora"]){
+                    $.ajax({
+                        url: "transport/id/" + response["IDTransportadora"],
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            id: response["IDTransportadora"]
+                        },
+                        success: function(listIds) {
+                            $(".preForm select[id=transp]").children("option").each(function() {
+                                var value = $(this).val();
+                                if(listIds.indexOf(value) !== -1) {
+                                    $(".preForm select[id=transp]").val(value);
+                                }
+                                if(listIds.length === 0 && $(this).text() === "SEM FRETE") {
+                                    $(".preForm select[id=transp]").val(value);
+                                    $(".preForm select[id=transp]").trigger("change");
+                                }
+                            });
+                        }
+                    });
+                }
+                /** defining hidden carrier fields */
+                hiddenFields('select[id=transp]');
             } else {
                 alertLatch("Nenhum dado foi encontrado", "var(--cor-warning)");
                 return false;

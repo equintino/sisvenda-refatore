@@ -14,7 +14,7 @@ class Transport extends Model implements Models
 
     public function load(int $id, string $columns = "*")
     {
-        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTrasportadora={$id}");
+        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTransportadora={$id}");
 
         if($this->fail || !$load->rowCount()) {
             $this->message = "Transportadora não encontrada do id informado.";
@@ -24,18 +24,19 @@ class Transport extends Model implements Models
         return $load->fetchObject(__CLASS__);
     }
 
-    public function find(string $search, string $columns = "*")
+    public function find(string $cnpj, string $columns = "*")
     {
-        if(filter_var($search, FILTER_SANITIZE_STRIPPED)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE CNPJ=:CNPJ ", "CNPJ={$search}");
+        if(filter_var($cnpj, FILTER_SANITIZE_STRIPPED)) {
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE CNPJ=:CNPJ ", "CNPJ={$cnpj}");
         }
 
-        if($this->fail || !$find->rowCount()) {
+        if($this->fail || empty($find)) {
             $this->message = "Transportadora não encontrada.";
             return null;
         }
 
-        return $find->fetchObject(__CLASS__);
+        return $find->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        //return $find->fetchObject(__CLASS__);
     }
 
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "RasSocial"): ?array
@@ -91,7 +92,7 @@ class Transport extends Model implements Models
 
     public function create_()
     {
-        if($this->find($this->CNPJ)) {
+        if(!empty($this->CNPJ) && $this->find($this->CNPJ)) {
             $this->message = "<span class='warning'>Transporttadora informada já está cadastrada</span>";
         } else {
             /** increment false in LOJASCOM_N */

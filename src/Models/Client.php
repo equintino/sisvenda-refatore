@@ -152,16 +152,18 @@ class Client extends Model implements Models
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
             $client = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
-            $this->setSafe("id,created_at,DataReg,ID_PFISICA,ID_PJURIDICA,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo");
+            $this->setSafe("id,created_at,DataReg,ID_PFISICA,ID_PJURIDICA,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo,transpCompanyId,transpCnpj");
             $this->data->IDEmpresa = $company->ID;
+
+            $transport = $this->getTransport($this->data->transpCnpj ?? null, $company->ID);
+            $this->data->IDTransportadora = $transport->IDTransportadora;
 
             if($client->fetch()) {
                 $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
             } else {
-                $this->setSafe("id,created_at,DataReg,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo");
+                $this->setSafe("id,created_at,DataReg,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo,transpCompanyId,transpCnpj");
                 $cpfCnpj = (!empty($this->data->CPF) ? "ID_PFISICA" : "ID_PJURIDICA");
                 $this->data->$cpfCnpj = $this->lastId();
-
                 $this->create(self::$entity, $this->safe());
             }
         }
@@ -221,6 +223,18 @@ class Client extends Model implements Models
         if(!empty($this->data->DataNasc)) {
             $this->data->DataNasc = dateFormat($this->data->DataNasc);
         }
+    }
+
+    private function getTransport(?string $cnpj, int $companyId = null)
+    {
+        $transport = new Transport();
+        // if($transportId) {
+        //     return $transport->load($transportId);
+        // } else {
+            $terms = "Cnpj = :Cnpj AND IDEmpresa = :IDEmpresa";
+            $params = "Cnpj={$cnpj}&IDEmpresa={$companyId}";
+        //}
+        return $transport->read("SELECT * FROM " . $transport::$entity . " WHERE {$terms}", $params)->fetch();
     }
 
     public function createThisTable()

@@ -93,9 +93,9 @@ var_dump(
     $transport->createThisTable()
 );
 $data = [
-    "RasSocial" => "Minha Empresa",
-    "Cnpj" => "11.117.117/0001-15",
-    "Email" => "empresa@gmail.com"
+    "RasSocial" => "SEM FRETE",
+    "Cnpj" => "",
+    "IDEmpresa" => 1
 ];
 $transport->bootstrap($data);
 $transport->save();

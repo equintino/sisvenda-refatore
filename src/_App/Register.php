@@ -18,6 +18,7 @@ class Register extends Controller
         $data["act"] = $act;
         $loading = theme("assets/img/loading.png");
 
+        /** conferir utilização */
         /**return Cnpj da transportadora*/
         $selIdTransp = function($id) {
             foreach( $_SESSION["Transportadora"] as $v ) {
@@ -31,13 +32,14 @@ class Register extends Controller
         $transpDb = (new Transport())->all(0);
         if(!empty($transpDb)) {
             foreach ($transpDb as $value) {
-                $cnpjTransp = ($value->Cnpj != "" ? $value->Cnpj : 'SEM_FRETE');
-                $transp[$cnpjTransp] = array(
-                    'RasSocial' => $value->RasSocial,
-                    'IDEmpresa' => $value->IDEmpresa,
-                    "Cnpj" => $value->Cnpj,
-                    "IDTransportadora" => $value->IDTransportadora
-                );
+                if($value->Cnpj !== "" || $value->RasSocial === "SEM FRETE") {
+                    $transp[$value->Cnpj] = array(
+                        'RasSocial' => $value->RasSocial,
+                        'IDEmpresa' => $value->IDEmpresa,
+                        "Cnpj" => $value->Cnpj,
+                        "IDTransportadora" => $value->IDTransportadora
+                    );
+                }
             }
         }
         $transp = ($transp ?? null);
@@ -125,7 +127,7 @@ class Register extends Controller
     {
         $client = new Client();
         $fields = [
-            "Nome","DataNasc","TelResid","Celular","Email","Rua","Num","Complemento","Bairro","Cidade","UF","CEP","NomeFantasia","InscEstadual","RasSocial","Tel01","Tel02","qsa","Contato","HomePage","Atividade","StatusAtivo","cep","Sócio01","Cep"
+            "Nome","DataNasc","TelResid","Celular","Email","Rua","Num","Complemento","Bairro","Cidade","UF","CEP","NomeFantasia","InscEstadual","RasSocial","Tel01","Tel02","qsa","Contato","HomePage","Atividade","StatusAtivo","cep","Sócio01","Cep","IDTransportadora"
         ];
 
         if(!empty($data["cpf"])) {
@@ -164,7 +166,7 @@ class Register extends Controller
     {
         $transport = new Transport();
         $fields = [
-            "Nome","DataNasc","TelResid","Celular","Email","Rua","Num","Complemento","Bairro","Cidade","UF","CEP","NomeFantasia","InscEstadual","RasSocial","Tel01","Tel02","qsa","Contato","HomePage","Atividade","StatusAtivo","cep","Sócio01","InscEsdatual"
+           "Nome","DataNasc","TelResid","Celular","Email","Rua","Num","Complemento","Bairro","Cidade","UF","CEP","NomeFantasia","InscEstadual","RasSocial","Tel01","Tel02","qsa","Contato","HomePage","Atividade","StatusAtivo","cep","Sócio01","InscEsdatual"
         ];
         $cnpj = $data["cnpj"];
         $cnpj = substr($cnpj,0,2) . "."
@@ -173,7 +175,7 @@ class Register extends Controller
             . substr($cnpj,8,4) . "-"
             . substr($cnpj,-2);
 
-        $transportDb = $transport->find($cnpj);
+        $transportDb = $transport->find($cnpj)[0];
 
         $obj = new \stdClass();
         if(!empty($transportDb)) {
@@ -249,15 +251,8 @@ class Register extends Controller
     {
         $data = array_filter($data);
         $client = new Client();
-        if(!empty($data["CNPJ"])) {
-            $client::$entity = "PJuridica";
-        } else {
-            $client::$entity = "PFisica";
-        }
+        $client::$entity = (!empty($data["CNPJ"]) ? "PJuridica" : "PFisica");
         foreach($data as $key => $value) {
-            // if($key === "DataNasc") {
-            //     $value = dateFormat($value);
-            // }
             $client->$key = $value;
         }
         $client->save();
@@ -281,7 +276,7 @@ class Register extends Controller
     {
         $data = array_filter($data);
         $transport = new Transport();
-        $transportDb = $transport->find($data["CNPJ"]);
+        $transportDb = $transport->find($data["CNPJ"])[0];
         if($transportDb) {
             foreach($data as $key => $value) {
                 ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
@@ -321,6 +316,20 @@ class Register extends Controller
             return print(json_encode($supplierDb->message()));
         }
         return print(json_encode("<span class=warning>Registro não encontrado</span>"));
+    }
+
+    public function getIdTransport($data)
+    {
+        $listIds = [];
+        $transport = new Transport();
+        $cnpjTransport = $transport->load($data["id"])->Cnpj;
+        $transports = $transport->find($cnpjTransport);
+        if($transports) {
+            foreach($transports as $value) {
+                $listIds[] = $value->IDTransportadora;
+            }
+        }
+        return print(json_encode($listIds));
     }
 
 }

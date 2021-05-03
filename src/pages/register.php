@@ -11,11 +11,10 @@
         <div class="col-md-6 col-sm-auto">
             <label for="transp" class="form-check-label col-form-label-sm ml-2">
                     Transportadora: </label>
-            <select class="form-control-sm" id="transp" style="height: 24px">
-                <option>SEM FRETE</option>
+            <select name="transpId" class="form-control-sm" id="transp" style="height: 24px">
+                <!-- <option>SEM FRETE</option> -->
                 <?php if(isset($transp)): foreach ($transp as $value): ?>
-                    <option value="<?= $value['IDTransportadora']?>" data-cnpj="<?= $value['Cnpj'] ?>" data-companyId="<?= $value['IDEmpresa'] ?>" >
-                        <?= $value["RasSocial"] ?></option>
+                    <option value="<?= $value['IDTransportadora']?>" data-transpCnpj="<?= $value['Cnpj'] ?>" data-companyId="<?= $value['IDEmpresa'] ?>" <?=($value["RasSocial"] !== "SEM FRETE" ?: "selected") ?> ><?= $value["RasSocial"] ?></option>
                 <?php endforeach; endif; ?>
             </select>
         </div><!-- select transportadora -->
@@ -27,9 +26,9 @@
 <!-- formulario PF -->
 <form class="form form-horizontal" id="pf" method="POST" action="#" style="display: none" >
     <!-- Dados Pessoa Física -->
-    <input type="hidden" name="IDTransportadora" value="1" />
-    <input type="hidden" name="IDEmpresa" value="1" />
-    <input type="hidden" name="Cnpj" value="1" />
+    <input type="hidden" name="IDTransportadora" value="" />
+    <input type="hidden" name="transpCompanyId" value="" />
+    <input type="hidden" name="transpCnpj" value="" />
     <div class="formCad row">
         <fieldset class="fieldset col mr-2 pt-4">
             <legend>IDENTIFICAÇÃO</legend>
@@ -124,8 +123,10 @@
 <!-- formulario PJ -->
 <form class="form-horizontal" id="pj" method="POST" action="#" >
     <!-- Dados Pessoa Jurídica -->
-    <input type="hidden" name="IDTransportadora" value="1" />
-    <input type="hidden" name="IDEmpresa" value="1" />
+    <input type="hidden" name="IDTransportadora" value="" />
+    <input type="hidden" name="transpCompanyId" value="" />
+    <input type="hidden" name="transpCnpj" value="" />
+
     <input type="hidden" name="Tipo" id="tipo" value="<?= $tipo ?? null ?>"  class="form-control" />
     <div class="formCad row">
         <fieldset class="fieldset col">
