@@ -12,7 +12,6 @@
             <label for="transp" class="form-check-label col-form-label-sm ml-2">
                     Transportadora: </label>
             <select name="transpId" class="form-control-sm" id="transp" style="height: 24px">
-                <!-- <option>SEM FRETE</option> -->
                 <?php if(isset($transp)): foreach ($transp as $value): ?>
                     <option value="<?= $value['IDTransportadora']?>" data-transpCnpj="<?= $value['Cnpj'] ?>" data-companyId="<?= $value['IDEmpresa'] ?>" <?=($value["RasSocial"] !== "SEM FRETE" ?: "selected") ?> ><?= $value["RasSocial"] ?></option>
                 <?php endforeach; endif; ?>

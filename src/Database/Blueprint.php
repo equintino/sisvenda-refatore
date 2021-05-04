@@ -147,6 +147,20 @@ class Blueprint
         return $this;
     }
 
+    public function datetime(string $date): object
+    {
+        $this->sql .= ", {$date} DATETIME ";
+
+        return $this;
+    }
+
+    public function smalldatetime(string $date): object
+    {
+        $this->sql .= ", {$date} SMALLDATETIME ";
+
+        return $this;
+    }
+
     public function default(string $default): object
     {
         $default = is_numeric($default) ? (int) $default : $default;

@@ -235,9 +235,9 @@ class Register extends Controller
         $clientDb = $client->find($search);
         if($clientDb) {
             foreach($data as $key => $value) {
-                if($key === "DataNasc") {
-                    $value = dateFormat($value);
-                }
+                // if($key === "DataNasc") {
+                //     $value = dateFormat($value);
+                // }
                 $clientDb->$key = $value;
             }
 

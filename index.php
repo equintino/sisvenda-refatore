@@ -74,6 +74,10 @@
         $router->post("/cadastro/fornecedor/{}", "Register:loadSupplier");
         $router->post("/cadastro/fornecedor/atualizar", "Register:updateSupplier");
         $router->post("/cadastro/fornecedor/salvar", "Register:saveSupplier");
+
+        /**
+         * Searching data
+         */
         $router->post("/transport/id/{}", "Register:getIdTransport");
 
 

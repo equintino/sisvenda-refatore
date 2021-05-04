@@ -68,7 +68,10 @@ function dateFormat(?string $date)
     }
     if(preg_match('/\//', $date)) {
         list($d, $m, $y) = explode("/", $date);
-        return "{$y}-{$m}-{$d}";
+        $dateFormated = "{$y}-{$m}-{$d}";
+        $datetime = new DateTime($dateFormated);
+        //return "{$y}-{$m}-{$d}";
+        return $datetime->format("Y-m-d H:i:s");
     }
     if(preg_match('/-/', $date)) {
         list($y, $m, $d) = explode("-", $date);
