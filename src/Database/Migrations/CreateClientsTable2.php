@@ -22,26 +22,25 @@ class CreateClientsTable2 implements CreateTable
             $table->increment("id");
             $table->int("ID_PJURIDICA");
             $table->string("CNPJ");
-                //$table->string("RasãoSocial",100)->unique();
-            $table->string("RasSocial,NomeFantasia,InscEstadual,Contato,Atividade,Vendedor,Sócio01,Bloqueio,Situação,Crédito,Conceito")->nullable();
+            $table->string("RasSocial,NomeFantasia,InscEstadual,Contato,Atividade,Sócio01")->nullable();
             $table->bool("StatusAtivo")->nullable()->default(1);
-                //$table->string("CNPJ",50)->unique();
             $table->string("Rua,Num,Complemento,CEP,Bairro,Cidade")->nullable();
             $table->string("UF",2)->nullable();
             $table->string("FAX,Tel01,Tel02,Email,HomePage")->nullable();
-                //$table->decimal(18,2)->nullable();
-                //$table->bool("ATIVO")->nullable()->default(1);
-                //$table->int("COD_EXTERNO_SCWEB, ID_Empresa_Central")->nullable();
+            $table->string("Bloqueio,Conceito")->nullable();
+            $table->bool("Revenda")->nullable();
+            $table->decimal("Crédito",18,4)->nullable();
+            $table->string("Situação")->default("BOM")->nullable();
+            $table->bool("BloqueioAVista,BloqueioAPrazo,OBSVENDA")->nullable();
             $table->int("IDEmpresa")->default(1);
             $table->int("IDTransportadora")->nullable();
-                //$table->tynyint("IND_INTEGRA_SCWEB")->nullable();
-                //$table->date("DataNasc")->nullable();
+            $table->int("Vendedor")->nullable();
+            $table->int("CFOPe,CFOPs")->nullable();
+            $table->bool("PersonalizaE,PersonalizaS,EspePagamento,ECF,consumidorFinal")->nullable();
+            $table->datetime("DataReg")->nullable();
             $table->timestamps();
             return $table->run();
         });
-        //   'IDTransportadora' => string '' (length=0)
-        //   'IDEmpresa' => string '' (length=0)
-        //   'Cnpj' => string '' (length=0)
 
         return $schema;
     }

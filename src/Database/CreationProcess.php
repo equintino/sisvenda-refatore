@@ -11,7 +11,7 @@ class CreationProcess
 
     public function define(string $name): void
     {
-        define("CONF_CONNECTION", $name);
+        @define("CONF_CONNECTION", $name);
         $this->connectionName = CONF_CONNECTION;
         $this->type = (new Config())->type();
     }

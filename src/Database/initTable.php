@@ -1,14 +1,17 @@
 <?php
 
 /** table creation file */
+require_once __DIR__ . "/../Support/FileTransation.php";
+require_once __DIR__ . "/../Boot/Helpers.php";
 require __DIR__ . "/../autoload.php";
 
+$session = new Core\Session();
 $creation = new Database\CreationProcess();
 $creation->define("local");
 
 /** init table tb_usuario */
 $user = new Models\User();
-var_dump($user->createThisTable());
+$user->createThisTable();
 $data = [
     "Nome" => "Administrador",
     "Logon" => "admin",
@@ -21,15 +24,11 @@ $data = [
 ];
 $user->bootstrap($data);
 $user->save();
-var_dump(
-    $user->message()
-);
+echo "tb_usuario - " . $user->message() . "<br>";
 
 /** init table tb_group */
 $group = new Models\Group();
-var_dump(
-    $group->createThisTable()
-);
+$group->createThisTable();
 $data = [
     "name" => "Administrador",
     "access" => " *",
@@ -37,13 +36,11 @@ $data = [
 ];
 $group->bootstrap($data);
 $group->save();
-var_dump($group->message());
+echo "tb_group - " . $group->message() . "<br>";
 
 /** init table Dados_Empresa */
 $company = new Models\Company();
-var_dump(
-    $company->createThisTable()
-);
+$company->createThisTable();
 $data = [
     "NomeFantasia" => "Nome Fantasia",
     "CNPJ" => "56.123.111/1234-25",
@@ -51,15 +48,11 @@ $data = [
 ];
 $company->bootstrap($data);
 $company->save();
-var_dump(
-    $company->message()
-);
+echo "Dados_Empresa - " . $company->message() . "<br>";
 
 /** init table PFisica */
 $client = new Models\Client();
-var_dump(
-    $client->createThisTable()
-);
+$client->createThisTable();
 $data = [
     "Nome" => "Edmilson Messias Quintino",
     "CPF" => "956.117.117-15",
@@ -67,15 +60,11 @@ $data = [
 ];
 $client->bootstrap($data);
 $client->save();
-var_dump(
-    $client->message()
-);
+echo "PFisica - " . $client->message() . "<br>";
 
 /** init table PJuridica */
 $legalPerson = new Models\LegalPerson();
-var_dump(
-    $legalPerson->createThisTable()
-);
+$legalPerson->createThisTable();
 $data = [
     "NomeFantasia" => "Minha Empresa",
     "CNPJ" => "11.117.117/0001-15",
@@ -83,31 +72,24 @@ $data = [
 ];
 $legalPerson->bootstrap($data);
 $legalPerson->save();
-var_dump(
-    $legalPerson->message()
-);
+echo "PJuridica - " . $legalPerson->message() . "<br>";
 
 /** init table Transportadora */
 $transport = new Models\Transport();
-var_dump(
-    $transport->createThisTable()
-);
+$transport->createThisTable();
 $data = [
     "RasSocial" => "SEM FRETE",
-    "Cnpj" => "",
-    "IDEmpresa" => 1
+    "Cnpj" => " ",
+    "IDEmpresa" => 1,
+    "Contato" => "Sem Contato"
 ];
 $transport->bootstrap($data);
 $transport->save();
-var_dump(
-    $transport->message()
-);
+echo "Transportadora - " . $transport->message() . "<br>";
 
 /** init table Fornecedor */
 $supplier = new Models\Supplier();
-var_dump(
-    $supplier->createThisTable()
-);
+$supplier->createThisTable();
 $data = [
     "RasSocial" => "Minha Empresa",
     "CNPJ" => "11.117.117/0001-15",
@@ -115,9 +97,20 @@ $data = [
 ];
 $supplier->bootstrap($data);
 $supplier->save();
-var_dump(
-    $supplier->message()
-);
+echo "Fornecedor - " . $supplier->message() . "<br>";
+
+/** init table Vendedor */
+$saleman = new Models\Saleman();
+$saleman->createThisTable();
+$data = [
+    "LogON" => "edmilson",
+    "Senha" => "123",
+    "Email" => "vendedor@gmail.com",
+    "IDEmpresa" => "1"
+];
+$saleman->bootstrap($data);
+$saleman->save();
+echo "Vendedor - " . $saleman->message() . "<br>";
 
 /** init table Configs */
 // $config = new Source\Models\Config();

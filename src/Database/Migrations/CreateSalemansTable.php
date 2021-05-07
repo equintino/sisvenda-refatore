@@ -7,7 +7,7 @@ use Database\CreateTable;
 use Database\Schema;
 use Database\Blueprint;
 
-class CreateTransportsTable implements CreateTable
+class CreateSalemansTable implements CreateTable
 {
     private $type;
 
@@ -19,18 +19,18 @@ class CreateTransportsTable implements CreateTable
     public function up(string $entity): string
     {
         $schema = Schema::create($entity, $this->type, function(Blueprint $table) {
-            $table->increment("IDTransportadora");
-            $table->string("Cnpj")->nullable();
-            $table->string("RasSocial,InscEsdatual,Contato")->nullable();
-            $table->bool("ATIVO")->nullable()->default(1);
-            $table->string("Rua,Num,Complemento,CEP,Bairro,Cidade")->nullable();
-            $table->string("UF",2)->nullable();
-            $table->string("Fax,Tel01,Tel02,Email,HomePage")->nullable();
+            $table->increment("ID_Vendedor");
+            $table->string("LogON");
+            $table->string("Senha,Nome,Sexo,EstaCivil,CPF,Email")->nullable();
+            $table->date("DataNasc")->nullable();
+            $table->bool("Gerente")->nullable()->default(0);
+            $table->int("USUARIOG")->default(0);
+            $table->int("ATIVO")->default(1);
+            $table->string("LOGONEMAIL")->nullable();
             $table->int("IDEmpresa")->default(1);
             $table->timestamps();
             return $table->run();
         });
-
         return $schema;
     }
 

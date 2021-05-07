@@ -75,6 +75,7 @@
         $router->post("/cadastro/fornecedor/atualizar", "Register:updateSupplier");
         $router->post("/cadastro/fornecedor/salvar", "Register:saveSupplier");
 
+
         /**
          * Searching data
          */

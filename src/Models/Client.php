@@ -20,7 +20,6 @@ class Client extends Model implements Models
             $this->message = "Cliente não encontrada do id informado.";
             return null;
         }
-
         return $load->fetchObject(__CLASS__);
     }
 
@@ -41,7 +40,6 @@ class Client extends Model implements Models
             $this->message = "Cliente não encontrada.";
             return null;
         }
-
         return $find->fetchObject(__CLASS__);
     }
 
@@ -56,7 +54,6 @@ class Client extends Model implements Models
             $this->message = "Sua consulta não retornou nenhum registro.";
             return null;
         }
-
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
@@ -66,6 +63,9 @@ class Client extends Model implements Models
         if(!$this->required()) {
             return null;
         }
+
+        /** accent worlds */
+        $this->accentWorlds = [ "Situacao" => "Situação", "Credito" => "Crédito", "Salario" => "Salário" ];
 
         /** Validate fields */
         $this->validateFields();
@@ -92,7 +92,6 @@ class Client extends Model implements Models
             $this->otherCompanies(["CNPJ" => $this->CNPJ]);
         }
 
-        /** Vendedor/IDEmpresa, IDTransportadora/IDEmpresa */
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
 
         return null;
@@ -138,7 +137,6 @@ class Client extends Model implements Models
     protected function otherCompanies(array $where = [])
     {
         unset($this->data->cep);
-
         $companys = (new Company())->all();
         $keys = array_keys($where);
         $terms = "";
@@ -152,16 +150,25 @@ class Client extends Model implements Models
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
             $client = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
-            $this->setSafe("id,created_at,DataReg,ID_PFISICA,ID_PJURIDICA,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo,transpCompanyId,transpCnpj");
+            $this->setSafe("id,created_at,ID_PFISICA,ID_PJURIDICA,transpCompanyId,transpCnpj");
             $this->data->IDEmpresa = $company->ID;
 
             $transport = $this->getTransport($this->data->transpCnpj ?? null, $company->ID);
-            $this->data->IDTransportadora = $transport->IDTransportadora;
+            if(!empty($transport)) {
+                $this->data->IDTransportadora = $transport->IDTransportadora;
+            }
+
+            $login = $_SESSION["login"]->Logon ?? null;
+            $saleman = $this->getSaleman($login, $company->ID);
+            if(!empty($saleman)) {
+                $this->data->Vendedor = $saleman->ID_Vendedor;
+            }
 
             if($client->fetch()) {
                 $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
             } else {
-                $this->setSafe("id,created_at,DataReg,Salário,Situação,Crédito,Sexo,EstCivil,Bloqueio,Conceito,Vendedor,Revenda,ECF,StatusAtivo,transpCompanyId,transpCnpj");
+                $this->data->DataReg = date("Y-m-d H:i:s");
+                $this->setSafe("id,created_at,transpCompanyId,transpCnpj");
                 $cpfCnpj = (!empty($this->data->CPF) ? "ID_PFISICA" : "ID_PJURIDICA");
                 $this->data->$cpfCnpj = $this->lastId();
                 $this->create(self::$entity, $this->safe());
@@ -211,7 +218,6 @@ class Client extends Model implements Models
                 return false;
             }
         }
-
         return true;
     }
 
@@ -223,18 +229,53 @@ class Client extends Model implements Models
         if(!empty($this->data->DataNasc)) {
             $this->data->DataNasc = dateFormat($this->data->DataNasc);
         }
+
+        /** Default fields */
+        $defaultFields = [
+            "Bloqueio" => "NÃO",
+            "Situacao" => "BOM",
+            "Conceito" => "BOM",
+            "Revenda" => 1,
+            "Credito" => '1000.0000'
+            // "BloqueioAVista" => 0,
+            // "BloqueioAPrazo" => 0,
+            // "OBSVENDA" => 0,
+            // "CFOPe" => 0,
+            // "CFOPs" => 0,
+            // "PersonalizaE" => 0,
+            // "PersonalizaS" => 0,
+            // "EspePagamento" => 0,
+            // "ECF" => 0,
+            // "consumidorFinal" => 0
+        ];
+        if(!empty($this->data->CPF)) {
+            $add = [
+                "Sexo" => "MASCULINO",
+                "EstCivil" => "SOLTEIRO",
+                "Salario" => "0.0000"
+            ];
+            $defaultFields = array_merge($defaultFields, $add);
+        }
+        foreach($defaultFields as $k => $v) {
+            $k = ($this->accentWorlds[$k] ?? $k);
+            $this->data->$k = ($this->data->$k ?? $v);
+        }
     }
 
     private function getTransport(?string $cnpj, int $companyId = null)
     {
         $transport = new Transport();
-        // if($transportId) {
-        //     return $transport->load($transportId);
-        // } else {
-            $terms = "Cnpj = :Cnpj AND IDEmpresa = :IDEmpresa";
-            $params = "Cnpj={$cnpj}&IDEmpresa={$companyId}";
-        //}
+        $terms = "Cnpj = :Cnpj AND IDEmpresa = :IDEmpresa";
+        $params = "Cnpj={$cnpj}&IDEmpresa={$companyId}";
         return $transport->read("SELECT * FROM " . $transport::$entity . " WHERE {$terms}", $params)->fetch();
+    }
+
+    private function getSaleman(?string $login, int $companyId = null)
+    {
+        $saleman = new Saleman();
+        $terms = "LogON = :LogON AND IDEmpresa = :IDEmpresa";
+        $params = "LogON={$login}&IDEmpresa={$companyId}";
+        return $saleman->read("SELECT * FROM " . $saleman::$entity . " WHERE {$terms}", $params)->fetch();
     }
 
     public function createThisTable()

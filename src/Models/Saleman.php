@@ -3,35 +3,34 @@
 namespace Models;
 
 use Core\Model;
-use Database\Migrations\CreateTransportsTable;
+use Database\Migrations\CreateSalemansTable;
 
-class Transport extends Model implements Models
+class Saleman extends Model implements Models
 {
-    public static $entity = "Transportadora";
+    public static $entity = "Vendedor";
 
     /** @var array */
     private $required = [];
 
     public function load(int $id, string $columns = "*")
     {
-        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTransportadora={$id}");
+        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$id}");
 
         if($this->fail || !$load->rowCount()) {
             $this->message = "Transportadora não encontrada do id informado.";
             return null;
         }
-
         return $load->fetchObject(__CLASS__);
     }
 
-    public function find(string $cnpj, string $columns = "*")
+    public function find(string $login, string $columns = "*")
     {
-        if(filter_var($cnpj, FILTER_SANITIZE_STRIPPED)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE CNPJ=:CNPJ ", "CNPJ={$cnpj}");
+        if(filter_var($login, FILTER_SANITIZE_STRIPPED)) {
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE LogON=:LogON ", "LogON={$login}");
         }
 
         if($this->fail || empty($find)) {
-            $this->message = "Transportadora não encontrada.";
+            $this->message = "Vendedor não encontrado.";
             return null;
         }
 
@@ -39,7 +38,7 @@ class Transport extends Model implements Models
         //return $find->fetchObject(__CLASS__);
     }
 
-    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "RasSocial"): ?array
+    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "LogON"): ?array
     {
         $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE 1=1 " . $this->order($order);
         if($limit !== 0) {
@@ -58,7 +57,7 @@ class Transport extends Model implements Models
 
     public function save()
     {
-        static::$safe = ["IDTransportadora","created_at","updated_at"];
+        static::$safe = ["ID_Vendedor","created_at","updated_at"];
         if(!$this->required()) {
             return null;
         }
@@ -66,12 +65,12 @@ class Transport extends Model implements Models
         $this->validateFields();
 
         /** Update */
-        if($this->IDTransportadora) {
+        if($this->ID_Vendedor) {
             return $this->update_();
         }
 
         /** Create */
-        if(empty($this->IDTransportadora)) {
+        if(empty($this->ID_Vendedor)) {
             $this->create_();
         }
         return $this;
@@ -79,10 +78,10 @@ class Transport extends Model implements Models
 
     private function update_()
     {
-        if(!empty($this->IDTransportadora)) {
+        if(!empty($this->ID_Vendedor)) {
             /** increment false in LOJASCOM_N */
             $false = ($this->connectionDetails->local !== "lojascom" ?: false);
-            $this->otherCompanies(["Cnpj" => $this->CNPJ], $false);
+            $this->otherCompanies(["LogON" => $this->LogON], $false);
         }
 
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
@@ -92,33 +91,25 @@ class Transport extends Model implements Models
 
     public function create_()
     {
-        if(!empty($this->CNPJ) && $this->find($this->CNPJ)) {
-            $this->message = "<span class='warning'>Transporttadora informada já está cadastrada</span>";
+        if(!empty($this->LogON) && $this->find($this->LogON)) {
+            $this->message = "<span class='warning'>Vendedor informado já está cadastrado</span>";
         } else {
             /** increment false in LOJASCOM_N */
             $false = ($this->connectionDetails->local !== "lojascom" ?: false);
-            $id = $this->otherCompanies(["Cnpj" => $this->CNPJ], $false);
+            $id = $this->otherCompanies(["LogON" => $this->LogON], $false);
             if($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
-            $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTransportadora={$id}")->fetch();
+            $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$id}")->fetch();
         }
         return null;
     }
 
     protected function otherCompanies(array $where=[], bool $autoincrement = true)
     {
-        if(!empty($this->data->CNPJ)) {
-            $this->data->Cnpj = $this->data->CNPJ;
-        }
-        //$this->data->Cnpj = (empty($this->data->CNPJ) ?: $this->data->CNPJ);
-        $this->data->ATIVO = (empty($this->data->StatusAtivo) ?: $this->data->StatusAtivo);
-        unset($this->data->CNPJ, $this->data->NomeFantasia, $this->data->StatusAtivo, $this->data->Atividade);
-        //InscEsdatual, Fax, Tel02, HomePage
-
         $companys = (new Company())->all();
         $keys = array_keys($where);
         $terms = "";
@@ -131,7 +122,6 @@ class Transport extends Model implements Models
         $terms = substr($terms, 0, -1);
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
-            static::$safe = ["IDTransportadora","created_at","updated_at"];
             $transport = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
 
             $this->data->IDEmpresa = $company->ID;
@@ -139,14 +129,12 @@ class Transport extends Model implements Models
             if(!$transport->fetch()) {
                 if(!$autoincrement) {
                     static::$safe = ["created_at","updated_at"];
-                    $this->data->IDTransportadora = $this->lastId();
+                    $this->data->ID_vendedor = $this->lastId();
                 }
                 $id = $this->create(self::$entity, $this->safe());
             } else {
                 $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
             }
-
-            //( !$transport->fetch() ? $id = $this->create(self::$entity, $this->safe()) : $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}") );
         }
         return $id ?? null;
     }
@@ -154,14 +142,14 @@ class Transport extends Model implements Models
     public function destroy()
     {
         if(!empty($this->id)) {
-            $this->delete(self::$entity, "IDTransportadora=:IDTransportadora", "IDTransportadora={$this->id}");
+            $this->delete(self::$entity, "ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$this->id}");
         }
 
         if($this->fail()) {
-            $this->message = "Não foi possível remover Transportadora";
+            $this->message = "Não foi possível remover cadastro";
             return null;
         }
-        $this->message = "Transportadora foi removida com sucesso";
+        $this->message = "Cadastro removido com sucesso";
         $this->data = null;
 
         return $this;
@@ -169,15 +157,13 @@ class Transport extends Model implements Models
 
     private function lastId()
     {
-        $lastData = $this->all(1, 0, "IDTransportadora", "IDTransportadora DESC");
-        return ($lastData ? $lastData[0]->IDTransportadora + 1 : 1);
+        $lastData = $this->all(1, 0, "ID_Vendedor", "ID_Vendedor DESC");
+        return ($lastData ? $lastData[0]->ID_Vendedor + 1 : 1);
     }
 
     private function validateFields()
     {
-        if(!empty($this->data->cep)) {
-            unset($this->data->cep);
-        }
+        return null;
     }
 
     public function required(): bool
@@ -188,19 +174,18 @@ class Transport extends Model implements Models
                 return false;
             }
         }
-
         return true;
     }
 
     public function createThisTable()
     {
-        $sql = (new CreateTransportsTable())->up(self::$entity);
+        $sql = (new CreateSalemansTable())->up(self::$entity);
         return $this->createTable($sql);
     }
 
     public function dropThisTable()
     {
-        $sql = (new CreateTransportsTable())->down(self::$entity);
+        $sql = (new CreateSalemansTable())->down(self::$entity);
         return $this->dropTable($sql);
     }
 }

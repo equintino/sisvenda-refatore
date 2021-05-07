@@ -27,6 +27,9 @@ abstract class Model
     /** @var array connection details */
     protected $connectionDetails;
 
+    /**  */
+    protected $accentWorlds;
+
     public function __construct()
     {
         $this->connectionDetails = new Config();
@@ -89,11 +92,13 @@ abstract class Model
     {
         try {
             $columns = implode(", ", array_keys($data));
-            $values = ":" . implode(", :", array_keys($data));
-            $stmt = Connect::getInstance($msgDb)->prepare("INSERT INTO {$entity} ({$columns}) VALUES ({$values})");
-            $stmt->execute($this->filter($data));
+            $values = ":" . implode(", :", array_keys(removeAccentArray($data)));
+            $stmt = Connect::getInstance($msgDb)->prepare("INSERT INTO {$entity} (" . $this->getAccentWorlds($columns) . ") VALUES ({$values})");
+            //var_dump($stmt,$data,$this->filter(removeAccentArray($data)));die;
+            $stmt->execute($this->filter(removeAccentArray($data)));
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {
+            var_dump($exception);
             $this->fail = $exception;
             return null;
         }
@@ -159,11 +164,25 @@ abstract class Model
         return array_filter($safe_);
     }
 
+    private function getAccentWorlds($columns)
+    {
+        $worlds = explode(", ", $columns);
+        $arr = [];
+        foreach($worlds as $world) {
+            if(!empty($this->accentWorlds) && array_key_exists($world, $this->accentWorlds)) {
+                array_push($arr, $this->accentWorlds[$world]);
+            } else {
+                array_push($arr, $world);
+            }
+        }
+        return implode(", ",$arr);
+    }
+
     private function filter(array $data, array $filtered = []): ?array
     {
         $filter = [];
         foreach($data as $key => $value) {
-            if(!in_array($key, $filtered) && $value !== null) {
+            if(!in_array($key, $filtered) && $value != null) {
                 $filter[$key] = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
@@ -210,6 +229,7 @@ abstract class Model
             }
             $stmt->execute();
         } catch(PDOException $exception) {
+            var_dump($exception);
             $this->fail = $exception;
         }
         return $stmt;

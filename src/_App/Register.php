@@ -60,7 +60,7 @@ class Register extends Controller
         'CEP');
 
         $outrosCnpj = array('Vendedor', 'Bloqueio', 'Crédito', 'Revenda',
-        'IDTransportadora', 'IDEmpresa', 'ECF', 'LIMITE_CAIXAS', 'Conceito');
+        'IDTransportadora', 'IDEmpresa', 'ECF', 'LIMITE_CAIXAS', 'Conceito', 'BloqueioAVista');
 
         $this->view->insertTheme([ compact("page", "loading") ]);
         $this->view->render("register", [
@@ -127,7 +127,7 @@ class Register extends Controller
     {
         $client = new Client();
         $fields = [
-            "Nome","DataNasc","TelResid","Celular","Email","Rua","Num","Complemento","Bairro","Cidade","UF","CEP","NomeFantasia","InscEstadual","RasSocial","Tel01","Tel02","qsa","Contato","HomePage","Atividade","StatusAtivo","cep","Sócio01","Cep","IDTransportadora"
+            "Nome","DataNasc","TelResid","Celular","Email","Rua","Num","Complemento","Bairro","Cidade","UF","CEP","NomeFantasia","InscEstadual","RasSocial","Tel01","Tel02","qsa","Contato","HomePage","Atividade","StatusAtivo","cep","Sócio01","Cep","IDTransportadora","Vendedor"
         ];
 
         if(!empty($data["cpf"])) {
@@ -175,13 +175,13 @@ class Register extends Controller
             . substr($cnpj,8,4) . "-"
             . substr($cnpj,-2);
 
-        $transportDb = $transport->find($cnpj)[0];
+        $transportDb = $transport->find($cnpj);
 
         $obj = new \stdClass();
-        if(!empty($transportDb)) {
+        if(!empty($transportDb[0])) {
             foreach($fields as $field) {
                 $field_ = ($field !== "StatusAtivo" ? $field : "ATIVO");
-                $obj->$field = $transportDb->$field_;
+                $obj->$field = $transportDb[0]->$field_;
             }
             $obj->buttonText = "Atualizar";
         } else {
@@ -235,9 +235,6 @@ class Register extends Controller
         $clientDb = $client->find($search);
         if($clientDb) {
             foreach($data as $key => $value) {
-                // if($key === "DataNasc") {
-                //     $value = dateFormat($value);
-                // }
                 $clientDb->$key = $value;
             }
 
@@ -331,5 +328,4 @@ class Register extends Controller
         }
         return print(json_encode($listIds));
     }
-
 }

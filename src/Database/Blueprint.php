@@ -69,7 +69,6 @@ class Blueprint
             $this->array = null;
             $this->sql .= ", {$name} INT NOT NULL";
         }
-
         return $this;
     }
 
@@ -86,7 +85,6 @@ class Blueprint
             $this->array = null;
             $this->sql .= ", {$name} VARCHAR({$length}) NOT NULL";
         }
-
         return $this;
     }
 
@@ -100,8 +98,40 @@ class Blueprint
             case "sqlsrv":
                 $boolean = "BIT";
         }
-        $this->sql .= ", {$name} {$boolean} NOT NULL";
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} {$boolean} NOT NULL";
+            }
+        } else {
+            $this->array = null;
+            $this->sql .= ", {$name} {$boolean} NOT NULL";
+        }
+        return $this;
+    }
 
+    public function decimal(string $name, int $n, int $d): object
+    {
+        $this->sql .= ", {$name} DECIMAL({$n},{$d}) ";
+        return $this;
+    }
+
+    public function date(string $date): object
+    {
+        $this->sql .= ", {$date} DATE ";
+        return $this;
+    }
+
+    public function datetime(string $date): object
+    {
+        $this->sql .= ", {$date} DATETIME ";
+        return $this;
+    }
+
+    public function smalldatetime(string $date): object
+    {
+        $this->sql .= ", {$date} SMALLDATETIME ";
         return $this;
     }
 
@@ -129,35 +159,12 @@ class Blueprint
             $partTwo = substr($this->sql, $end + 4, strlen($this->sql));
             $this->sql = $partOne . $partTwo;
         }
-
         return $this;
     }
 
     public function unique(): object
     {
         $this->sql .= " UNIQUE";
-
-        return $this;
-    }
-
-    public function date(string $date): object
-    {
-        $this->sql .= ", {$date} DATE ";
-
-        return $this;
-    }
-
-    public function datetime(string $date): object
-    {
-        $this->sql .= ", {$date} DATETIME ";
-
-        return $this;
-    }
-
-    public function smalldatetime(string $date): object
-    {
-        $this->sql .= ", {$date} SMALLDATETIME ";
-
         return $this;
     }
 
@@ -165,7 +172,6 @@ class Blueprint
     {
         $default = is_numeric($default) ? (int) $default : $default;
         $this->sql .= " DEFAULT '{$default}'";
-
         return $this;
     }
 
@@ -187,7 +193,6 @@ class Blueprint
             "created_at DATETIME NOT NULL DEFAULT {$default}",
             "updated_at DATETIME NULL{$type}"
         ];
-
         return $this;
     }
 

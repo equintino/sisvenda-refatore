@@ -70,7 +70,6 @@ function dateFormat(?string $date)
         list($d, $m, $y) = explode("/", $date);
         $dateFormated = "{$y}-{$m}-{$d}";
         $datetime = new DateTime($dateFormated);
-        //return "{$y}-{$m}-{$d}";
         return $datetime->format("Y-m-d H:i:s");
     }
     if(preg_match('/-/', $date)) {
@@ -88,10 +87,10 @@ function removeAccent(string $string)
     return preg_replace(array("/(á|à|ã|â|ä)/","/(Á|À|Ã|Â|Ä)/","/(é|è|ê|ë)/","/(É|È|Ê|Ë)/","/(í|ì|î|ï)/","/(Í|Ì|Î|Ï)/","/(ó|ò|õ|ô|ö)/","/(Ó|Ò|Õ|Ô|Ö)/","/(ú|ù|û|ü)/","/(Ú|Ù|Û|Ü)/","/(ñ)/","/(Ñ)/","/(ç)/","/(Ç)/"),explode(" ","a A e E i I o O u U n N c C"),$string);
 }
 
-function removeAccentArray(array $array)
+function removeAccentArray(array $array): array
 {
     foreach($array as $key => $value) {
         $arr[removeAccent($key)] = $value;
     }
-    return $arr;
+    return $arr ?? [];
 }

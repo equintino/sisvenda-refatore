@@ -91,7 +91,6 @@ $(document).ready(function() {
 
         if(ok !== 0) {
             var data = $("form[id=" + formAtivo + "]").serialize();
-            console.log(data);
             var actButton = $(this).text().toLowerCase();
             saveAjaxData(data, actButton);
         }
@@ -104,37 +103,8 @@ $(document).ready(function() {
     $('#cnpj').mask('00.000.000/0000-00');
     $('#cel').mask("(00)00000-0000");
 
-
-    // $('#nascimento').blur(function(e)
-    // {
-    //     var dataNascimento = $(this).val().length;
-    //     if(dataNascimento !== 10)
-    //     {
-    //         subModal('A "Data de Aniversário" precisa estar no formato '
-    //             + '"dd/mm/aaaa".');
-    //     }
-    // });
-
     $('select[id=transp]').on("change", function() {
         hiddenFields('select[id=transp]');
-        // var transpId = $(this).val();/* cnpj */
-        // var companyId;
-        // var transpCnpj;
-        // $(this).children("option").each(function() {
-        //     if($(this).attr("value") === transpId) {
-        //         companyId = $(this).attr("data-companyId");
-        //         transpCnpj = $(this).attr("data-transpCnpj");
-        //     }
-        // });
-        // $('input[type=hidden]').each(function() {
-        //     if($(this).attr('name') === 'IDTransportadora') {
-        //         $(this).val(transpId);
-        //     } else if($(this).attr('name') === 'transpCompanyId') {
-        //         $(this).val(companyId);
-        //     } else if($(this).attr('name') === 'transpCnpj') {
-        //         $(this).val(transpCnpj);
-        //     }
-        // });
     });
 
     $(document).submit(function(e) {
@@ -532,7 +502,6 @@ function buscaCep(dom, formAtivo) {
 function saveAjaxData(data, act = "salvar") {
     var origem = cad === "ACESSO" ? "cad_pessoa" : "cad_cliente";
     IDEmpresa = typeof(IDEmpresa) === "undefined" ? null : IDEmpresa;
-    //var url = "../paginas/addAjax.php?origem=" + origem + "&act=" + cad + "&IDEmpresa=" + IDEmpresa;
     var url = "cadastro/" + act + "?origem=" + origem + "&act=" + cad + "&IDEmpresa=" + IDEmpresa;
     if(cad !== "CLIENTE") {
         url = cad.toLowerCase() + "/" + act;

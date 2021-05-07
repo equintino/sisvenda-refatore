@@ -19,30 +19,30 @@ class CreateClientsTable implements CreateTable
     public function up(string $entity): string
     {
         $schema = Schema::create($entity, $this->type, function(Blueprint $table) {
-            //$table->increment("ID_PFISICA");
             $table->increment("id");
             $table->int("ID_PFISICA");
-                //$table->string("RasãoSocial",100)->unique();
             $table->string("Nome,CPF")->nullable();
-                //$table->string("CNPJ",50)->unique();
+            $table->date("DataNasc")->nullable();
             $table->string("Rua,Num,Complemento,CEP,Bairro,Cidade")->nullable();
-            $table->string("Sexo,EstCivil,Salário,Bloqueio,Conceito,Revenda,Crédito,ECF")->nullable();
-            $table->string("Situação")->default("BOM");
+            $table->string("Sexo,EstCivil")->nullable();
+            $table->string("Situação")->default("BOM")->nullable();
             $table->string("UF",2)->nullable();
             $table->string("TelResid,Celular,Email")->nullable();
-                //$table->decimal(18,2)->nullable();
-            $table->bool("StatusAtivo")->nullable()->default(1);
+            $table->bool("StatusAtivo")->default(1)->nullable();
             $table->int("IDEmpresa")->default(1);
             $table->int("IDTransportadora")->nullable();
             $table->int("Vendedor")->nullable();
-                //$table->tynyint("IND_INTEGRA_SCWEB")->nullable();
-            $table->date("DataNasc")->nullable();
+            $table->string("Bloqueio,Conceito")->nullable();
+            $table->bool("Revenda")->nullable();
+            $table->decimal("Crédito",18,4)->nullable();
+            $table->decimal("Salário",18,4)->nullable();
+            $table->bool("BloqueioAVista,BloqueioAPrazo,OBSVENDA")->nullable();
+            $table->int("CFOPe,CFOPs")->nullable();
+            $table->bool("PersonalizaE,PersonalizaS,EspePagamento,ECF,consumidorFinal")->nullable();
+            $table->datetime("DataReg")->nullable();
             $table->timestamps();
             return $table->run();
         });
-
-        //'DataReg' => string '2020-06-27 11:50:00' (length=19)
-
         return $schema;
     }
 
