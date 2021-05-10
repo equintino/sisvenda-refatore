@@ -370,29 +370,36 @@ function buscaCnpj (formAtivo, cnpj) {
             cad: cad,
             cnpj: cnpj
         },
-        beforeSend: function(){
+        beforeSend: function() {
             $("form").find("input").not("[name=CNPJ]").val("");
             $(".loading, #mask_main").show();
         },
-        success: function(response){
+        success: function(response) {
+            console.log(response);
             $("form#" + formAtivo).find("[type=submit]").text(response.buttonText);
+            $("form#" + formAtivo + " [name=StatusAtivo]").attr("checked", false);
             if(response !== null) {
                 for(var i in response) {
                     if(response[i] !== null) {
                         switch(i) {
                             case "InscEsdatual":
-                                i_ = "InscEstadual";
+                                i = "InscEstadual";
                                 break;
                             case "Cep": case "cep":
-                                i_ = "CEP";
+                                i = "CEP";
                                 break;
-                            default:
-                                i_ = i;
+                            case "StatusAtivo":
+                                console.log(response[i]);
+                                $("form#" + formAtivo + " [data-ativo=0]").val(0);
+                                $("form#" + formAtivo + " [data-ativo=1]").val(1);
+                                $("form#" + formAtivo + " [name=" + i + "][data-ativo=" + response[i] + "]").attr("checked",true);
+                            // default:
+                            //     i_ = i;
                         }
-                    } else {
-                        i_ = i;
                     }
-                    $("form#" + formAtivo + " [name=" + i_ + "]").val(response[i]);
+                    if(i !== "StatusAtivo") {
+                        $("form#" + formAtivo + " [name=" + i + "]").val(response[i]);
+                    }
                 }
                 if(response["IDTransportadora"]){
                     $.ajax({

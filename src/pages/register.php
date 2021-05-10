@@ -175,20 +175,25 @@
                 </div>
             </div><!-- form row -->
             <div class="form-group form-row">
-                <div class="col-md">
+                <div class="col-md-3">
                     <label>Site: </label>
                     <input size=15 name="HomePage" id="homePage" value="<?= $site ?? null ?>" class="form-control" style="text-transform: lowercase"/>
                 </div>
+                <?php if(!preg_match('/transportadora/', $act)): ?>
                 <div class="col-md">
                     <label>Atividade Principal: </label>
                     <input type="text" name="<?= $identCnpj[5] ?? null ?>" id="Atividade" value="<?= $atv ?? null ?>" class="form-control" />
                 </div>
-                <div class="col-md-3">
-                    <label>Status: </label>
-                    <div class="form-group">
-                        <input type="text" name="<?= $identCnpj[6] ?? null ?>" value="<?= $situacao ?? null ?>" class="form-control" />
-                    </div><!-- form group -->
-                </div>
+                <?php endif ?>
+                <?php if(!preg_match('/fornecedor/', $act)): ?>
+                    <div class="col-md-3">
+                        <label>Status Ativo: </label>
+                        <div class="form-group" style="text-align: center">
+                            <label style="font-size: .8em">SIM</label><input type="radio" name="<?= $identCnpj[6] ?? null ?>" data-ativo="1" value="1" class="" style="height: 12px; margin: -20px 5px 0" checked/>
+                            <label style="font-size: .8em">NÃO</label><input type="radio" name="<?= $identCnpj[6] ?? null ?>" data-ativo="0" value="0" class="" style="height: 12px; margin: -20px 0 0 5px"/>
+                        </div><!-- form group -->
+                    </div>
+                <?php endif ?>
             </div><!-- form row -->
         </fieldset>
         <fieldset class="fieldset col ml-2">

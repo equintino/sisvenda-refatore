@@ -29,7 +29,7 @@ class Register extends Controller
         };
 
         /** Definindo empresa/id Transportadora */
-        $transpDb = (new Transport())->all(0);
+        $transpDb = (new Transport())->activeAll(0);
         if(!empty($transpDb)) {
             foreach ($transpDb as $value) {
                 if($value->Cnpj !== "" || $value->RasSocial === "SEM FRETE") {
@@ -72,7 +72,7 @@ class Register extends Controller
     {
         $cnpj = null;
         $cpf = null;
-        $act = "cad_trasportadora";
+        $act = "cad_transportadora";
         $page = "TRANSPORTADORA";
         $data["act"] = $act;
         $loading = theme("assets/img/loading.png");
@@ -82,7 +82,6 @@ class Register extends Controller
 
         if( $act === "cad_transportadora" ) {
             $identCnpj[1] = "RasSocial";
-            $fantasia = $rasSocial;
         }
 
         $endCnpj = array('Rua', 'Num', 'Complemento', 'Bairro', 'Cidade', 'UF',
@@ -180,8 +179,15 @@ class Register extends Controller
         $obj = new \stdClass();
         if(!empty($transportDb[0])) {
             foreach($fields as $field) {
-                $field_ = ($field !== "StatusAtivo" ? $field : "ATIVO");
-                $obj->$field = $transportDb[0]->$field_;
+                if($field === "StatusAtivo") {
+                    $obj->$field = $transportDb[0]->ATIVO;
+                } elseif($field === "InscEstadual") {
+                    $obj->$field = $transportDb[0]->InscEsdatual;
+                } elseif($field === "NomeFantasia") {
+                    $obj->$field = $transportDb[0]->RasSocial;
+                } else {
+                    $obj->$field = $transportDb[0]->$field;
+                }
             }
             $obj->buttonText = "Atualizar";
         } else {
@@ -210,7 +216,13 @@ class Register extends Controller
         $obj = new \stdClass();
         if(!empty($supplierDb)) {
             foreach($fields as $field) {
-                $obj->$field = $supplierDb->$field;
+                if($field === "CEP") {
+                    $obj->$field = $supplierDb->Cep;
+                } elseif($field === "InscEstadual") {
+                    $obj->$field = $supplierDb->InscEsdatual;
+                } else {
+                    $obj->$field = $supplierDb->$field;
+                }
             }
             $obj->buttonText = "Atualizar";
         } else {
@@ -223,7 +235,7 @@ class Register extends Controller
 
     public function update(array $data): string
     {
-        $data = array_filter($data);
+        $data = array_filter($data, "filterNull");
         $client = new Client();
         if(!empty($data["CNPJ"])) {
             $search = $data["CNPJ"];
@@ -237,7 +249,6 @@ class Register extends Controller
             foreach($data as $key => $value) {
                 $clientDb->$key = $value;
             }
-
             $clientDb->save();
             return print(json_encode($clientDb->message()));
         }
@@ -246,7 +257,7 @@ class Register extends Controller
 
     public function save(array $data): void
     {
-        $data = array_filter($data);
+        $data = array_filter($data, "filterNull");
         $client = new Client();
         $client::$entity = (!empty($data["CNPJ"]) ? "PJuridica" : "PFisica");
         foreach($data as $key => $value) {
@@ -258,11 +269,10 @@ class Register extends Controller
 
     public function saveTransport(array $data): void
     {
-        $data = array_filter($data);
+        $data = array_filter($data, "filterNull");
         $transport = new Transport();
         $transport::$entity = "Transportadora";
         foreach($data as $key => $value) {
-            ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
             $transport->$key = $value;
         }
         $transport->save();
@@ -271,27 +281,24 @@ class Register extends Controller
 
     public function updateTransport(array $data): string
     {
-        $data = array_filter($data);
+        $data = array_filter($data, "filterNull");
         $transport = new Transport();
-        $transportDb = $transport->find($data["CNPJ"])[0];
+        $transportDb = $transport->find($data["CNPJ"]);
         if($transportDb) {
             foreach($data as $key => $value) {
-                ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
-                $transportDb->$key = $value;
+                $transportDb[0]->$key = $value;
             }
-
-            $transportDb->save();
-            return print(json_encode($transportDb->message()));
+            $transportDb[0]->save();
+            return print(json_encode($transportDb[0]->message()));
         }
         return print(json_encode("<span class=warning>Registro não encontrado</span>"));
     }
 
     public function saveSupplier(array $data): void
     {
-        $data = array_filter($data);
+        $data = array_filter($data, "filterNull");
         $supplier = new Supplier();
         foreach($data as $key => $value) {
-            ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
             $supplier->$key = $value;
         }
         $supplier->save();
@@ -300,15 +307,13 @@ class Register extends Controller
 
     public function updateSupplier(array $data): string
     {
-        $data = array_filter($data);
+        $data = array_filter($data, "filterNull");
         $supplier = new Supplier();
         $supplierDb = $supplier->find($data["CNPJ"]);
         if($supplierDb) {
             foreach($data as $key => $value) {
-                ($key = $key === "InscEstadual" ? "InscEsdatual" : $key);
                 $supplierDb->$key = $value;
             }
-
             $supplierDb->save();
             return print(json_encode($supplierDb->message()));
         }

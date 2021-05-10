@@ -160,8 +160,7 @@ abstract class Model
         foreach(static::$safe as $unset) {
             unset($safe_[$unset]);
         }
-
-        return array_filter($safe_);
+        return array_filter($safe_, "filterNull");
     }
 
     private function getAccentWorlds($columns)

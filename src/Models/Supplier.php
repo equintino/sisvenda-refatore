@@ -165,14 +165,17 @@ class Supplier extends Model implements Models
         }
         $this->message = "Fornecedor foi removido com sucesso";
         $this->data = null;
-
         return $this;
     }
 
     private function validateFields(): void
     {
-        if(!empty($this->data->Atividade)) {
+        if(isset($this->data->Atividade)) {
             $this->data->Atividade = substr($this->data->Atividade, 0, 19);
+        }
+        if(isset($this->data->InscEstadual)) {
+            $this->data->InscEsdatual = $this->data->InscEstadual;
+            unset($this->data->InscEstadual);
         }
     }
 
@@ -184,7 +187,6 @@ class Supplier extends Model implements Models
                 return false;
             }
         }
-
         return true;
     }
 

@@ -56,6 +56,23 @@ class Transport extends Model implements Models
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
+    public function activeAll(int $limit=30, int $offset=0, string $columns = "*", string $order = "RasSocial"): ?array
+    {
+        $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE ATIVO=1 " . $this->order($order);
+        if($limit !== 0) {
+            $all = $this->read($sql . $this->limit(), "limit={$limit}&offset={$offset}");
+        } else {
+            $all = $this->read($sql);
+        }
+
+        if($this->fail || !$all->rowCount()) {
+            $this->message = "Sua consulta não retornou nenhum registro.";
+            return null;
+        }
+
+        return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
     public function save()
     {
         static::$safe = ["IDTransportadora","created_at","updated_at"];
@@ -111,11 +128,12 @@ class Transport extends Model implements Models
 
     protected function otherCompanies(array $where=[], bool $autoincrement = true)
     {
-        if(!empty($this->data->CNPJ)) {
+        if(isset($this->data->CNPJ)) {
             $this->data->Cnpj = $this->data->CNPJ;
         }
-        //$this->data->Cnpj = (empty($this->data->CNPJ) ?: $this->data->CNPJ);
-        $this->data->ATIVO = (empty($this->data->StatusAtivo) ?: $this->data->StatusAtivo);
+        if(isset($this->data->StatusAtivo)) {
+            $this->data->ATIVO = $this->data->StatusAtivo;
+        }
         unset($this->data->CNPJ, $this->data->NomeFantasia, $this->data->StatusAtivo, $this->data->Atividade);
         //InscEsdatual, Fax, Tel02, HomePage
 
@@ -175,8 +193,16 @@ class Transport extends Model implements Models
 
     private function validateFields()
     {
-        if(!empty($this->data->cep)) {
+        if(isset($this->data->cep)) {
             unset($this->data->cep);
+        }
+        if(isset($this->data->InscEstadual)) {
+            $this->data->InscEsdatual = $this->data->InscEstadual;
+            unset($this->data->InscEstadual);
+        }
+        if(isset($this->data->StatusAtivo)) {
+            $this->data->ATIVO = $this->data->StatusAtivo;
+            unset($this->data->StatusAtivo);
         }
     }
 

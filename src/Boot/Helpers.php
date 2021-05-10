@@ -94,3 +94,8 @@ function removeAccentArray(array $array): array
     }
     return $arr ?? [];
 }
+
+function filterNull($var)
+{
+    return $var != null;
+}
