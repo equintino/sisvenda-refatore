@@ -40,6 +40,7 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
     $minJS->add(__DIR__ . "/../../shared/scripts/script-security.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/script-config.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/script-register.js");
+    $minJS->add(__DIR__ . "/../../shared/scripts/script-management.js");
 
     /**
      * theme

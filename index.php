@@ -32,6 +32,8 @@
         $router->post("/senha/reseta", "User:reset");
         $router->post("/usuario/update", "User:update");
         $router->post("/usuario/save", "User:save");
+        $router->get("/gerenciamento", "Management:init");
+        $router->get("/gerenciamento/vendas", "Management:sale");
 
 
         /**
@@ -80,6 +82,7 @@
          * Searching data
          */
         $router->post("/transport/id/{}", "Register:getIdTransport");
+        $router->post("/company", "Company:list");
 
 
         /**

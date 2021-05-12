@@ -81,7 +81,9 @@ abstract class Safety
             "config" => "Configuração",
             "login" => "Login de Acesso",
             "register" => "Cadastro de Cliente",
-            "shield" => "Segurança"
+            "shield" => "Segurança",
+            "management" => "Gerenciamento",
+            "sale" => "Gerenciamento de Vendas"
         ];
         $key = trim($key);
         return (array_key_exists($key, $screens) ? $screens[$key] : $key);

@@ -7,8 +7,13 @@ $(document).ready(function() {
     /* general forms configuration */
     var formAtivo = "pj";
     var corBack = '#faffbd';
-    var ident = identification.split(' ');
-    cad = ident[ident.length-1];
+    var ident;
+    if(typeof(identification) !== "undefined") {
+        ident = identification.split(' ');
+        cad = ident[ident.length-1];
+    } else {
+        identification = null;
+    }
 
     /* fundo foco */
     $("input").blur(function() {

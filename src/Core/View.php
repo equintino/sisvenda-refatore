@@ -3,7 +3,6 @@
 namespace Core;
 
 use Models\Group;
-//use Controllers\Web;
 
 class View
 {
@@ -75,12 +74,10 @@ class View
         }
         /** allows or prohibits access */
         if(!empty($login) && $login->Group_id) {
-            //$screens = str_replace(" ","",(new Group())->load($login->Group_id)->access);
             $screens = (new Group())->load($login->Group_id)->access;
             foreach(explode(",", $screens) as $screen) {
                 array_push($this->access, trim($screen));
             }
-            //$this->access = explode(",", $screens);
         }
     }
 

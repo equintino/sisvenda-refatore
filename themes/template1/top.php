@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse pl-4" id="navbarSupportedContent" style="">
         <ul class="nav navbar-nav mr-auto">
             <li>
-                <a id="home" class="nav-link" href="<?= url("/") ?>" >
+                <a id="home" class="nav-link" href="<?= url("home") ?>" >
                     Home<span class="sr-only">(current)</span>
                 </a>
             </li>
@@ -37,29 +37,29 @@
                     Gerenciamento
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <?php if (!empty($access) && in_array('gerenciamento-orcamento', $access) || in_array("*", $access)): ?>
-                        <a href="<?= url("/orcamento") ?>" class="dropdown-item" >
-                            Orçamentos
-                        </a>
-                    <?php endif ?>
-                    <?php if (!empty($access) && in_array('venda', $access) || in_array("*", $access)): ?>
-                        <a href="<?= url("/gerenciamento") ?>" class="dropdown-item" >
-                            Vendas
-                        </a>
-                    <?php endif; ?>
-                    <?php if (!empty($access) && in_array('gerEntrega', $access) || in_array("*", $access)): ?>
-                        <a href="<?= url("/entrega") ?>" class="dropdown-item" >
-                            Entrega de Produtos
-                        </a>
-                    <?php endif; ?>
-                    <?php if (!empty($access) && in_array('preco', $access) || in_array("*", $access)): ?>
-                        <a href="<?= url("/preco") ?>" class="dropdown-item" >
+                    <?php if (!empty($access) && in_array('Gerenciamento de Preços', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("gerenciamento/precos") ?>" class="dropdown-item" >
                             Altera Preços
                         </a>
                     <?php endif; ?>
-                    <?php if (in_array('estoque', $access) || in_array("*", $access)): ?>
-                        <a href="../web/index.php?pagina=estoque" class="dropdown-item" >
+                    <?php if (!empty($access) && in_array('Gerenciamento de Entrega', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("gerenciamento/entregas") ?>" class="dropdown-item" >
+                            Entrega de Produtos
+                        </a>
+                    <?php endif; ?>
+                    <?php if (!empty($access) && in_array('Gerenciamento de Orçamento', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("gerenciamento/orcamento") ?>" class="dropdown-item" >
+                            Orçamentos
+                        </a>
+                    <?php endif ?>
+                    <?php if (in_array('Gerenciamento de Estoque', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("gerenciamento/estoque") ?>"  class="dropdown-item" >
                             Tempo no Estoque
+                        </a>
+                    <?php endif; ?>
+                    <?php if (!empty($access) && in_array('Gerenciamento de Vendas', $access) || in_array("*", $access)): ?>
+                        <a href="<?= url("gerenciamento/vendas") ?>" class="dropdown-item" >
+                            Vendas
                         </a>
                     <?php endif; ?>
                 </div>
