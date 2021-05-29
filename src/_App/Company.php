@@ -8,8 +8,11 @@ class Company extends Controller
     {
         $company = new \Models\Company();
 
-        foreach($company->all() as $datas) {
-            $companies[] = $datas->NomeFantasia;
+        foreach($company->activeAll() as $datas) {
+            $companies[$datas->ID] = [
+                "NomeFantasia" => $datas->NomeFantasia,
+                "CNPJ" => $datas->CNPJ
+            ];
         }
         return print(json_encode($companies));
     }

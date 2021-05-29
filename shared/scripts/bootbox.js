@@ -368,12 +368,10 @@
       if (options.title) {
         if (options.bootstrap > 3) {
           dialog.find('.modal-header').append(closeButton);
-        }
-        else {
+        } else {
           dialog.find('.modal-header').prepend(closeButton);
         }
-      }
-      else {
+      } else {
         closeButton.prependTo(body);
       }
     }
@@ -397,8 +395,7 @@
     if (options.onHide) {
       if ($.isFunction(options.onHide)) {
         dialog.on('hide.bs.modal', options.onHide);
-      }
-      else {
+      } else {
         throw new Error('Argument supplied to "onHide" must be a function');
       }
     }
@@ -408,8 +405,7 @@
     if (options.onHidden) {
       if ($.isFunction(options.onHidden)) {
         dialog.on('hidden.bs.modal', options.onHidden);
-      }
-      else {
+      } else {
         throw new Error('Argument supplied to "onHidden" must be a function');
       }
     }
@@ -417,8 +413,7 @@
     if (options.onShow) {
       if ($.isFunction(options.onShow)) {
         dialog.on('show.bs.modal', options.onShow);
-      }
-      else {
+      } else {
         throw new Error('Argument supplied to "onShow" must be a function');
       }
     }
@@ -428,8 +423,7 @@
     if (options.onShown) {
       if ($.isFunction(options.onShown)) {
         dialog.on('shown.bs.modal', options.onShown);
-      }
-      else {
+      } else {
         throw new Error('Argument supplied to "onShown" must be a function');
       }
     }
@@ -719,8 +713,7 @@
           if (options.step) {
             if (options.step === 'any' || (!isNaN(options.step) && parseFloat(options.step) > 0)) {
               input.attr('step', options.step);
-            }
-            else {
+            } else {
               throw new Error('"step" must be a valid positive number or the value "any". See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step for more information.');
             }
           }
@@ -898,8 +891,7 @@
       var message = $(templates.promptMessage).html(options.message);
       form.prepend(message);
       options.message = form;
-    }
-    else {
+    } else {
       options.message = form;
     }
 
@@ -945,8 +937,7 @@
     if (argn === 2 || typeof args[0] === 'string') {
       options[properties[0]] = args[0];
       options[properties[1]] = args[1];
-    }
-    else {
+    } else {
       options = args[0];
     }
 
@@ -1108,16 +1099,14 @@
         var isPrimary = false;
         if (options.swapButtonOrder) {
           isPrimary = index === 0;
-        }
-        else {
+        } else {
           isPrimary = index === total - 1;
         }
 
         if (total <= 2 && isPrimary) {
           // always add a primary to the main option in a one or two-button dialog
           button.className = 'btn-primary';
-        }
-        else {
+        } else {
           // adding both classes allows us to target both BS3 and BS4 without needing to check the version
           button.className = 'btn-secondary btn-default';
         }
@@ -1193,20 +1182,16 @@
     if (type === 'date') {
       if (min !== undefined && !(minValid = dateIsValid(min))) {
         console.warn('Browsers which natively support the "date" input type expect date values to be of the form "YYYY-MM-DD" (see ISO-8601 https://www.iso.org/iso-8601-date-and-time-format.html). Bootbox does not enforce this rule, but your min value may not be enforced by this browser.');
-      }
-      else if (max !== undefined && !(maxValid = dateIsValid(max))) {
+      } else if (max !== undefined && !(maxValid = dateIsValid(max))) {
         console.warn('Browsers which natively support the "date" input type expect date values to be of the form "YYYY-MM-DD" (see ISO-8601 https://www.iso.org/iso-8601-date-and-time-format.html). Bootbox does not enforce this rule, but your max value may not be enforced by this browser.');
       }
-    }
-    else if (type === 'time') {
+    } else if (type === 'time') {
       if (min !== undefined && !(minValid = timeIsValid(min))) {
         throw new Error('"min" is not a valid time. See https://www.w3.org/TR/2012/WD-html-markup-20120315/datatypes.html#form.data.time for more information.');
-      }
-      else if (max !== undefined && !(maxValid = timeIsValid(max))) {
+      } else if (max !== undefined && !(maxValid = timeIsValid(max))) {
         throw new Error('"max" is not a valid time. See https://www.w3.org/TR/2012/WD-html-markup-20120315/datatypes.html#form.data.time for more information.');
       }
-    }
-    else {
+    } else {
       if (min !== undefined && isNaN(min)) {
         minValid = false;
         throw new Error('"min" must be a valid number. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min for more information.');
@@ -1221,8 +1206,7 @@
     if (minValid && maxValid) {
       if (max <= min) {
         throw new Error('"max" must be greater than "min". See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max for more information.');
-      }
-      else {
+      } else {
         result = true;
       }
     }

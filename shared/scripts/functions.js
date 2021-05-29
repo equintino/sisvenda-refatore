@@ -12,25 +12,30 @@
       root.modal = factory(root.jQuery);
     }
 }(this, function init($, undefined) {
-    var modal = {
+    return modal = {
         nameModal: $("#boxe_main"),
         mask: $("#mask_main"),
         title: $("#boxe_main #title"),
         message: $("#boxe_main #message"),
         content: $("#boxe_main #content"),
-        close: function() {
+        buttons: $("#boxe_main #buttons"),
+        dialogue: $("#div_dialogue"),
+        closeEnable: function() {
             var that = this;
             $("#boxe_main .close, #mask_main").on("click", function() {
                 that.nameModal.hide();
                 that.mask.fadeOut();
+                that.content.find("div#content").remove();
+                that.dialogue.hide();
+                $("#mask_main").css("z-index","2");
             });
         },
         /** @var title, message, content */
         show: function(params) {
-            this.close();
+            this.closeEnable();
             if(params.title && params.title !== null) this.title.html(params.title).show();
             if(params.message && params.message !== null) this.message.html(params.message).show();
-            if(params.content && params.content !== null) this.content.load(params.content);
+            if(params.content && params.content !== null) this.content.load(params.content).show();
             this.mask.fadeIn();
             this.nameModal.fadeIn().css({
                 display: "flex",
@@ -42,20 +47,50 @@
             $("#boxe_main").hide();
         },
         confirm: function(params) {
-            this.close();
-            this.content.html("<div align='right'><button class='button cancel' value='0'>Cancela</button><button class='button error' style='margin-left: 3px' value='1'>Confirma</button></div>");
-            this.show(params);
+            this.dialogue.find("#title").html(params.title).show();
+            this.dialogue.find("#message").html(params.message).show();
+            this.dialogue.find("#buttons").html("<div align='right'><button class='button cancel' value='0'>Cancela</button><button class='button error' style='margin-left: 3px' value='1'>Confirma</button></div>");
+            this.dialogue.fadeIn().css({
+                display: "flex"
+            });
+            $("#mask_main").css({
+                "z-index": "4"
+            });
 
-            return this.content.find("button").on("button click", function() {
+            return this.dialogue.find("button").on("click", function() {
                 if($(this).val() == 0) {
-                    $("#boxe_main .close").trigger("click");
+                    $("#div_dialogue").hide();
+                    $("#mask_main").css("z-index","2");
                 } else {
                     return $(this).val();
                 }
             });
+        },
+        open: function(params) {
+            this.closeEnable();
+            if(params.title && params.title !== null) this.title.html(params.title).show();
+            if(params.message && params.message !== null) this.message.html(params.message).show();
+            if(params.content && params.content !== null) this.content.load(params.content).show();
+            this.mask.fadeIn();
+            this.nameModal.fadeIn().css({
+                display: "flex",
+                top: 0
+            });
+            this.complete();
+            return this;
+        },
+        complete: function(params) {
+            if(typeof(params) !== "undefined") {
+                this.buttons.html(params.buttons).show().css({
+                    "margin-bottom": "-23px"
+                });
+                params.callback();
+            }
+        },
+        close: function() {
+            $("#mask_main").trigger("click");
         }
     };
-    return modal;
 }));
 
 /** loading */
@@ -214,11 +249,10 @@ var getScreenAccess = function(element, check, groupName) {
             access += (access.length === 0 ? $(this).text() : "," + $(this).text());
         }
     });
-    var security = {
+    return {
         access: access,
         name: groupName
     };
-    return security;
 };
 
 /**
@@ -283,3 +317,15 @@ var saveData = function(link, data, msg = "Salvando") {
     });
     return success;
 };
+
+var sleep = function(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};
+
+var valReal = function(val) {
+    return parseFloat(val.replace(".","").replace(",","."));
+}
+
+var moeda = function(val) {
+    return val.toLocaleString('pt-br', {minimumFractionDigits: 2});
+}

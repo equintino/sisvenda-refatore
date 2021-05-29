@@ -50,10 +50,12 @@ class Blueprint
     {
         switch($this->type) {
             case "mysql":
-                return $this->sql .= "{$name} INT NOT NULL AUTO_INCREMENT PRIMARY KEY";
+                $this->sql .= "{$name} INT NOT NULL AUTO_INCREMENT PRIMARY KEY";
+                break;
             case "sqlsrv":
-                return $this->sql .= "{$name} INT NOT NULL IDENTITY(1,1) PRIMARY KEY";
+                $this->sql .= "{$name} INT NOT NULL IDENTITY(1,1) PRIMARY KEY";
         }
+        return $this->sql;
     }
 
     /** @var string name, @var string $null, @var string $default, */
@@ -113,25 +115,76 @@ class Blueprint
 
     public function decimal(string $name, int $n, int $d): object
     {
-        $this->sql .= ", {$name} DECIMAL({$n},{$d}) ";
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} DECIMAL({$n},{$d}) NOT NULL";
+            }
+        } else {
+            $this->array = null;
+            $this->sql .= ", {$name} DECIMAL({$n},{$d}) NOT NULL";
+        }
         return $this;
     }
 
-    public function date(string $date): object
+    public function date(string $name): object
     {
-        $this->sql .= ", {$date} DATE ";
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} DATE NOT NULL";
+            }
+        } else {
+            $this->array = null;
+            $this->sql .= ", {$name} DATE NOT NULL";
+        }
         return $this;
     }
 
-    public function datetime(string $date): object
+    public function datetime(string $name): object
     {
-        $this->sql .= ", {$date} DATETIME ";
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} DATETIME NOT NULL";
+            }
+        } else {
+            $this->array = null;
+            $this->sql .= ", {$name} DATETIME NOT NULL";
+        }
         return $this;
     }
 
-    public function smalldatetime(string $date): object
+    public function smalldatetime(string $name): object
     {
-        $this->sql .= ", {$date} SMALLDATETIME ";
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} SMALLDATETIME NOT NULL";
+            }
+        } else {
+            $this->array = null;
+            $this->sql .= ", {$name} SMALLDATETIME NOT NULL";
+        }
+        return $this;
+    }
+
+    public function varbinary(string $name): object
+    {
+        if(strpos($name, ",")) {
+            $this->array = $name;
+            $names = explode(",", $name);
+            foreach($names as $value) {
+                $this->sql .= ", {$value} VARBINARY(max) NOT NULL";
+            }
+        } else {
+            $this->array = null;
+            $this->sql .= ", {$name} VARBINARY(max) NOT NULL";
+        }
         return $this;
     }
 

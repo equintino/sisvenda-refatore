@@ -3,34 +3,34 @@
 namespace Models;
 
 use Core\Model;
-use Database\Migrations\CreateSalemansTable;
+use Database\Migrations\CreateCadArquivosTable;
 
-class Saleman extends Model implements Models
+class FileRegistration extends Model implements Models
 {
-    public static $entity = "Vendedor";
+    public static $entity = "CadArquivos";
 
     /** @var array */
     private $required = [];
 
-    public function load(int $id, string $columns = "*")
+    public function load(int $COD_ARQUIVO, string $columns = "*")
     {
-        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$id}");
+        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE COD_ARQUIVO=:COD_ARQUIVO", "COD_ARQUIVO={$COD_ARQUIVO}");
 
         if($this->fail || !$load->rowCount()) {
-            $this->message = "Transportadora não encontrada do id informado.";
+            $this->message = "Arquivo não encontrado";
             return null;
         }
         return $load->fetchObject(__CLASS__);
     }
 
-    public function find(string $login, string $columns = "*")
+    public function find(string $COD_DOCUMENTO, string $columns = "*")
     {
-        if(filter_var($login, FILTER_SANITIZE_STRIPPED)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE LogON=:LogON ", "LogON={$login}");
+        if(filter_var($COD_DOCUMENTO, FILTER_SANITIZE_STRIPPED)) {
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE COD_DOCUMENTO=:COD_DOCUMENTO ", "COD_DOCUMENTO={$COD_DOCUMENTO}");
         }
 
         if($this->fail || empty($find)) {
-            $this->message = "Vendedor não encontrado.";
+            $this->message = "Arquivo não encontrado.";
             return null;
         }
 
@@ -52,7 +52,7 @@ class Saleman extends Model implements Models
         return $data->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "LogON"): ?array
+    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "COD_ARQUIVO"): ?array
     {
         $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE 1=1 " . $this->order($order);
         if($limit !== 0) {
@@ -69,9 +69,9 @@ class Saleman extends Model implements Models
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function activeAll(int $limit=30, int $offset=0, string $columns = "*", string $order = "LogON"): ?array
+    public function activeAll(int $limit=30, int $offset=0, string $columns = "*", string $order = "COD_ARQUIVO"): ?array
     {
-        $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE ATIVO=1 " . $this->order($order);
+        $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE " . $this->order($order);
         if($limit !== 0) {
             $all = $this->read($sql . $this->limit(), "limit={$limit}&offset={$offset}");
         } else {
@@ -86,9 +86,17 @@ class Saleman extends Model implements Models
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
+    public function readDataTable(string $sql, ?array $where)
+    {
+        if(empty($where)) {
+            return $this->activeAll();
+        }
+        //return $this->read($sql, $params);
+    }
+
     public function save()
     {
-        static::$safe = ["ID_Vendedor","created_at","updated_at"];
+        static::$safe = ["id","created_at","updated_at"];
         if(!$this->required()) {
             return null;
         }
@@ -96,12 +104,12 @@ class Saleman extends Model implements Models
         $this->validateFields();
 
         /** Update */
-        if($this->ID_Vendedor) {
+        if($this->COD_ARQUIVO) {
             return $this->update_();
         }
 
         /** Create */
-        if(empty($this->ID_Vendedor)) {
+        if(empty($this->COD_ARQUIVO)) {
             $this->create_();
         }
         return $this;
@@ -109,10 +117,8 @@ class Saleman extends Model implements Models
 
     private function update_()
     {
-        if(!empty($this->ID_Vendedor)) {
-            /** increment false in LOJASCOM_N */
-            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
-            $this->otherCompanies(["LogON" => $this->LogON], $false);
+        if(!empty($this->COD_ARQUIVO)) {
+            $this->otherCompanies(["COD_ARQUIVO" => $this->COD_ARQUIVO]);
         }
 
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
@@ -122,25 +128,23 @@ class Saleman extends Model implements Models
 
     public function create_()
     {
-        if(!empty($this->LogON) && $this->find($this->LogON)) {
-            $this->message = "<span class='warning'>Vendedor informado já está cadastrado</span>";
+        if(!empty($this->COD_ARQUIVO) && $this->find($this->COD_ARQUIVO)) {
+            $this->message = "<span class='warning'>Arquivo informado já está cadastrado</span>";
         } else {
-            /** increment false in LOJASCOM_N */
-            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
-            $id = $this->otherCompanies(["LogON" => $this->LogON], $false);
+            $COD_ARQUIVO = $this->otherCompanies(["COD_ARQUIVO" => $this->COD_ARQUIVO]);
             if($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
-            $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
+            $this->message = "<span class='success'>Arquivo salvo com sucesso</span>";
 
-            $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$id}")->fetch();
+            $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE COD_ARQUIVO=:COD_ARQUIVO", "COD_ARQUIVO={$COD_ARQUIVO}")->fetch();
         }
         return null;
     }
 
     protected function otherCompanies(array $where=[], bool $autoincrement = true)
-    {
+    {/** Identificar a empresa */
         $companys = (new Company())->all();
         $keys = array_keys($where);
         $terms = "";
@@ -153,34 +157,47 @@ class Saleman extends Model implements Models
         $terms = substr($terms, 0, -1);
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
-            $transport = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
+            $transport = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND COD_EMPRESA={$company->ID}", $params);
 
-            $this->data->IDEmpresa = $company->ID;
+            $this->data->COD_EMPRESA = $company->ID;
 
             if(!$transport->fetch()) {
                 if(!$autoincrement) {
                     static::$safe = ["created_at","updated_at"];
-                    $this->data->ID_vendedor = $this->lastId();
+                    $this->data->COD_ARQUIVO = $this->lastId();
                 }
                 $id = $this->create(self::$entity, $this->safe());
             } else {
-                $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
+                $this->update(self::$entity, $this->safe(), "{$terms} AND COD_EMPRESA={$company->ID}", "{$params}");
             }
         }
         return $id ?? null;
     }
 
+    public function showImage( $id )
+    {
+        $dados = $this->load($id);
+        if( isset($dados) ){
+            $type = $dados->IND_TIPO;
+            $img = $dados->ARQ_01;
+            header("Content-Type: {$type}");
+            return $img;
+        }else{
+            return false;
+        }
+    }
+
     public function destroy()
     {
-        if(!empty($this->id)) {
-            $this->delete(self::$entity, "ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$this->id}");
+        if(!empty($this->COD_ARQUIVO)) {
+            $this->delete(self::$entity, "COD_ARQUIVO=:COD_ARQUIVO", "COD_ARQUIVO={$this->COD_ARQUIVO}");
         }
 
         if($this->fail()) {
-            $this->message = "Não foi possível remover cadastro";
+            $this->message = "Não foi possível remover arquivo";
             return null;
         }
-        $this->message = "Cadastro removido com sucesso";
+        $this->message = "Arquivo removido com sucesso";
         $this->data = null;
 
         return $this;
@@ -188,8 +205,8 @@ class Saleman extends Model implements Models
 
     private function lastId()
     {
-        $lastData = $this->all(1, 0, "ID_Vendedor", "ID_Vendedor DESC");
-        return ($lastData ? $lastData[0]->ID_Vendedor + 1 : 1);
+        $lastData = $this->all(1, 0, "COD_ARQUIVO", "COD_ARQUIVO DESC");
+        return ($lastData ? $lastData[0]->COD_ARQUIVO + 1 : 1);
     }
 
     private function validateFields()
@@ -210,13 +227,13 @@ class Saleman extends Model implements Models
 
     public function createThisTable()
     {
-        $sql = (new CreateSalemansTable())->up(self::$entity);
+        $sql = (new CreateCadArquivosTable())->up(self::$entity);
         return $this->createTable($sql);
     }
 
     public function dropThisTable()
     {
-        $sql = (new CreateSalemansTable())->down(self::$entity);
+        $sql = (new CreateCadArquivosTable())->down(self::$entity);
         return $this->dropTable($sql);
     }
 }

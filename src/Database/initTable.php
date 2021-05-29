@@ -79,7 +79,7 @@ $transport = new Models\Transport();
 $transport->createThisTable();
 $data = [
     "RasSocial" => "SEM FRETE",
-    "Cnpj" => " ",
+    "Cnpj" => null,
     "IDEmpresa" => 1,
     "Contato" => "Sem Contato"
 ];
@@ -111,6 +111,34 @@ $data = [
 $saleman->bootstrap($data);
 $saleman->save();
 echo "Vendedor - " . $saleman->message() . "<br>";
+
+/** init table Venda */
+$sale = new Models\Sale();
+$sale->createThisTable();
+$data = [
+    "Pedido" => "1",
+    "CNPJeCPF" => "111.111.111-11",
+    "IDEmpresa" => "1"
+];
+$sale->bootstrap($data);
+$sale->save();
+echo "Pedido - " . $sale->message() . "<br>";
+
+/** init table CadArquivos */
+$file = new Models\FileRegistration();
+$file->createThisTable();
+$data = [
+    "COD_ARQUIVO" => 1,
+    "IND_LOCAL" => "1",
+    "COD_EMPRESA" => "1",
+    "COD_DOCUMENTO" => "1111",
+    "NOM_ARQUIVO" => "teste.pdf",
+    "DAT_INCLUSAO" => date("Y-m-d"),
+    "IND_TIPO" => "1"
+];
+$file->bootstrap($data);
+$file->save();
+echo "Arquivo - " . $file->message() . "<br>";die;
 
 /** init table Configs */
 // $config = new Source\Models\Config();

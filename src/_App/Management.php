@@ -27,9 +27,38 @@ class Management extends Controller
         $loading = $this->loading;
         $sitList = ['Entregue','Devolvido','Conferindo','Liberado','Não Liberado','Não Disponivel'];
         $sts = array('C' => 'VENDA CANCELADA', 'CO' => 'ORÇAMENTO CANCELADO','V' => 'VENDA DE PRODUTO', 'O' => 'ORÇAMENTO COM RESERVA','S' => 'ORÇAMENTO SIMPLES');
+        /** fields displayed in the table */
+        $fields = "Pedido,Controle,NFNum,NomeCliente,CNPJeCPF,DataVenda,HoraVenda,Vendedor,Situação,DESATIVO,PAGO,Valor,Status,CustoVenda, TabComissao,CreditoUtilizado,Frete,NUM_RASTREIOCORREIOS,ORIGEM,IDCliente,TipoCliente,IDEMPRESA,OBS";
+        $chTitles = [
+                1   => "Pedido",
+                2   => "Nº Controle",
+                3   => "Nota Fiscal",
+                4   => "Nome Cliente",
+                5   => "CNPJ/CPF",
+                6   => "Data Reg.",
+                7   => "Horário",
+                8   => "Vendedor",
+                9   => "Situação",
+                10  => "Desativar",
+                11  => "Pago",
+                12  => "Valor",
+                13  => "Status",
+                14  => "Custo Venda",
+                15  => "Comissão",
+                16  => "Créd. Dev.",
+                17  => "Frete",
+                18  => "Código Correio",
+                19  => "Origem",
+                20  => "Cód. Cliente",
+                21  => "Tipo Cliente",
+                22  => "Empresa",
+                23  => "OBS"
+            ];
+
+        $columns = explode(",", $fields);
 
         $this->view->insertTheme([ compact("page", "loading") ]);
-        $this->view->render("sale", [ compact("sitList", "sts") ]);
+        $this->view->render("sale", [ compact("sitList", "sts", "columns", "chTitles") ]);
     }
 
     // public function supplier(?array $data): void

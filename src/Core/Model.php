@@ -163,6 +163,11 @@ abstract class Model
         return array_filter($safe_, "filterNull");
     }
 
+    protected function setSafe(string $safe)
+    {
+        static::$safe = explode(",",$safe);
+    }
+
     private function getAccentWorlds($columns)
     {
         $worlds = explode(", ", $columns);

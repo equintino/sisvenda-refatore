@@ -41,8 +41,22 @@ class Company extends Model implements Models
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "
-            //. self::$entity . " WHERE ATIVO=1 "
             . self::$entity . " WHERE 1=1 "
+            . $this->order($order)
+            . $this->limit(), "limit={$limit}&offset={$offset}");
+
+        if($this->fail || !$all->rowCount()) {
+            $this->message = "Sua consulta não retornou nenhum registro.";
+            return null;
+        }
+
+        return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    public function activeAll(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
+    {
+        $all = $this->read("SELECT {$columns} FROM  "
+            . self::$entity . " WHERE ATIVO=1 "
             . $this->order($order)
             . $this->limit(), "limit={$limit}&offset={$offset}");
 
@@ -59,10 +73,11 @@ class Company extends Model implements Models
         if(!$this->required()) {
             return null;
         }
+        $this->setSafe("ID,created_at,updated_at");
 
         /** Update */
-        if(!empty($this->id)) {
-            $companyId = $this->id;
+        if(!empty($this->ID)) {
+            $companyId = $this->ID;
             $company = $this->read("SELECT id FROM " . self::$entity . " WHERE CNPJ = :CNPJ AND ID != :ID",
                 "CNPJ={$this->CNPJ}&ID={$companyId}");
             if($company->rowCount()) {
@@ -80,7 +95,7 @@ class Company extends Model implements Models
         }
 
         /** Create */
-        if(empty($this->id)) {
+        if(empty($this->ID)) {
             if($this->find($this->CNPJ)) {
                 $this->message = "A Empresa informada já está cadastrada.";
                 return null;
@@ -93,7 +108,6 @@ class Company extends Model implements Models
             $this->message = "Cadastro realizado com sucesso.";
         }
         $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID=:ID", "ID={$companyId}")->fetch();
-
         return $this;
     }
 
@@ -109,7 +123,6 @@ class Company extends Model implements Models
         }
         $this->message = "Empresa foi removida com sucesso";
         $this->data = null;
-
         return $this;
     }
 
@@ -121,7 +134,6 @@ class Company extends Model implements Models
                 return false;
             }
         }
-
         return true;
     }
 

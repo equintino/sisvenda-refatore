@@ -1,12 +1,519 @@
+/** functions */
+function openDoc(nDoc, pedido) {
+    var url = "image/" + nDoc;
+    var title = "Documento em anexo de número: " + nDoc;
+    modal.open({
+        title: title,
+        content: url
+    }).complete({
+        buttons: '<button class="button error" id="delete" > Excluir Anexo</button>',
+        callback: function() {
+            $("#boxe_main button#delete").on("click", function() {
+                var message = "Deseja realmente excluir o documento " + nDoc + "?";
+                var conf = modal.confirm({
+                    title: "Você está prestes a excluir o anexo",
+                    message: message
+                });
+                conf.on("click", function() {
+                    if($(this).val() == 1) {
+                        alertLatch("<div class='success'>Anexo (" + nDoc + ") escluído com sucesso... Brincadeirinha</div>","var(--cor-success)");
+                        modal.close();
+                    }
+                });
+            });
+        }
+    });
+}
+
+function getFormData(form) {
+    var form        = $("form#filtroGerVenda");
+    var busca       = form.find("input[name=busca]").val();
+    var tBusca      = form.find("input[name=tBusca]:checked").val();
+    var pg          = form.find("input[name=pg]:checked").val();
+    var desativado  = form.find("input[name=desativado]:checked").val();
+    var saleman     = form.find("select[name=saleman] :selected").val();//attr("data-id");
+    var pago        = form.find("input[name=pago]:checked").val();
+    var dtInicio    = form.find("input[name=dtInicio]").val();
+    var dtFim       = form.find("input[name=dtFim]").val();
+    var situacao    = form.find("select[name=situacao] :selected").val();
+    var status      = form.find("select[name=status] :selected").val();
+    var activeSale  = form.find("input[name=activeSale]:checked").val();
+    var companies   = form.find("select[name=companies] :selected").val();
+
+    var situations = form.find("select[name=situacao]").children("Option");
+    var sts = form.find("select[name=status]").children("Option");
+
+    sitList = [];
+    stsList = [];
+    situations.each(function() {
+        sitList.push($(this).attr("value"));
+    });
+    sts.each(function() {
+        stsList.push({
+            "value": $(this).attr("value"),
+            "name": $(this).text()
+        });
+    });
+    return {
+        busca, tBusca, pg, desativado, saleman, pago,dtInicio, dtFim, situacao, status, activeSale, companies,sitList,stsList
+    };
+}
+
+function loadDataTable() {
+    //var dataForm = getFormData();
+    var columns = [
+        {
+            data: null,
+            targets: [ 0 ],
+            class: "details-control",
+            visible: true,
+            orderable: false,
+            searchable: false,
+            defaultContent: ""
+        },
+        { data: "Pedido"                },
+        { data: "Controle"              },
+        { data: "NFNum"                 },
+        { data: "NomeCliente"           },
+        { data: "CNPJeCPF"              },
+        { data: "DataVenda"             },
+        { data: "HoraVenda"             },
+        { data: "Vendedor"              },
+        { data: "Situação"              },
+        { data: "DESATIVO"              },
+        { data: "PAGO"                  },
+        { data: "Valor"                 },
+        { data: "Status"                },
+        { data: "CustoVenda"            },
+        { data: "TabComissao"           },
+        { data: "CreditoUtilizado"      },
+        { data: "Frete"                 },
+        { data: "NUM_RASTREIOCORREIOS"  },
+        { data: "ORIGEM"                },
+        { data: "IDCliente"             },
+        { data: "TipoCliente"           },
+        { data: "IDEMPRESA"             },
+        {
+            data: "OBS",
+            visible: false,
+            searchable: false,
+            orderable: false
+        },
+        {
+            data: "Arquivos",
+            visible: true,
+            orderable: false
+        },
+        {
+            data: "Documentos",
+            visible: true,
+            orderable: false
+        },
+        {
+            data: "Produto",
+            visible: false
+        }
+    ];
+
+    //if(typeof(tabSale) !== "undefined")tabSale.destroy();
+
+    tabSale = $("#tabSale").on("xhr.dt", function(e,settings, json, xhr) {
+
+    }).DataTable({
+        processing      : true,
+        serverSide      : true,
+        paging          : true,
+        searching       : true,
+        ordering        : true,
+        colReorder      :
+            {
+                fixedColumnsLeft: 2,
+                fixedColumnsRight: 5
+        },
+        stateSave       : true,
+        info            : true,
+        lengthChange    : true,
+        aLengthMenu     : [
+            [ 25, 50, 100, 200, 300, 400, 500 ],
+            [ 25, 50, 100, 200, 300, 400, 500 ]
+        ],
+        iDisplayLength  : 25,
+        scrollCollapse  : true,
+        scrollY         : 350,
+        scrollX         : true,
+        select          : true,
+        ajax            :
+            {
+                url      : "../sale",
+                enctype  : "multipart/form-data",
+                type     : "POST",
+                dataType : "JSON",
+                data     : getFormData(),
+                async    : true,
+                beforeSend: function(data) {
+                    $("#mask_main").show();
+                    // $(".screen, #mask_main").show();
+                    // $(".progress-bar").css({
+                    //     width: 0 + "%"
+                    // }).text(0 + "%");
+
+                    /**
+                     * showing
+                     */
+                    //var tab = $("#tabSale").DataTable();
+                    //var pageInfo = tab.page.info();
+                    //var showing = parseInt(pageInfo.length);
+                    //var currentPage = parseInt(pageInfo.page) + 1;
+
+                    var count = 0;
+                    var percent = 0;
+                    var countRepeated = 0;
+                    var totalRows;
+                    var lastPage;
+                    var extreRows = null;
+
+                    // var perc = function() {
+                    //     setTimeout(function() {
+                    //         $.ajax({
+                    //             url: "../web/percent.txt",
+                    //             type: "POST",
+                    //             dataType: "text",
+                    //             complete: function(response) {
+                    //                 var d = response["responseText"].split(",");
+                    //                 totalRows = d[0];
+                    //                 count = ( d.length ===  1 ? 0 : d[d.length - 1] );
+
+                    //                 extreRows = totalRows % showing;
+                    //                 if(extreRows !== 0) {
+                    //                     lastPage = parseInt(totalRows / showing) + 1;
+                    //                 } else {
+                    //                     lastPage = parseInt(totalRows / showing);
+                    //                 }
+                    //                 /** is last page */
+                    //                 showing = (currentPage === lastPage ? extreRows : showing);
+                    //                 percent =  parseInt(count * 100/showing);
+
+                    //                 var percentPlus = (percent === 99 && countRepeated > 2 ? 100 : percent);
+
+                    //                 /** avoid infinite loop */
+                    //                 if(typeof(countOld) !== "undefined" && countOld === count) {
+                    //                     countRepeated++;
+                    //                 } else {
+                    //                     countRepeated = 3;
+                    //                 }
+                    //                 var countOld = count;
+
+                    //                 $(".progress-bar").css({
+                    //                     width: percentPlus + "%"
+                    //                 }).text(percentPlus + "%");
+                    //                 if(percentPlus >= 100 || countRepeated > 30) {
+                    //                     clearInterval(interval);
+                    //                 }
+                    //             }
+                    //         });
+                    //     }, 900);
+                    // };
+
+                    /** loop for progress bar */
+                    // interval = setInterval (function() {
+                    //         perc();
+                    //     }, 50);
+
+                },
+                error: function(xhr, ajaxOption, thrownError) {
+                    console.log(thrownError);
+                    alertLatch("<span class=danger>Servidor demorou a responder, tente novamente</span>", "var(--cor-danger)");
+                },
+                complete: function(response) {
+                    $("#mask_main").hide();
+                    //reorderCol(tabSale);
+                    //selectOnClick();
+                    // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
+                    // $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
+                }
+        },
+        // initComplete: function() {
+        //     setTimeout(function(){
+        //       $('.loading-overlay').remove();
+        //     }, 1500);
+        // },
+        columns: columns,
+        order: [[ 1, "desc" ]],
+        language: {
+                zeroRecords     : CONF_DATATABLE_ZERORECORDS,
+                infoEmpty       : CONF_DATATABLE_INFOEMPTY,
+                sSearch         : CONF_DATATABLE_SEARCH,
+                sProcessing     : CONF_DATATABLE_PROCESSING,
+                infoFiltered    : CONF_DATATABLE_INFOFILTERED,
+                info            : CONF_DATATABLE_INFO,
+                sLengthMenu     : CONF_DATATABLE_SLENGTHMENU,
+                paginate        : {'previous': 'Anterior','next': 'Próximo'}
+        },
+        footerCallback: function ( tfoot,row, data, start, end, display ) {
+            // Total over all pages
+            var api = this.api();
+
+            /** Valor */
+            var total = api
+                .column(12, { page: "current" })
+                .data()
+                .reduce( function (a, b) {
+                    return a + valReal(b);
+                }, 0 );
+
+            /** Custo Venda */
+            var totalCusto = api
+                .column(14, { page: "current" })
+                .data()
+                .reduce(function (a, b) {
+                    return a + valReal(bValue(b));
+                }, 0);
+
+            /** Comissão */
+            var totalComissao = api
+                .column(15, { page: "current"} )
+                .data()
+                .reduce(function (a, b) {
+                    return a + valReal(b);
+                }, 0);
+
+            /** Créd Dev. */
+            var pageTotalCred = api
+                    .column(16, {page: "current"})
+                    .data()
+                    .reduce(function (a, b) {
+                        return a + valReal(b);
+                    }, 0);
+
+            /** Frete */
+            var pageTotalFrete = api
+                    .column(17, { page: "current" })
+                    .data()
+                    .reduce(function (a, b) {
+                        return a + valReal(b);
+                    }, 0);
+
+            /* Desativado */
+            desativado = 0;
+            var desativadoLucro = 0;
+            var nRow;
+            var custoVenda;
+            var comissao;
+            var selectDesativado = api.column(10, { page: 'current'} ).nodes();
+
+            $.each(selectDesativado, function () {
+                var checked = $(this).find("input").prop("checked");
+                if (checked) {
+                    nRow = tabSale.row(this).index();
+                    custoVenda = valReal(bValue(api.row(nRow).data().CustoVenda));
+                    comissao = valReal(api.row(nRow).data().TabComissao);
+                    var cred = valReal(api.row(nRow).data().CreditoUtilizado);
+                    var frete = valReal(api.row(nRow).data().Frete);
+
+                    desativado += valReal(api.row(nRow).data().Valor);
+                    desativadoLucro += (desativado - custoVenda - comissao);
+                    totalCusto -= custoVenda;
+                    totalComissao -= comissao;
+                    pageTotalCred -= cred;
+                    pageTotalFrete -= frete;
+                }
+            });
+
+            /* Pago */
+            pago = 0;
+            var selecPago = api.column(11, { page: "current" }).nodes();
+
+            $.each(selecPago, function () {
+                var checked = $(this).find("input").prop("checked");
+
+                if (checked) {
+                    nRow = tabSale.row(this).index();
+                    pago += valReal(api.row(nRow).data().Valor);
+                }
+            });
+
+            // Update footer
+            var qtdOrc = api.rows().data().length;
+            var html = "<table id='tabFoot' widht='100%'><tr><td style='border-right: 1px solid white' ><span class='mr-4'>Total de Registro(s) " + qtdOrc + "<span></td><td>Total Valor: " + moeda(total) + "</td><td style='border-right: 1px solid white'><span class='mr-4'>Lucro: " + moeda(total - desativado - (totalCusto + totalComissao)) + "</span></td><td><span class='mr-4'>Custo: " + moeda(totalCusto) + "</span></span>Comissão: " + moeda(totalComissao) + "</span><br><span class=mr-4>Frete: " + moeda(pageTotalFrete) + "</span><span class='mr-4'>Crédito Devolvido: " + moeda(pageTotalCred) + "</span></td><td style='border-left: 1px solid white'>Pago: " + moeda(pago) + "</td><td><span class='mr-4'>Desativado: " + moeda(desativado) + "</span></td><td style='border-left: 1px solid white'>Total Geral: R$ " + moeda(total - desativado) + "</td></tr></table>";
+            $("#total").html(html);
+        }
+    });
+}
+
+/** Extract the value of input */
+function bValue(b) {
+    var value = "";
+    var word = "value=";
+    for(i in b) {
+        if( i > ( b.indexOf(word) + word.length) ) {
+            if(b[i] == '\'') break;
+            value += b[i];
+        }
+    }
+    return value;
+}
+
 $(document).ready(function() {
     $.ajax({
         url: "../company",
         type: "POST",
         dataType: "JSON",
         success: function(response) {
-            for(i in response) {
-                $("select[name=companies]").append("<option>" + response[i] + "</option>");
+            for(var i in response) {
+                $("select[name=companies]").append("<option value='" + i + "'>"
+                    + response[i].NomeFantasia + "</option>");
             }
         }
     });
+    $("select[name=companies]").on("change", function() {
+        var companyId = $(this).val();
+        var data = {
+            companyId
+        };
+        if(companyId !== "") {
+            $.ajax({
+                url: "../saleman",
+                type: "POST",
+                dataType: "JSON",
+                data: data,
+                beforeSend: function() {
+                    $("select[name=saleman] option").remove();
+                },
+                success: function(response) {
+                    var el = $("select[name=saleman]");
+                    el.attr("disabled", false);
+                    el.append("<option value=''></option>");
+                    for(var i in response) {
+                        el.append("<option value='" + response[i].ID_Vendedor + "'>" + response[i].LogON + "</option>");
+                    }
+                }
+            });
+        } else {
+            $("select[name=saleman]").val(0).attr("disabled", true);
+        }
+    });
+    $("input[name=pg]").on("change", function() {
+        if($("input[name=pg]").prop("checked")) {
+            $("input[name=pago]").attr("disabled", false);
+        } else {
+            $("input[name=pago]").attr("disabled", true);
+        }
+    });
+    $("select[name=status]").on("change", function() {
+        var status = $(this).val();
+        $("input[name=activeSale]").each(function() {
+            if(status === "C" || status === "CO") {
+                (
+                    $(this).attr("value") == 0 ?
+                        $(this).attr("checked",true) : $(this).attr("checked", false)
+                );
+            } else {
+                (
+                    $(this).attr("value") == 1 ?
+                        $(this).attr("checked", true) : $(this).attr("checked", false)
+                );
+            }
+        });
+    });
+    $("form#filtroGerVenda").on("submit", function(e) {
+        e.preventDefault();
+        tabSale.destroy();
+        console.log(loadDataTable());
+        // $("#tabSale").dataTable({
+        //     ajax:{
+        //         url      : "../sale",
+        //         enctype  : "multipart/form-data",
+        //         type     : "POST",
+        //         dataType : "JSON",
+        //         data     : dataForm,
+        //         async    : true,
+        //         beforeSend: function(data) {
+        //             // $(".screen, #mask_main").show();
+        //             // $(".progress-bar").css({
+        //             //     width: 0 + "%"
+        //             // }).text(0 + "%");
+
+        //             /**
+        //              * showing
+        //              */
+        //             //var tab = $("#tabSale").DataTable();
+        //             //var pageInfo = tab.page.info();
+        //             //var showing = parseInt(pageInfo.length);
+        //             //var currentPage = parseInt(pageInfo.page) + 1;
+
+        //             var count = 0;
+        //             var percent = 0;
+        //             var countRepeated = 0;
+        //             var totalRows;
+        //             var lastPage;
+        //             var extreRows = null;
+
+        //             // var perc = function() {
+        //             //     setTimeout(function() {
+        //             //         $.ajax({
+        //             //             url: "../web/percent.txt",
+        //             //             type: "POST",
+        //             //             dataType: "text",
+        //             //             complete: function(response) {
+        //             //                 var d = response["responseText"].split(",");
+        //             //                 totalRows = d[0];
+        //             //                 count = ( d.length ===  1 ? 0 : d[d.length - 1] );
+
+        //             //                 extreRows = totalRows % showing;
+        //             //                 if(extreRows !== 0) {
+        //             //                     lastPage = parseInt(totalRows / showing) + 1;
+        //             //                 } else {
+        //             //                     lastPage = parseInt(totalRows / showing);
+        //             //                 }
+        //             //                 /** is last page */
+        //             //                 showing = (currentPage === lastPage ? extreRows : showing);
+        //             //                 percent =  parseInt(count * 100/showing);
+
+        //             //                 var percentPlus = (percent === 99 && countRepeated > 2 ? 100 : percent);
+
+        //             //                 /** avoid infinite loop */
+        //             //                 if(typeof(countOld) !== "undefined" && countOld === count) {
+        //             //                     countRepeated++;
+        //             //                 } else {
+        //             //                     countRepeated = 3;
+        //             //                 }
+        //             //                 var countOld = count;
+
+        //             //                 $(".progress-bar").css({
+        //             //                     width: percentPlus + "%"
+        //             //                 }).text(percentPlus + "%");
+        //             //                 if(percentPlus >= 100 || countRepeated > 30) {
+        //             //                     clearInterval(interval);
+        //             //                 }
+        //             //             }
+        //             //         });
+        //             //     }, 900);
+        //             // };
+
+        //             /** loop for progress bar */
+        //             // interval = setInterval (function() {
+        //             //         perc();
+        //             //     }, 50);
+
+        //         },
+        //         error: function(xhr, ajaxOption, thrownError) {
+        //             console.log(thrownError);
+        //             alertLatch("<span class=danger>Servidor demorou a responder, tente novamente</span>", "var(--cor-danger)");
+        //         },
+        //         complete: function(response) {
+        //             //reorderCol(tabSale);
+        //             //selectOnClick();
+        //             // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
+        //             // $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
+        //         },
+        //         always: function() {
+        //             //$("#mask_main").hide();
+        //         }
+        //     }
+        // });
+    });
+
+    //var dataForm = getFormData();
+
+    loadDataTable();
 });

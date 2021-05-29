@@ -3,37 +3,36 @@
 namespace Models;
 
 use Core\Model;
-use Database\Migrations\CreateSalemansTable;
+use Database\Migrations\CreateSalesTable;
 
-class Saleman extends Model implements Models
+class Sale extends Model implements Models
 {
-    public static $entity = "Vendedor";
+    public static $entity = "Venda";
 
     /** @var array */
     private $required = [];
 
-    public function load(int $id, string $columns = "*")
+    public function load(int $salesOrder, string $columns = "*")
     {
-        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$id}");
+        $load = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE IDVenda_NEW=:IDVenda_NEW", "IDVenda_NEW={$salesOrder}");
 
         if($this->fail || !$load->rowCount()) {
-            $this->message = "Transportadora não encontrada do id informado.";
+            $this->message = "Pedido de Venda não encontrado";
             return null;
         }
         return $load->fetchObject(__CLASS__);
     }
 
-    public function find(string $login, string $columns = "*")
+    public function find(string $salesOrder, string $columns = "*")
     {
-        if(filter_var($login, FILTER_SANITIZE_STRIPPED)) {
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE LogON=:LogON ", "LogON={$login}");
+        if(filter_var($salesOrder, FILTER_SANITIZE_STRIPPED)) {
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Pedido=:Pedido ", "Pedido={$salesOrder}");
         }
 
         if($this->fail || empty($find)) {
-            $this->message = "Vendedor não encontrado.";
+            $this->message = "Pedido não encontrado.";
             return null;
         }
-
         return $find->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         //return $find->fetchObject(__CLASS__);
     }
@@ -52,7 +51,7 @@ class Saleman extends Model implements Models
         return $data->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "LogON"): ?array
+    public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "Pedido"): ?array
     {
         $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE 1=1 " . $this->order($order);
         if($limit !== 0) {
@@ -65,13 +64,12 @@ class Saleman extends Model implements Models
             $this->message = "Sua consulta não retornou nenhum registro.";
             return null;
         }
-
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function activeAll(int $limit=30, int $offset=0, string $columns = "*", string $order = "LogON"): ?array
+    public function activeAll(int $limit=30, int $offset=0, string $columns = "*", string $order = "Pedido"): ?array
     {
-        $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE ATIVO=1 " . $this->order($order);
+        $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE Status!='C' AND Status!='CO' " . $this->order($order);
         if($limit !== 0) {
             $all = $this->read($sql . $this->limit(), "limit={$limit}&offset={$offset}");
         } else {
@@ -86,9 +84,14 @@ class Saleman extends Model implements Models
         return $all->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
+    public function readDataTable(string $sql, array $where=null)
+    {
+        return $this->read($sql);
+    }
+
     public function save()
     {
-        static::$safe = ["ID_Vendedor","created_at","updated_at"];
+        static::$safe = ["IDVenda_NEW","created_at","updated_at"];
         if(!$this->required()) {
             return null;
         }
@@ -96,12 +99,12 @@ class Saleman extends Model implements Models
         $this->validateFields();
 
         /** Update */
-        if($this->ID_Vendedor) {
+        if($this->IDVenda_NEW) {
             return $this->update_();
         }
 
         /** Create */
-        if(empty($this->ID_Vendedor)) {
+        if(empty($this->IDVenda_NEW)) {
             $this->create_();
         }
         return $this;
@@ -109,38 +112,33 @@ class Saleman extends Model implements Models
 
     private function update_()
     {
-        if(!empty($this->ID_Vendedor)) {
-            /** increment false in LOJASCOM_N */
-            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
-            $this->otherCompanies(["LogON" => $this->LogON], $false);
+        if(!empty($this->Pedido)) {
+            $this->otherCompanies(["Pedido" => $this->Pedido]);
         }
 
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
-
         return null;
     }
 
     public function create_()
     {
-        if(!empty($this->LogON) && $this->find($this->LogON)) {
+        if(!empty($this->IDVenda_NEW) && $this->find($this->IDVenda_NEW)) {
             $this->message = "<span class='warning'>Vendedor informado já está cadastrado</span>";
         } else {
-            /** increment false in LOJASCOM_N */
-            $false = ($this->connectionDetails->local !== "lojascom" ?: false);
-            $id = $this->otherCompanies(["LogON" => $this->LogON], $false);
+            $IDVenda_NEW = $this->otherCompanies(["Pedido" => $this->Pedido]);
             if($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
-            $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
+            $this->message = "<span class='success'>Pedido salvo com sucesso</span>";
 
-            $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$id}")->fetch();
+            $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE IDVenda_NEWr=:IDVenda_NEW", "IDVenda_NEW={$IDVenda_NEW}")->fetch();
         }
         return null;
     }
 
     protected function otherCompanies(array $where=[], bool $autoincrement = true)
-    {
+    {/** Identificar a empresa */
         $companys = (new Company())->all();
         $keys = array_keys($where);
         $terms = "";
@@ -172,24 +170,23 @@ class Saleman extends Model implements Models
 
     public function destroy()
     {
-        if(!empty($this->id)) {
-            $this->delete(self::$entity, "ID_Vendedor=:ID_Vendedor", "ID_Vendedor={$this->id}");
+        if(!empty($this->IDVenda_NEW)) {
+            $this->delete(self::$entity, "IDVenda_NEW=:IDVenda_NEW", "IDVenda_NEW={$this->IDVenda_NEW}");
         }
 
         if($this->fail()) {
-            $this->message = "Não foi possível remover cadastro";
+            $this->message = "Não foi possível remover pedido";
             return null;
         }
-        $this->message = "Cadastro removido com sucesso";
+        $this->message = "Pedido removido com sucesso";
         $this->data = null;
-
         return $this;
     }
 
     private function lastId()
     {
-        $lastData = $this->all(1, 0, "ID_Vendedor", "ID_Vendedor DESC");
-        return ($lastData ? $lastData[0]->ID_Vendedor + 1 : 1);
+        $lastData = $this->all(1, 0, "Pedido", "Pedido DESC");
+        return ($lastData ? $lastData[0]->Pedido + 1 : 1);
     }
 
     private function validateFields()
@@ -210,13 +207,13 @@ class Saleman extends Model implements Models
 
     public function createThisTable()
     {
-        $sql = (new CreateSalemansTable())->up(self::$entity);
+        $sql = (new CreateSalesTable())->up(self::$entity);
         return $this->createTable($sql);
     }
 
     public function dropThisTable()
     {
-        $sql = (new CreateSalemansTable())->down(self::$entity);
+        $sql = (new CreateSalesTable())->down(self::$entity);
         return $this->dropTable($sql);
     }
 }

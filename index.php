@@ -83,6 +83,21 @@
          */
         $router->post("/transport/id/{}", "Register:getIdTransport");
         $router->post("/company", "Company:list");
+        $router->post("/saleman", "Saleman:load");
+        $router->post("/sale", "Sale:init");
+        $router->get("/gerenciamento/image/id/{id}", "FileRegistration:loadImage");
+
+
+        /**
+         * Images
+         */
+        $router->get("/image/{img}", "Image:open");
+
+
+        /**
+         * Modals
+         */
+        $router->get("/gerenciamento/image/{id}", "FileRegistration:init");
 
 
         /**
@@ -120,7 +135,7 @@
          * Error Redirect
          */
         if($router->error()) {
-            $router->redirect("/ops/{$router->error()}");
+            $router->redirect("../ops/{$router->error()}");
         }
     } else {
         (new Web())->start();

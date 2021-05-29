@@ -177,10 +177,10 @@ class Client extends Model implements Models
         //return $id ?? null;
     }
 
-    private function setSafe(string $safe)
-    {
-        static::$safe = explode(",",$safe);
-    }
+    // private function setSafe(string $safe)
+    // {
+    //     static::$safe = explode(",",$safe);
+    // }
 
     private function lastId(): int
     {

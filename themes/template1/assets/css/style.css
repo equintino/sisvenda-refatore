@@ -456,7 +456,7 @@ main .form-signin {
     display: none;
 }
 
-#boxe_main #title {
+#boxe_main #title, #div_dialogue #title {
     background: var(--cor-primary);
     height: var(--title-height);
     border-radius: 5px 5px 0 0;
@@ -510,6 +510,35 @@ main .form-signin {
 
 #boxe_main #button:hover {
     color: white;
+}
+
+#div_dialogue {
+    position: fixed;
+    width: 35%;
+    margin: 17% 33%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    pointer-events: auto;
+    background-clip: padding-box;
+    outline: 0;
+    background: #ffffff;
+    box-shadow: var(--box-shadow);
+    z-index: 4;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    border-radius: 5px;
+    display: none;
+}
+
+#div_dialogue #message {
+    padding: 20px 20px;
+}
+
+#div_dialogue #buttons {
+    margin-bottom: -20px;
 }
 
 /* button stylization */

@@ -29,15 +29,18 @@
                 <span id="button" class="close"><i class="fa fa-times-circle"></i></span>
                 <span id="message"></span>
                 <div id="content"></div>
+                <div id="buttons" style="text-align: right"></div>
             </section>
 
-            <!-- caixa de dialogo -->
-            <section id="div_dialogo" >
-                <div class="title"></div>
+            <!-- dialogue box -->
+            <section id="div_dialogue" >
+                <div id="title" class="title"></div>
                 <span id="message"></span>
+                <div id="content"></div>
+                <div id="buttons" style="text-align: right"></div>
             </section>
 
-            <!-- relatório do banco -->
+            <!-- bank report -->
             <section id='ajax' style="display: none">
                 <div><h5>Relatório de Resposta do Banco de Dados</h5></div>
                 <table id='tabAjax' class='display'></table>
