@@ -59,6 +59,21 @@ function getFormData(form) {
     };
 }
 
+function hideColumns() {
+    $("#hideSelection select[name=colunas] option").remove();
+    var options = "";
+    var numberColumnsTotal = tabSale.columns().data().length;
+    var validateColumn = [ "OBS","Arquivos","Documentos","Produto","Pedido","Empresa" ];
+    for(var x = 0; x < numberColumnsTotal; x++) {
+        var nameColumn = tabSale.columns(x).header()[0].innerText;
+        if(validateColumn.indexOf(nameColumn) === -1) {
+            var hide = (tabSale.column(x).visible() ? "" : "- ");
+            options += "<option value=" + x + ">" + hide + nameColumn + "</option>";
+        }
+    }
+    $("#hideSelection select[name=colunas]").append(options);
+}
+
 function loadDataTable() {
     //var dataForm = getFormData();
     var columns = [
@@ -125,10 +140,12 @@ function loadDataTable() {
         paging          : true,
         searching       : true,
         ordering        : true,
-        colReorder      :
-            {
+        colReorder      : {
                 fixedColumnsLeft: 2,
-                fixedColumnsRight: 5
+                fixedColumnsRight: 5,
+                reorderCallback: function() {
+                    hideColumns();
+                },
         },
         stateSave       : true,
         info            : true,
@@ -338,6 +355,7 @@ function loadDataTable() {
             $("#total").html(html);
         }
     });
+    return tabSale;
 }
 
 /** Extract the value of input */
@@ -415,105 +433,32 @@ $(document).ready(function() {
             }
         });
     });
+    $('#hideSelection select[name=colunas]').on('change', function (e) {
+        e.preventDefault();
+        if ($(this).val() != '') {
+            var column = tabSale.column($(this).val());
+            column.visible(!column.visible());
+        }
+        var title = $(this).val();
+        $(this).find("option").each(function() {
+            if($(this).attr("value") === title) {
+                var text = $(this).text();
+                if(text.substr(0, 1) !== "-") {
+                    $(this).text("- " + text);
+                } else {
+                    $(this).text(text.substr(2));
+                }
+            }
+        });
+        $(this).val('');
+    });
     $("form#filtroGerVenda").on("submit", function(e) {
         e.preventDefault();
+        console.log(tabSale);
+        tabSale.colReorder.reset();
         tabSale.destroy();
-        console.log(loadDataTable());
-        // $("#tabSale").dataTable({
-        //     ajax:{
-        //         url      : "../sale",
-        //         enctype  : "multipart/form-data",
-        //         type     : "POST",
-        //         dataType : "JSON",
-        //         data     : dataForm,
-        //         async    : true,
-        //         beforeSend: function(data) {
-        //             // $(".screen, #mask_main").show();
-        //             // $(".progress-bar").css({
-        //             //     width: 0 + "%"
-        //             // }).text(0 + "%");
-
-        //             /**
-        //              * showing
-        //              */
-        //             //var tab = $("#tabSale").DataTable();
-        //             //var pageInfo = tab.page.info();
-        //             //var showing = parseInt(pageInfo.length);
-        //             //var currentPage = parseInt(pageInfo.page) + 1;
-
-        //             var count = 0;
-        //             var percent = 0;
-        //             var countRepeated = 0;
-        //             var totalRows;
-        //             var lastPage;
-        //             var extreRows = null;
-
-        //             // var perc = function() {
-        //             //     setTimeout(function() {
-        //             //         $.ajax({
-        //             //             url: "../web/percent.txt",
-        //             //             type: "POST",
-        //             //             dataType: "text",
-        //             //             complete: function(response) {
-        //             //                 var d = response["responseText"].split(",");
-        //             //                 totalRows = d[0];
-        //             //                 count = ( d.length ===  1 ? 0 : d[d.length - 1] );
-
-        //             //                 extreRows = totalRows % showing;
-        //             //                 if(extreRows !== 0) {
-        //             //                     lastPage = parseInt(totalRows / showing) + 1;
-        //             //                 } else {
-        //             //                     lastPage = parseInt(totalRows / showing);
-        //             //                 }
-        //             //                 /** is last page */
-        //             //                 showing = (currentPage === lastPage ? extreRows : showing);
-        //             //                 percent =  parseInt(count * 100/showing);
-
-        //             //                 var percentPlus = (percent === 99 && countRepeated > 2 ? 100 : percent);
-
-        //             //                 /** avoid infinite loop */
-        //             //                 if(typeof(countOld) !== "undefined" && countOld === count) {
-        //             //                     countRepeated++;
-        //             //                 } else {
-        //             //                     countRepeated = 3;
-        //             //                 }
-        //             //                 var countOld = count;
-
-        //             //                 $(".progress-bar").css({
-        //             //                     width: percentPlus + "%"
-        //             //                 }).text(percentPlus + "%");
-        //             //                 if(percentPlus >= 100 || countRepeated > 30) {
-        //             //                     clearInterval(interval);
-        //             //                 }
-        //             //             }
-        //             //         });
-        //             //     }, 900);
-        //             // };
-
-        //             /** loop for progress bar */
-        //             // interval = setInterval (function() {
-        //             //         perc();
-        //             //     }, 50);
-
-        //         },
-        //         error: function(xhr, ajaxOption, thrownError) {
-        //             console.log(thrownError);
-        //             alertLatch("<span class=danger>Servidor demorou a responder, tente novamente</span>", "var(--cor-danger)");
-        //         },
-        //         complete: function(response) {
-        //             //reorderCol(tabSale);
-        //             //selectOnClick();
-        //             // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
-        //             // $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
-        //         },
-        //         always: function() {
-        //             //$("#mask_main").hide();
-        //         }
-        //     }
-        // });
+        loadDataTable();
     });
-
-    //var dataForm = getFormData();
-
     loadDataTable();
+    hideColumns();
 });

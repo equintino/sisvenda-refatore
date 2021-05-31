@@ -894,14 +894,6 @@ table#tabFiltro {
         <div id="hideSelection" >Ocultar Coluna:
             <select name="colunas">
                 <option value=""></option>
-                <?php
-                    foreach($columns as $column):
-                        if($column !== "Pedido" && $column !== "CNPJeCPF" && $column !== "IDEMPRESA" && $column !== "OBS"): ?>
-                        <option value="<?= $column ?>" >
-                    <?= ( array_key_exists($column, $chTitles) ? $chTitles[$column] : $column ) ?></option>
-                <?php
-                        endif;
-                    endforeach; ?>
             </select>
         </div>
         <form action="#" id="altOrc" enctype="multipart/form-data" method="POST">

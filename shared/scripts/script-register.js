@@ -74,7 +74,7 @@ $(document).ready(function() {
         }
     });
 
-    $("button[type=submit]").click( function() {
+    $("form#pf button[type=submit], form#pj button[type=submit]").click( function() {
         /** confirmar proposito */
         if(this["id"] === "cad_pessoa") {
             formAtivo = "acesso";
@@ -512,8 +512,8 @@ function buscaCep(dom, formAtivo) {
 }
 
 function saveAjaxData(data, act = "salvar") {
-    var origem = cad === "ACESSO" ? "cad_pessoa" : "cad_cliente";
-    IDEmpresa = typeof(IDEmpresa) === "undefined" ? null : IDEmpresa;
+    var origem = (cad === "ACESSO" ? "cad_pessoa" : "cad_cliente");
+    IDEmpresa = (typeof(IDEmpresa) === "undefined" ? null : IDEmpresa);
     var url = "cadastro/" + act + "?origem=" + origem + "&act=" + cad + "&IDEmpresa=" + IDEmpresa;
     if(cad !== "CLIENTE") {
         url = cad.toLowerCase() + "/" + act;
