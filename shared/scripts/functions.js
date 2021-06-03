@@ -327,5 +327,5 @@ var valReal = function(val) {
 }
 
 var moeda = function(val) {
-    return val.toLocaleString('pt-br', {minimumFractionDigits: 2});
+    return parseFloat(val).toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 }

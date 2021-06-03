@@ -39,7 +39,7 @@ class Management extends Controller
                 7   => "Horário",
                 8   => "Vendedor",
                 9   => "Situação",
-                10  => "Desativar",
+                10  => "Desativado",
                 11  => "Pago",
                 12  => "Valor",
                 13  => "Status",

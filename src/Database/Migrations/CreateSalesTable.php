@@ -21,7 +21,7 @@ class CreateSalesTable implements CreateTable
         $schema = Schema::create($entity, $this->type, function(Blueprint $table) {
             $table->increment("IDVenda_NEW");
             $table->int("Pedido");
-            $table->int("IDClient")->nullable();
+            $table->int("IDCliente")->nullable();
             $table->string("NomeCliente")->nullable();
             $table->string("CNPJeCPF");
             $table->string("InscEstadual,TipoCliente")->nullable();

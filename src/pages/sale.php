@@ -98,13 +98,13 @@ table#tabSale tbody {
     border: 4px solid gray;
 }
 
-table#tabSale tbody tr {
+/* table#tabSale tbody tr {
     background: #ffffff;
 }
 
 table#tabSale tbody .odd {
     background: #f9f9f9;
-}
+} */
 
 table#tabSale td, table#tabSale th {
     white-space: nowrap;
@@ -350,6 +350,13 @@ form {
     margin-top: 15px;
 }
 
+#tabSale .selected {
+    color: white;
+}
+
+#tabSale tbody tr {
+    cursor: pointer;
+}
 
 /* #topheader {
     background: #196430;
@@ -897,7 +904,7 @@ table#tabFiltro {
             </select>
         </div>
         <form action="#" id="altOrc" enctype="multipart/form-data" method="POST">
-            <table id="tabSale" class="compact display nowrap" width="100%" >
+            <table id="tabSale" class="table-striped compact display nowrap" width="100%" >
                 <thead>
                     <tr>
                         <th></th>

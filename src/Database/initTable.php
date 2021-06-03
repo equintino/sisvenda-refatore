@@ -138,7 +138,22 @@ $data = [
 ];
 $file->bootstrap($data);
 $file->save();
-echo "Arquivo - " . $file->message() . "<br>";die;
+echo "Arquivo - " . $file->message() . "<br>";
+
+/** init table Produto_Venda */
+$product = new Models\Product();
+$product->createThisTable();
+$data = [
+    "Pedido" => 1,
+    "IDProduto" => "1",
+    "Descrição" => "Produto de Teste",
+    "IDEmpresa" => "1"
+];
+$product->bootstrap($data);
+$product->save();
+echo "Produto - " . $product->message() . "<br>";die;
+
+
 
 /** init table Configs */
 // $config = new Source\Models\Config();

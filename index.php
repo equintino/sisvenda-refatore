@@ -86,6 +86,7 @@
         $router->post("/saleman", "Saleman:load");
         $router->post("/sale", "Sale:init");
         $router->get("/gerenciamento/image/id/{id}", "FileRegistration:loadImage");
+        $router->post("/produto", "Product:load");
 
 
         /**

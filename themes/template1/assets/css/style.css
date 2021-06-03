@@ -461,7 +461,7 @@ main .form-signin {
     height: var(--title-height);
     border-radius: 5px 5px 0 0;
     color: white;
-    font-size: var(--title-size);
+    font-size: 1.1em;
     padding: 3px 0 0 10px;
     text-transform: uppercase;
     font-weight: var(--title-weight);
@@ -477,6 +477,10 @@ main .form-signin {
 #boxe_main #content {
     padding: 10px 20px;
     font-size: .9rem;
+}
+
+#boxe_main > #content {
+    overflow: auto;
 }
 
 #boxe_main input, #boxe_main select {
@@ -531,10 +535,12 @@ main .form-signin {
     transition: opacity 400ms ease-in;
     border-radius: 5px;
     display: none;
+    //overflow: scroll;
 }
 
 #div_dialogue #message {
     padding: 20px 20px;
+    font-size: 1.3em;
 }
 
 #div_dialogue #buttons {

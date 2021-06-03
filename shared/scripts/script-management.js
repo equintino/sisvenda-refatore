@@ -74,8 +74,193 @@ function hideColumns() {
     $("#hideSelection select[name=colunas]").append(options);
 }
 
+function selectOnClick() {
+    /** Selection when clicking */
+    $("#tabSale tr td").on("click", function() {
+        /* Prevent from opening the (detail) */
+        if(!$(this).hasClass("details-control")) {
+            var tr = $(this).parents("tr");
+            $("#tabSale tbody tr").removeClass("selected").find("a").css("color","blue");
+            tr.addClass("selected");
+            tr.find("a").css("color", "white");
+        }
+    });
+}
+
+/** Extract the value of input */
+function bValue(b) {
+    var value = "";
+    var word = "value=";
+    for(i in b) {
+        if( i > ( b.indexOf(word) + word.length) ) {
+            if(b[i] == '\'') break;
+            value += b[i];
+        }
+    }
+    return value;
+}
+
+/** View product details */
+function productDetail(data) {
+    var align;
+    var dTab;
+    var tGeral = 0;
+    var obs = data["OBS"];
+    var titles = ["Item","Cód. Produto","Descrição","Un. Medida","Qtd","Valor","Valor Total","Obs"];
+    var table = "<table class='tabDetail' cellpadding=5 cellspacing=0 border=1" + " width='30%' ><thead><tr style='background: silver;'>";
+
+    for(var i in titles) {
+        align = (i !== '2' ? "style='text-align:center'" : null);
+        table += "<th "+ align +" style='padding: 4px'>"+ titles[i]+ "</th>";
+    }
+    $.ajax({
+        url: "../produto",
+        type: "POST",
+        dataType: "JSON",
+        data: data,
+        async: false,
+        beforeSend: function() {
+            $(".loading, #mask_main").show();
+        },
+        success: function(response) {
+            table += "<tr>";
+            var passed = 0;
+            var rows = response.length;
+            var align;
+            for(var codeProduct in response) {
+                align = "center";
+                table += "<tr>";
+                if(codeProduct !== "OBS" && codeProduct !== "rows") {
+                    for(var nameColumn in response[codeProduct]) {
+                        var unit = response[codeProduct]["UniMedida"];
+                        var value = response[codeProduct][nameColumn];
+                        if(nameColumn === "Quantidade") {
+                            var qtd = value;
+                            value = unit === "MT" ?
+                                parseFloat(value).toFixed(1) : parseInt(value);
+                        } else if(nameColumn === "Valor") {
+                            var price = value;
+                            value = moeda(value);
+                            align = "right";
+                        } else if(nameColumn === "Descrição") {
+                            align = "left";
+                        }
+                        table += "<td align=" + align + ">" + value + "</td>";
+                    }
+                    tGeral += (qtd * price);
+                    table += "<td align=right>" + moeda(qtd * price) + "</td>";
+                    if(passed++ === 0) {
+                        table += "<td rowspan='" + rows + "'><textarea cols=60 rows='" + rows + "' name=OBS >" + obs + "</textarea></td></tr>";
+                    }
+                }
+            }
+        },
+        error: function(error) {
+
+        },
+        complete: function() {
+            $(".loading, #mask_main").hide();
+        }
+    });
+    table += "</tbody><tfood><tr style='background:#eae9e8'><th colspan=6 style='text-align:right'>Total Geral: </th><th align=right> R$ " + moeda(tGeral) + "</th><th></th></tr></tfood>";
+    return table;
+}
+
+function footerTotal(api) {
+    var columnTotal = api.columns()[0].length;
+    var desativado = 0;
+    var pago = 0;
+    for(var x=0; x < columnTotal; x++) {
+        var columnName = api.column(x).header().innerText;
+        switch(columnName) {
+            case "Valor":
+                var total = api
+                    .column(x, { page: "current" })
+                    .data()
+                    .reduce( function (a, b) {
+                        return a + valReal(b);
+                    }, 0 );
+                break;
+            case "Custo Venda":
+                var totalCusto = api
+                    .column(x, { page: "current" })
+                    .data()
+                    .reduce(function (a, b) {
+                        return a + valReal(bValue(b));
+                    }, 0);
+                break;
+            case "Comissão":
+                var totalComissao = api
+                    .column(x, { page: "current"} )
+                    .data()
+                    .reduce(function (a, b) {
+                        return a + valReal(b);
+                    }, 0);
+                break;
+            case "Créd. Dev.":
+                var pageTotalCred = api
+                    .column(x, {page: "current"})
+                    .data()
+                    .reduce(function (a, b) {
+                        return a + valReal(b);
+                    }, 0);
+                break;
+            case "Frete":
+                var pageTotalFrete = api
+                    .column(x, { page: "current" })
+                    .data()
+                    .reduce(function (a, b) {
+                        return a + valReal(b);
+                    }, 0);
+                break;
+            case "Desativado":
+                var desativadoLucro = 0;
+                var nRow;
+                var custoVenda;
+                var comissao;
+                var selectDesativado = api.column(x, { page: 'current'} ).nodes();
+                break;
+            case "Pago":
+                var selecPago = api.column(x, { page: "current" }).nodes();
+
+                $.each(selecPago, function () {
+                    var checked = $(this).find("input").prop("checked");
+
+                    if (checked) {
+                        nRow = tabSale.row(this).index();
+                        pago += valReal(api.row(nRow).data().Valor);
+                    }
+                });
+        }
+    }
+    $.each(selectDesativado, function () {
+        var checked = $(this).find("input").prop("checked");
+        if (checked) {
+            nRow = tabSale.row(this).index();
+            custoVenda = valReal(bValue(api.row(nRow).data().CustoVenda));
+            comissao = valReal(api.row(nRow).data().TabComissao);
+            var cred = valReal(api.row(nRow).data().CreditoUtilizado);
+            var frete = valReal(api.row(nRow).data().Frete);
+
+            desativado += valReal(api.row(nRow).data().Valor);
+            desativadoLucro += (desativado - custoVenda - comissao);
+            totalCusto -= custoVenda;
+            totalComissao -= comissao;
+            pageTotalCred -= cred;
+            pageTotalFrete -= frete;
+        }
+    });
+
+    /* Pago */
+
+
+    // Update footer
+    var qtdOrc = api.rows().data().length;
+    var html = "<table id='tabFoot' widht='100%'><tr><td style='border-right: 1px solid white' ><span class='mr-4'>Total de Registro(s) " + qtdOrc + "<span></td><td>Total Valor: " + moeda(total) + "</td><td style='border-right: 1px solid white'><span class='mr-4'>Lucro: " + moeda(total - desativado - (totalCusto + totalComissao)) + "</span></td><td><span class='mr-4'>Custo: " + moeda(totalCusto) + "</span></span>Comissão: " + moeda(totalComissao) + "</span><br><span class=mr-4>Frete: " + moeda(pageTotalFrete) + "</span><span class='mr-4'>Crédito Devolvido: " + moeda(pageTotalCred) + "</span></td><td style='border-left: 1px solid white'>Pago: " + moeda(pago) + "</td><td><span class='mr-4'>Desativado: " + moeda(desativado) + "</span></td><td style='border-left: 1px solid white'>Total Geral: R$ " + moeda(total - desativado) + "</td></tr></table>";
+    $("#total").html(html);
+}
+
 function loadDataTable() {
-    //var dataForm = getFormData();
     var columns = [
         {
             data: null,
@@ -129,9 +314,6 @@ function loadDataTable() {
             visible: false
         }
     ];
-
-    //if(typeof(tabSale) !== "undefined")tabSale.destroy();
-
     tabSale = $("#tabSale").on("xhr.dt", function(e,settings, json, xhr) {
 
     }).DataTable({
@@ -146,6 +328,7 @@ function loadDataTable() {
                 reorderCallback: function() {
                     hideColumns();
                 },
+                realtime: true
         },
         stateSave       : true,
         info            : true,
@@ -158,9 +341,10 @@ function loadDataTable() {
         scrollCollapse  : true,
         scrollY         : 350,
         scrollX         : true,
-        select          : true,
-        ajax            :
-            {
+        select          : {
+            style: 'single'
+        },
+        ajax             : {
                 url      : "../sale",
                 enctype  : "multipart/form-data",
                 type     : "POST",
@@ -243,8 +427,8 @@ function loadDataTable() {
                 },
                 complete: function(response) {
                     $("#mask_main").hide();
+                    selectOnClick();
                     //reorderCol(tabSale);
-                    //selectOnClick();
                     // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
                     // $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
                 }
@@ -267,108 +451,10 @@ function loadDataTable() {
                 paginate        : {'previous': 'Anterior','next': 'Próximo'}
         },
         footerCallback: function ( tfoot,row, data, start, end, display ) {
-            // Total over all pages
-            var api = this.api();
-
-            /** Valor */
-            var total = api
-                .column(12, { page: "current" })
-                .data()
-                .reduce( function (a, b) {
-                    return a + valReal(b);
-                }, 0 );
-
-            /** Custo Venda */
-            var totalCusto = api
-                .column(14, { page: "current" })
-                .data()
-                .reduce(function (a, b) {
-                    return a + valReal(bValue(b));
-                }, 0);
-
-            /** Comissão */
-            var totalComissao = api
-                .column(15, { page: "current"} )
-                .data()
-                .reduce(function (a, b) {
-                    return a + valReal(b);
-                }, 0);
-
-            /** Créd Dev. */
-            var pageTotalCred = api
-                    .column(16, {page: "current"})
-                    .data()
-                    .reduce(function (a, b) {
-                        return a + valReal(b);
-                    }, 0);
-
-            /** Frete */
-            var pageTotalFrete = api
-                    .column(17, { page: "current" })
-                    .data()
-                    .reduce(function (a, b) {
-                        return a + valReal(b);
-                    }, 0);
-
-            /* Desativado */
-            desativado = 0;
-            var desativadoLucro = 0;
-            var nRow;
-            var custoVenda;
-            var comissao;
-            var selectDesativado = api.column(10, { page: 'current'} ).nodes();
-
-            $.each(selectDesativado, function () {
-                var checked = $(this).find("input").prop("checked");
-                if (checked) {
-                    nRow = tabSale.row(this).index();
-                    custoVenda = valReal(bValue(api.row(nRow).data().CustoVenda));
-                    comissao = valReal(api.row(nRow).data().TabComissao);
-                    var cred = valReal(api.row(nRow).data().CreditoUtilizado);
-                    var frete = valReal(api.row(nRow).data().Frete);
-
-                    desativado += valReal(api.row(nRow).data().Valor);
-                    desativadoLucro += (desativado - custoVenda - comissao);
-                    totalCusto -= custoVenda;
-                    totalComissao -= comissao;
-                    pageTotalCred -= cred;
-                    pageTotalFrete -= frete;
-                }
-            });
-
-            /* Pago */
-            pago = 0;
-            var selecPago = api.column(11, { page: "current" }).nodes();
-
-            $.each(selecPago, function () {
-                var checked = $(this).find("input").prop("checked");
-
-                if (checked) {
-                    nRow = tabSale.row(this).index();
-                    pago += valReal(api.row(nRow).data().Valor);
-                }
-            });
-
-            // Update footer
-            var qtdOrc = api.rows().data().length;
-            var html = "<table id='tabFoot' widht='100%'><tr><td style='border-right: 1px solid white' ><span class='mr-4'>Total de Registro(s) " + qtdOrc + "<span></td><td>Total Valor: " + moeda(total) + "</td><td style='border-right: 1px solid white'><span class='mr-4'>Lucro: " + moeda(total - desativado - (totalCusto + totalComissao)) + "</span></td><td><span class='mr-4'>Custo: " + moeda(totalCusto) + "</span></span>Comissão: " + moeda(totalComissao) + "</span><br><span class=mr-4>Frete: " + moeda(pageTotalFrete) + "</span><span class='mr-4'>Crédito Devolvido: " + moeda(pageTotalCred) + "</span></td><td style='border-left: 1px solid white'>Pago: " + moeda(pago) + "</td><td><span class='mr-4'>Desativado: " + moeda(desativado) + "</span></td><td style='border-left: 1px solid white'>Total Geral: R$ " + moeda(total - desativado) + "</td></tr></table>";
-            $("#total").html(html);
+            footerTotal(tabSale);
         }
     });
     return tabSale;
-}
-
-/** Extract the value of input */
-function bValue(b) {
-    var value = "";
-    var word = "value=";
-    for(i in b) {
-        if( i > ( b.indexOf(word) + word.length) ) {
-            if(b[i] == '\'') break;
-            value += b[i];
-        }
-    }
-    return value;
 }
 
 $(document).ready(function() {
@@ -454,11 +540,38 @@ $(document).ready(function() {
     });
     $("form#filtroGerVenda").on("submit", function(e) {
         e.preventDefault();
-        console.log(tabSale);
         tabSale.colReorder.reset();
         tabSale.destroy();
         loadDataTable();
     });
     loadDataTable();
     hideColumns();
+
+    $("#tabSale tbody").on("change", "td input[name=DESATIVO], td input[name=PAGO]", function() {
+        footerTotal(tabSale);
+    });
+
+    /* Hide and show details */
+    // Array to track the ids of the displayed details
+    var detailRows = [];
+    $('#tabSale tbody').on('click', 'tr td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = tabSale.row( tr );
+        var idx = $.inArray( tr.attr('id'), detailRows );
+
+        if (row.child.isShown()) {
+            tr.removeClass( 'details' );
+            row.child.hide();
+            // Remove from the 'open' array
+            detailRows.splice( idx, 1 );
+        } else {
+            tr.addClass( 'details' );
+            row.child(productDetail(row.data())).show();
+
+            // Add to the 'open' array
+            if ( idx === -1 ) {
+                 detailRows.push( tr.attr('id') );
+            }
+        }
+    });
 });

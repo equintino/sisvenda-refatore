@@ -22,7 +22,8 @@ class CreateClientsTable2 implements CreateTable
             $table->increment("id");
             $table->int("ID_PJURIDICA");
             $table->string("CNPJ");
-            $table->string("RasSocial,NomeFantasia,InscEstadual,Contato,Atividade,Sócio01")->nullable();
+            $table->string("RasSocial,NomeFantasia,InscEstadual,Contato,Atividade")->nullable();
+            $table->string("Sócio01")->nullable();
             $table->bool("StatusAtivo")->nullable()->default(1);
             $table->string("Rua,Num,Complemento,CEP,Bairro,Cidade")->nullable();
             $table->string("UF",2)->nullable();

@@ -193,23 +193,24 @@ class Blueprint
         if($this->array !== null) {
             $names = explode(",", $this->array);
             foreach($names as $name) {
-                $start = strpos($this->sql, $name);
-                $end = strpos(substr($this->sql, $start), ",");
+                $start = mb_strpos($this->sql, $name);
+                $end = mb_strpos(substr($this->sql, $start), "NULL,");
                 if($end) {
-                    $param = substr($this->sql, $start, $end);
+                    $param = substr($this->sql, $start, $end + mb_strlen("NULL,"));
                 } else {
                     $param = substr($this->sql, $start);
                 }
                 $newParam = str_replace("NOT ", "", $param);
 
                 $partOne = substr($this->sql, 0, $start);
-                $partTwo = substr($this->sql, $start + strlen($param));
+                $partTwo = substr($this->sql, $start + mb_strlen($param));
                 $this->sql = $partOne . $newParam . $partTwo;
             }
         } else {
             $end = strripos($this->sql, "NOT NULL");
             $partOne = substr($this->sql, 0, $end);
-            $partTwo = substr($this->sql, $end + 4, strlen($this->sql));
+            //$partTwo = substr($this->sql, $end + 4, mb_strlen($this->sql));
+            $partTwo = substr($this->sql, $end + 4);
             $this->sql = $partOne . $partTwo;
         }
         return $this;
