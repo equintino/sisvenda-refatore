@@ -93,6 +93,8 @@
          * Images
          */
         $router->get("/image/{img}", "Image:open");
+        $router->post("/percent", "Image:percent");
+        $router->post("/removeFile/file/{file}", "Image:removeFile");
 
 
         /**

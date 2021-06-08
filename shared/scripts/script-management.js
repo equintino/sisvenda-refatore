@@ -260,6 +260,55 @@ function footerTotal(api) {
     $("#total").html(html);
 }
 
+var perc = function(interval) {
+    /** showing */
+    var tab = $("#tabSale").DataTable();
+    var pageInfo = tab.page.info();
+    var currentPage = parseInt(pageInfo.page) + 1;
+    var showingPage = pageInfo.length;
+    countRepeated = (typeof(countRepeated) === "undefined" ? 0 : countRepeated);
+
+    //setTimeout(function() {
+        $.ajax({
+            url: "../src/public/percent.txt",
+                type: "POST",
+                dataType: "text",
+            beforeSend: function() {
+            },
+            complete: function(response) {
+                var d = response["responseText"].split(",");
+                var totalRows = parseInt(d[0]);
+                var count = parseInt( d.length ===  1 ? 0 : d[d.length - 1] );
+                var extreRows = totalRows % showingPage;
+                var lastPage = (extreRows !== 0 ? parseInt(totalRows / showingPage) + 1 : parseInt(totalRows / showingPage));
+
+                /** is last page */
+                var showing = (currentPage === lastPage ? extreRows : showingPage);
+                var percent =  parseInt(count * 100/showing);
+                //var percentPlus = (percent > 97 && countRepeated > 5 ? 100 : percent);
+                var percentPlus = percent;//(percent > 97 ? 100 : percent);
+
+                //console.log(countOld,count,countRepeated,percentPlus);
+                /** avoid infinite loop */
+                if(typeof(countOld) !== "undefined" && countOld == count) {
+                    countRepeated++;
+                } else {
+                    countRepeated = 0;
+                }
+                countOld = count;
+
+                $(".progress-bar").css({
+                    width: percent + "%"
+                }).text(percent + "%");
+                //if(percentPlus >= 100 && countRepeated > 30) {
+                if(countRepeated > 30) {
+                    clearInterval(interval);
+                }
+            }
+        });
+    //}, 1600);
+};
+
 function loadDataTable() {
     var columns = [
         {
@@ -353,18 +402,11 @@ function loadDataTable() {
                 async    : true,
                 beforeSend: function(data) {
                     $("#mask_main").show();
-                    // $(".screen, #mask_main").show();
-                    // $(".progress-bar").css({
-                    //     width: 0 + "%"
-                    // }).text(0 + "%");
+                    //$(".screen").show();
+                    $(".progress-bar").css({
+                        width: 0 + "%"
+                    }).text(0 + "%");
 
-                    /**
-                     * showing
-                     */
-                    //var tab = $("#tabSale").DataTable();
-                    //var pageInfo = tab.page.info();
-                    //var showing = parseInt(pageInfo.length);
-                    //var currentPage = parseInt(pageInfo.page) + 1;
 
                     var count = 0;
                     var percent = 0;
@@ -373,53 +415,10 @@ function loadDataTable() {
                     var lastPage;
                     var extreRows = null;
 
-                    // var perc = function() {
-                    //     setTimeout(function() {
-                    //         $.ajax({
-                    //             url: "../web/percent.txt",
-                    //             type: "POST",
-                    //             dataType: "text",
-                    //             complete: function(response) {
-                    //                 var d = response["responseText"].split(",");
-                    //                 totalRows = d[0];
-                    //                 count = ( d.length ===  1 ? 0 : d[d.length - 1] );
-
-                    //                 extreRows = totalRows % showing;
-                    //                 if(extreRows !== 0) {
-                    //                     lastPage = parseInt(totalRows / showing) + 1;
-                    //                 } else {
-                    //                     lastPage = parseInt(totalRows / showing);
-                    //                 }
-                    //                 /** is last page */
-                    //                 showing = (currentPage === lastPage ? extreRows : showing);
-                    //                 percent =  parseInt(count * 100/showing);
-
-                    //                 var percentPlus = (percent === 99 && countRepeated > 2 ? 100 : percent);
-
-                    //                 /** avoid infinite loop */
-                    //                 if(typeof(countOld) !== "undefined" && countOld === count) {
-                    //                     countRepeated++;
-                    //                 } else {
-                    //                     countRepeated = 3;
-                    //                 }
-                    //                 var countOld = count;
-
-                    //                 $(".progress-bar").css({
-                    //                     width: percentPlus + "%"
-                    //                 }).text(percentPlus + "%");
-                    //                 if(percentPlus >= 100 || countRepeated > 30) {
-                    //                     clearInterval(interval);
-                    //                 }
-                    //             }
-                    //         });
-                    //     }, 900);
-                    // };
-
                     /** loop for progress bar */
-                    // interval = setInterval (function() {
-                    //         perc();
-                    //     }, 50);
-
+                    let interval = setInterval (function() {
+                            perc(interval);
+                        }, 50);
                 },
                 error: function(xhr, ajaxOption, thrownError) {
                     console.log(thrownError);
@@ -428,6 +427,18 @@ function loadDataTable() {
                 complete: function(response) {
                     $("#mask_main").hide();
                     selectOnClick();
+                    $.ajax({
+                        url: "../removeFile/file/percent.txt",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: "percent.txt",
+                        success: function(response) {
+                            console.log(response);
+                        },
+                        complete: function() {
+                            //alert("foi removido");
+                        }
+                    });
                     //reorderCol(tabSale);
                     // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
                     // $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });

@@ -5,6 +5,7 @@ namespace _App;
 class Sale extends Controller
 {
     private $requestData;
+    public $tRows;
 
     public function __contruct()
     {
@@ -54,15 +55,14 @@ class Sale extends Controller
     public function getTotalRows($sql) {
         $sale = new \Models\Sale();
         $sql = str_replace("*","1",$sql);
-        return count($sale->readDataTable($sql)->fetchAll());
-
+        $tRows = count($sale->readDataTable($sql)->fetchAll());
 
         /** create the file or recreate with the total rows */
-        // $handle = fopen(__DIR__ . "/../web/percent.txt", "w+");
-        // fwrite($handle, $tRows);
-        // fclose($handle);
+        $handle = fopen(__DIR__ . "/../public/percent.txt", "w+");
+        fwrite($handle, $tRows);
+        fclose($handle);
 
-        // return $tRows;
+        return $this->tRows = $tRows;
     }
 
     public function getData(string $sql, array $searchArr, array $columns=null)
@@ -80,8 +80,8 @@ class Sale extends Controller
         /**
          * open the file
          */
-        //$handle = fopen(__DIR__ . "/../web/percent.txt", "a");
-        //$row = 1;
+        $handle = fopen(__DIR__ . "/../public/percent.txt", "a");
+        $row = 1;
 
         //$rowsTotal = getTotalRows($sql);
 
@@ -99,11 +99,11 @@ class Sale extends Controller
                 /**
                  * save the rows separeted by commas
                  */
-                //fwrite($handle, "," . $row++);
-                //$percent = ($row * 100) / $rowsTotal;
+                fwrite($handle, "," . $row++);
+                $percent = ($row * 100) / $this->tRows;
             }
         }
-        //fclose($handle);
+        fclose($handle);
         return $datas;
     }
 
