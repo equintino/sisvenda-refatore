@@ -12,7 +12,7 @@ class Image extends Controller
 
     public function percent(array $data)
     {
-        $percent = explode(",",(file_get_contents(__DIR__ . "/../public/percent.txt")));
+        $percent = explode(",", file_get_contents(__DIR__ . "/../public/percent.txt"));
         $reading = [
             "rowsTotal" => $percent[0],
             "rowLast"   => count($percent) - 1
@@ -21,12 +21,13 @@ class Image extends Controller
         return print(json_encode($reading));
     }
 
-    public function removeFile(array $file)
+    public function removeFile(array $data)
     {
-        $handle = __DIR__ . "/../public/percent.txt";
+        $file = $data["file"];
+        $handle = __DIR__ . "/../public/{$file}";
         unlink($handle);
-        fopen($handle, "w+");
-        fclose($handle);
+        $f = fopen($handle, "w+");
+        fclose($f);
 
         return print(json_encode($file));
     }

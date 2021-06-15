@@ -36,6 +36,7 @@ if(strpos(url(), "192.168.100.6") || strpos(url(), "localhost")) {
     $minJS->add(__DIR__ . "/../../shared/scripts/datatables.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/bootstrap.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/functions.js");
+    $minJS->add(__DIR__ . "/../../shared/scripts/menu-script.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/script.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/bootbox.js");
     $minJS->add(__DIR__ . "/../../shared/scripts/script-login.js");

@@ -282,6 +282,10 @@ main .form-signin {
     color: #ffffff;
 }
 
+.active a i {
+    color: #ffffff;
+}
+
 /** rotation */
 @keyframes turns {
     to {

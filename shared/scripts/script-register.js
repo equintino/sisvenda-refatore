@@ -1,6 +1,6 @@
 $(document).ready(function() {
     /** loading image adjust */
-    if(page.toLowerCase() === "cliente") {
+    if(typeof(page) !== "undefined" && page.toLowerCase() === "cliente") {
         $(".loading").css("top","50%");
     }
 
@@ -11,9 +11,9 @@ $(document).ready(function() {
     if(typeof(identification) !== "undefined") {
         ident = identification.split(' ');
         cad = ident[ident.length-1];
-    } else {
-        identification = null;
-    }
+    }// else {
+    //     identification = null;
+    // }
 
     /* fundo foco */
     $("input").blur(function() {
@@ -168,7 +168,7 @@ $(document).ready(function() {
         }
     });
 
-    $(".identification").text(identification);
+    //$(".identification").text(identification);
 
     $('#cep').mask('00000-000');
     $('#cepPJ').mask('00000-000');
@@ -365,7 +365,10 @@ function buscaCpf(formAtivo, cpf) {
 function buscaCnpj (formAtivo, cnpj) {
     var data = $("form[id=" + formAtivo).serialize();
     var cnpj = cnpj.replace(/([^\d])+/gim, '');
-    var url = (page === "CLIENTE" ? "cadastro/" + cnpj : page.toLowerCase() + "/" + cnpj);
+    var url = "cadastro/" + cnpj;
+    if(typeof(page) !== "undefined" && page !== "CLIENTE") {
+        url = page.toLowerCase() + "/" + cnpj;
+    }
 
     $.ajax({
         url: url,

@@ -62,7 +62,7 @@ class Register extends Controller
         $outrosCnpj = array('Vendedor', 'Bloqueio', 'Crédito', 'Revenda',
         'IDTransportadora', 'IDEmpresa', 'ECF', 'LIMITE_CAIXAS', 'Conceito', 'BloqueioAVista');
 
-        $this->view->insertTheme([ compact("page", "loading") ]);
+        //$this->view->insertTheme([ compact("page", "loading") ]);
         $this->view->render("register", [
             compact("act","selIdTransp","transp","identCnpj","endCnpj","outrosCnpj")
         ]);
@@ -93,7 +93,7 @@ class Register extends Controller
         /** page identification */
         echo "<script>var identification = 'CADASTRO DE {$page}';</script>";
 
-        $this->view->insertTheme([ compact("page", "loading") ]);
+        //$this->view->insertTheme([ compact("page", "loading") ]);
         $this->view->render("register", [ compact("act","identCnpj","endCnpj","outrosCnpj") ]);
     }
 
@@ -118,7 +118,7 @@ class Register extends Controller
         /** page identification */
         echo "<script>var identification = 'CADASTRO DE {$page}';</script>";
 
-        $this->view->insertTheme([ compact("page", "loading") ]);
+        //$this->view->insertTheme([ compact("page", "loading") ]);
         $this->view->render("register", [ compact("act","identCnpj","endCnpj","outrosCnpj") ]);
     }
 

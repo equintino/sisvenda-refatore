@@ -16,7 +16,7 @@
          */
         $router->namespace("_App");
         $router->get("/home", "Web:home");
-        $router->get("/", "Web:home");
+        $router->get("/", "Web:init");
 
 
         /**
@@ -33,14 +33,16 @@
         $router->post("/usuario/update", "User:update");
         $router->post("/usuario/save", "User:save");
         $router->get("/gerenciamento", "Management:init");
-        $router->get("/gerenciamento/vendas", "Management:sale");
+        //$router->get("/gerenciamento/vendas", "Management:sale");
+        $router->get("/vendas", "Management:sale");
 
 
         /**
          * The Groups' Screens
          */
         $router->namespace("_App");
-        $router->get("/seguranca", "Group:list");
+        //$router->get("/seguranca", "Group:list");
+        $router->get("/shield", "Group:list");
         $router->get("/grupo/cadastro", "Group:add");
         $router->post("/grupo/{name}", "Group:load");
         $router->post("/grupo/save", "Group:save");
@@ -52,7 +54,8 @@
          * The Config's Screens
          */
         $router->namespace("_App");
-        $router->get("/configuracao", "Config:list");
+        //$router->get("/configuracao", "Config:list");
+        $router->get("/config", "Config:list");
         $router->get("/configuracao/cadastro", "Config:add");
         $router->get("/configuracao/editar/{connectionName}", "Config:edit");
         $router->post("/configuracao/salvar", "Config:save");
@@ -64,15 +67,18 @@
          * The Register's Screens
          */
         $router->namespace("_App");
-        $router->get("/cadastro", "Register:init");
+        //$router->get("/cadastro", "Register:init");
+        $router->get("/cliente", "Register:init");
         $router->post("/cadastro/{}", "Register:load");
         $router->post("/cadastro/atualizar", "Register:update");
         $router->post("/cadastro/salvar", "Register:save");
-        $router->get("/cadastro/transportadora", "Register:transport");
+        //$router->get("/cadastro/transportadora", "Register:transport");
+        $router->get("/transportadora", "Register:transport");
         $router->post("/cadastro/transportadora/{}", "Register:loadTransport");
         $router->post("/cadastro/transportadora/atualizar", "Register:updateTransport");
         $router->post("/cadastro/transportadora/salvar", "Register:saveTransport");
-        $router->get("/cadastro/fornecedor", "Register:supplier");
+        //$router->get("/cadastro/fornecedor", "Register:supplier");
+        $router->get("/fornecedor", "Register:supplier");
         $router->post("/cadastro/fornecedor/{}", "Register:loadSupplier");
         $router->post("/cadastro/fornecedor/atualizar", "Register:updateSupplier");
         $router->post("/cadastro/fornecedor/salvar", "Register:saveSupplier");

@@ -3,3 +3,4 @@
         <img src="<?= theme("assets/img/logo.png") ?>" alt="logo" height="100" >
     </a>
 </div>
+<script>$(".identification").text("Usuário: " + login);</script>

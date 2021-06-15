@@ -58,7 +58,8 @@ class Sale extends Controller
         $tRows = count($sale->readDataTable($sql)->fetchAll());
 
         /** create the file or recreate with the total rows */
-        $handle = fopen(__DIR__ . "/../public/percent.txt", "w+");
+        $logon = $_SESSION["login"]->Logon;
+        $handle = fopen(__DIR__ . "/../public/percent_{$logon}.txt", "w+");
         fwrite($handle, $tRows);
         fclose($handle);
 
@@ -77,11 +78,10 @@ class Sale extends Controller
             }
         }
 
-        /**
-         * open the file
-         */
-        $handle = fopen(__DIR__ . "/../public/percent.txt", "a");
-        $row = 1;
+        /** open the file */
+        $logon = $_SESSION["login"]->Logon;
+        $handle = fopen(__DIR__ . "/../public/percent_{$logon}.txt", "a");
+        $row = 0;
 
         //$rowsTotal = getTotalRows($sql);
 
@@ -96,11 +96,10 @@ class Sale extends Controller
                 $d["Produto"] = $this->getProduct($dVenda);
                 $datas[] = $d;
 
-                /**
-                 * save the rows separeted by commas
-                 */
+                /** save the rows separeted by commas */
                 fwrite($handle, "," . $row++);
                 $percent = ($row * 100) / $this->tRows;
+                setcookie("row", $row, time() + (86400 * 30), "/");
             }
         }
         fclose($handle);

@@ -855,7 +855,7 @@ table#tabFiltro {
                     <td style="text-align:right; border-left: 1px solid white"><input type="checkbox" name="desativado" value="1" <?= isset($desativado) ? 'checked' : null ?> /></td>
                     <td class="pr-1" colspan="2">Desativado</td>
                     <td colspan="3" style="border-right: 1px solid"></td>
-                    <td class="pl-1" colspan="4" align="right">GERENCIADOR DE VENDAS<a href="<?= url("home") ?>" ><i class="fa fa-sign-out sair pl-2" style="color: white"></i></a></td>
+                    <td class="pl-1" colspan="4" align="right">GERENCIADOR DE VENDAS<a href="<?= url("") ?>" ><i class="fa fa-sign-out sair pl-2" style="color: white"></i></a></td>
                 </tr>
                 <tr>
                     <td align="right" colspan="7"><input type="search" name="busca" id="busca" size="36" value="<?= $busca ?? null ?>" autofocus/></td>

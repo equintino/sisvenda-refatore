@@ -29,13 +29,13 @@ var setTime = 500;
 
 $(function($) {
     /** menu behavior */
-    $("#topHeader ul li a").each(function() {
-        if($(this).attr("id") === page) {
-            $(this).css({
-                color: "white"
-            });
-        }
-    });
+    // $("#topHeader ul li a").each(function() {
+    //     if($(this).attr("id") === page) {
+    //         $(this).css({
+    //             color: "white"
+    //         });
+    //     }
+    // });
 
     /** authentication */
     $("main form.form-signin").submit(function(e) {
@@ -51,7 +51,7 @@ $(function($) {
             dataType: "json",
             success: function(response) {
                 if(response === 1) {
-                    $(location).attr("href","home");
+                    $(location).attr("href","");
                 } else if(response === 2) {
                     var link = "src/Support/Ajax/save.php";
                     var login = $("main form [name=login]").val();

@@ -26,11 +26,7 @@ class View
     public function render(string $page, array $params = [])
     {
         $logged = $_SESSION["login"]->Logon ?? null;
-        if(empty($logged)) {
-            alertLatch("Necessário entrar novamente", "var(--cor-danger)");
-        } else {
-            echo "<script>var logged = '{$logged}'</script>";
-        }
+        echo "<script>var logged = '{$logged}'</script>";
 
         /** makes variables available to the page */
         if($params) {
@@ -52,6 +48,13 @@ class View
 
     public function insertTheme(array $params = null, string $path = null)
     {
+        $head = $this->seo(
+            CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
+            CONF_SITE_DESC,
+            url(),
+            theme("assets/img/loading.png"),
+            theme("assets/img/logo-menu.png")
+        );
         /** makes variables available to the page */
         if($params) {
             foreach($params as $var => $param) {
@@ -87,5 +90,10 @@ class View
             return true;
         }
         return false;
+    }
+
+    protected function seo(string $title, string $desc, string $url, string $img, string $logo, bool $follow = false)
+    {
+        return compact("title","desc","url","img","logo","follow");
     }
 }

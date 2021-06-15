@@ -28,21 +28,20 @@ class Web extends Controller
             ]);
     }
 
+    public function init(): void
+    {
+        //echo "<script>var login='" . ucfirst($_SESSION["login"]->Logon) . "'</script>";
+        $this->view->insertTheme();
+        //$this->view->render("home");
+    }
+
     public function home(): void
     {
-        $head = $this->seo(
-            CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
-            CONF_SITE_DESC,
-            url(),
-            theme("assets/img/loading.png")
-        );
-
-        $shortcut = theme("assets/img/logo.png");
         $page = "home";
-        $loading = theme("assets/img/logo-menu.png");
-        $this->view->insertTheme([
-                compact("shortcut","page","loading","head")
-            ]);
+        echo "<script>var login='" . ucfirst($_SESSION["login"]->Logon) . "'</script>";
+        // $this->view->insertTheme([
+        //         compact("page")
+        //     ]);
         $this->view->render("home");
     }
 
@@ -50,7 +49,7 @@ class Web extends Controller
     {
         $errcode = $data["errcode"];
         $title = "Erro ao carregar página";
-        $this->view->insertTheme([ compact("title") ]);
+        //$this->view->insertTheme([ compact("title") ]);
         $this->view->render("error", [ compact("errcode") ]);
     }
 

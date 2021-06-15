@@ -29,7 +29,7 @@ class User extends Controller
 
         echo "<script>var companyId = '" . $companyId . "' </script>";
         echo "<script>var identification = 'CONFIGURAÇÃO DE USUÁRIOS'</script>";
-        $this->view->insertTheme([ compact("page", "loading") ]);
+        //$this->view->insertTheme([ compact("page", "loading") ]);
         $this->view->render("login", $params);
     }
 

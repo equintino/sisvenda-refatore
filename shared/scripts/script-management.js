@@ -155,9 +155,6 @@ function productDetail(data) {
                 }
             }
         },
-        error: function(error) {
-
-        },
         complete: function() {
             $(".loading, #mask_main").hide();
         }
@@ -250,10 +247,6 @@ function footerTotal(api) {
             pageTotalFrete -= frete;
         }
     });
-
-    /* Pago */
-
-
     // Update footer
     var qtdOrc = api.rows().data().length;
     var html = "<table id='tabFoot' widht='100%'><tr><td style='border-right: 1px solid white' ><span class='mr-4'>Total de Registro(s) " + qtdOrc + "<span></td><td>Total Valor: " + moeda(total) + "</td><td style='border-right: 1px solid white'><span class='mr-4'>Lucro: " + moeda(total - desativado - (totalCusto + totalComissao)) + "</span></td><td><span class='mr-4'>Custo: " + moeda(totalCusto) + "</span></span>Comissão: " + moeda(totalComissao) + "</span><br><span class=mr-4>Frete: " + moeda(pageTotalFrete) + "</span><span class='mr-4'>Crédito Devolvido: " + moeda(pageTotalCred) + "</span></td><td style='border-left: 1px solid white'>Pago: " + moeda(pago) + "</td><td><span class='mr-4'>Desativado: " + moeda(desativado) + "</span></td><td style='border-left: 1px solid white'>Total Geral: R$ " + moeda(total - desativado) + "</td></tr></table>";
@@ -268,45 +261,39 @@ var perc = function(interval) {
     var showingPage = pageInfo.length;
     countRepeated = (typeof(countRepeated) === "undefined" ? 0 : countRepeated);
 
-    //setTimeout(function() {
-        $.ajax({
-            url: "../src/public/percent.txt",
-                type: "POST",
-                dataType: "text",
-            beforeSend: function() {
-            },
-            complete: function(response) {
-                var d = response["responseText"].split(",");
-                var totalRows = parseInt(d[0]);
-                var count = parseInt( d.length ===  1 ? 0 : d[d.length - 1] );
+    $.ajax({
+        url: "../src/public/percent_" + logon + ".txt",
+            type: "POST",
+            dataType: "text",
+        complete: function(response) {
+            var d = response["responseText"].split(",");
+            var totalRows = parseInt(d[0]);
+            var count = d.length - 1;
+            if(d.length > 1) {
                 var extreRows = totalRows % showingPage;
                 var lastPage = (extreRows !== 0 ? parseInt(totalRows / showingPage) + 1 : parseInt(totalRows / showingPage));
 
                 /** is last page */
                 var showing = (currentPage === lastPage ? extreRows : showingPage);
                 var percent =  parseInt(count * 100/showing);
-                //var percentPlus = (percent > 97 && countRepeated > 5 ? 100 : percent);
-                var percentPlus = percent;//(percent > 97 ? 100 : percent);
+                var percentPlus = percent;
 
-                //console.log(countOld,count,countRepeated,percentPlus);
                 /** avoid infinite loop */
                 if(typeof(countOld) !== "undefined" && countOld == count) {
                     countRepeated++;
                 } else {
-                    countRepeated = 0;
+                        countRepeated = 0;
                 }
                 countOld = count;
-
                 $(".progress-bar").css({
-                    width: percent + "%"
-                }).text(percent + "%");
-                //if(percentPlus >= 100 && countRepeated > 30) {
-                if(countRepeated > 30) {
+                    width: percentPlus + "%"
+                }).text(percentPlus + "%");
+                if(d.length > showing) {
                     clearInterval(interval);
                 }
             }
-        });
-    //}, 1600);
+        }
+    });
 };
 
 function loadDataTable() {
@@ -402,7 +389,6 @@ function loadDataTable() {
                 async    : true,
                 beforeSend: function(data) {
                     $("#mask_main").show();
-                    //$(".screen").show();
                     $(".progress-bar").css({
                         width: 0 + "%"
                     }).text(0 + "%");
@@ -414,6 +400,7 @@ function loadDataTable() {
                     var totalRows;
                     var lastPage;
                     var extreRows = null;
+                    logon = getCookie("login");
 
                     /** loop for progress bar */
                     let interval = setInterval (function() {
@@ -428,16 +415,10 @@ function loadDataTable() {
                     $("#mask_main").hide();
                     selectOnClick();
                     $.ajax({
-                        url: "../removeFile/file/percent.txt",
+                        url: "../removeFile/file/percent_" + logon + ".txt",
                         type: "POST",
                         dataType: "JSON",
-                        data: "percent.txt",
-                        success: function(response) {
-                            console.log(response);
-                        },
-                        complete: function() {
-                            //alert("foi removido");
-                        }
+                        data: "percent.txt"
                     });
                     //reorderCol(tabSale);
                     // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
@@ -469,17 +450,18 @@ function loadDataTable() {
 }
 
 $(document).ready(function() {
-    $.ajax({
-        url: "../company",
-        type: "POST",
-        dataType: "JSON",
-        success: function(response) {
-            for(var i in response) {
-                $("select[name=companies]").append("<option value='" + i + "'>"
-                    + response[i].NomeFantasia + "</option>");
+    if(typeof(page) !== "undefined" && page === "VENDAS") {
+        $.ajax({
+            url: "../company",
+            type: "POST",
+            dataType: "JSON",
+            success: function(response) {
+                for(var i in response) {
+                    $("select[name=companies]").append("<option value='" + i + "'>" + response[i].NomeFantasia + "</option>");
+                }
             }
-        }
-    });
+        });
+    }
     $("select[name=companies]").on("change", function() {
         var companyId = $(this).val();
         var data = {
