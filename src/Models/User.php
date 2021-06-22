@@ -205,4 +205,16 @@ class User extends Model implements Models
         $this->message = "<span class='warning'>Nova senha de <span class='uppercase'>{$login}</span> será cadastrada no próximo login</span>";
     }
 
+    protected function safe(): ?array
+    {
+        $safe_ = (array) $this->data();
+        foreach(static::$safe as $unset) {
+            unset($safe_[$unset]);
+        }
+        if(array_key_exists("token", $safe_) && $safe_["token"] === null) {
+            return $safe_;
+        };
+        return array_filter($safe_, "filterNull");
+    }
+
 }

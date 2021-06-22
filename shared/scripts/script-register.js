@@ -1,221 +1,4 @@
-$(document).ready(function() {
-    /** loading image adjust */
-    if(typeof(page) !== "undefined" && page.toLowerCase() === "cliente") {
-        $(".loading").css("top","50%");
-    }
-
-    /* general forms configuration */
-    var formAtivo = "pj";
-    var corBack = '#faffbd';
-    var ident;
-    if(typeof(identification) !== "undefined") {
-        ident = identification.split(' ');
-        cad = ident[ident.length-1];
-    }// else {
-    //     identification = null;
-    // }
-
-    /* fundo foco */
-    $("input").blur(function() {
-        $(this).css("background","white");
-    });
-
-    $("input").focus(function() {
-        $(this).css("background",corBack);
-    });
-
-    $('select#tipo').change(function() {
-        $("#pj, #pf").find("input").val("");
-        if($(this).val() === 'pf') {
-            $('#pf').show();
-            $('#pj').hide();
-            $('input[name=CPF]').focus();
-            formAtivo = "pf";
-        } else {
-            $('#pf').hide();
-            $('#pj').show();
-            $('input[name=CNPJ]').focus();
-            formAtivo = "pj";
-        }
-    });
-
-    $("button[type=reset]").click(function() {
-        return $("form").find("input").val("");
-    });
-
-    /* Validação de CPF */
-    $('form input[name=CPF]').on("keyup", function(e) {
-        var cpf = validCPF( $(this).val() );
-
-        if( cpf.length === 14 ) {
-            buscaCpf(formAtivo, cpf);
-        }
-    });
-
-    $("input#cepBusca, input#cepBuscaPJ").on("keyup", function(e) {
-        if( $(this).val().length === 8 ) {
-            buscaCep(this, formAtivo);
-        }
-    });
-
-    $('#tel').on("keyup", function(e) {
-        var tel = $(this).val();
-        if(tel.length === 13) {
-            if($(this).val().length === 14 || $(this).val().length === 13) {
-                $('input#email').css('background',corBack).focus();
-            }
-        }
-    });
-
-    $('input[name=CNPJ').on("keyup", function() {
-        var cnpj = $(this).val();
-        if( cnpj.length  === 18 ) {
-            buscaCnpj(formAtivo, cnpj);
-        }
-    });
-
-    $("form#pf button[type=submit], form#pj button[type=submit]").click( function() {
-        /** confirmar proposito */
-        if(this["id"] === "cad_pessoa") {
-            formAtivo = "acesso";
-        }
-
-        var campos = $("form[id=" + formAtivo + "] input[required=required]");
-        var ok = null;
-
-        campos.each(function() {
-            if($(this).val() === '') {
-                var cp = $(this).attr('name');
-
-                alertLatch("O campo <span style='color: red'>" + cp + "</span> é obrigatório.", "var(--cor-warning)");
-                ok = 0;
-                $(this).css("background",corBack).focus();
-                return false;
-            }
-        });
-
-        if(ok !== 0) {
-            var data = $("form[id=" + formAtivo + "]").serialize();
-            var actButton = $(this).text().toLowerCase();
-            saveAjaxData(data, actButton);
-        }
-    });
-
-    /* mascara */
-    $("#nascimento").mask("00/00/0000");
-    $("#cpf").mask("000.000.000-00");
-    $('#tel').mask("(00)0000-0000");
-    $('#cnpj').mask('00.000.000/0000-00');
-    $('#cel').mask("(00)00000-0000");
-
-    $('select[id=transp]').on("change", function() {
-        hiddenFields('select[id=transp]');
-    });
-
-    $(document).submit(function(e) {
-        if($('#tipo').val() === 'pj') {
-            var atividade = $('#Atividade').val().toLowerCase();
-
-            if(atividade.search(/comércio/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/comercio/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/fabricante/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/fabricacao/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/fabricação/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/importação/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/importacao/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/distribuição/) != -1) {
-                validaAtividade();
-            } else if(atividade.search(/distribuicao/) != -1) {
-                validaAtividade();
-            }
-
-            if($('#contato').val() == '') {
-                alertLatch("O campo contato está vazio. Favor preencher", "var(--cor-warning)");
-                $('#contato').focus();
-                return false;
-            }
-
-            if($('#Email').val() == '') {
-                alertLatch("O campo email está vazio ou preenchido incorretamente", "var(--cor-warning)");
-                $('#Email').focus();
-                return false;
-            }
-
-            if($('#telefone').val() == '') {
-                alertLatch("O campo telefone está vazio. Favor preencher", "var(--cor-warning)");
-                $('#telefone').focus();
-                return false;
-            }
-
-        } else if($('#tipo').val() === 'pf') {
-            if($('#cel').val() == '') {
-                alertLatch("Informar o número de celular", "var(--cor-warning)");
-                $('#cel').css("background",'#faffbd').focus();
-                return false;
-            }
-
-            if($('#nascimento').val().length !== 10) {
-                $('#nascimento').focus();
-                return false;
-            }
-        }
-    });
-
-    //$(".identification").text(identification);
-
-    $('#cep').mask('00000-000');
-    $('#cepPJ').mask('00000-000');
-    $('#telefonePJ').mask('(00)0000-0000');
-    $('#celularPJ').mask('(00)90000-0000');
-    $('.loading, #mask_main').hide();
-
-    $("form").show();
-
-    $(".searchCpf").click(function() {
-        var cpf = $('form input[name=CPF]').val();
-
-        if( cpf !== "" ) {
-            buscaCpf(formAtivo, cpf);
-        } else {
-            $('form input[name=CPF]').focus();
-        }
-    });
-
-    $(".searchCnpj").click(function() {
-        var cnpj = $('input[name=CNPJ').val();
-
-        if( cnpj !== "" ) {
-            buscaCnpj(formAtivo, cnpj);
-        } else {
-            $('input[name=CNPJ').focus();
-        }
-    });
-
-    $(".searchCep").click(function() {
-        var dom;
-
-        if( formAtivo === "pf" ) {
-            dom = $("input#cepBusca");
-        } else {
-            dom = $("input#cepBuscaPJ");
-        }
-
-        if( dom.val() !== "" ) {
-            buscaCep(dom, formAtivo);
-        } else {
-            dom.focus();
-        }
-    });
-    selectForm(formAtivo);
-});
-
+/** change hidden fields */
 function hiddenFields(element) {
     element = $(element);
     var transpId = element.val();/* cnpj */
@@ -362,11 +145,11 @@ function buscaCpf(formAtivo, cpf) {
     });
 }
 
-function buscaCnpj (formAtivo, cnpj) {
+function buscaCnpj(formAtivo, cnpj, page="cadastro") {
     var data = $("form[id=" + formAtivo).serialize();
     var cnpj = cnpj.replace(/([^\d])+/gim, '');
     var url = "cadastro/" + cnpj;
-    if(typeof(page) !== "undefined" && page !== "CLIENTE") {
+    if(page !== "CLIENTE") {
         url = page.toLowerCase() + "/" + cnpj;
     }
 
@@ -383,7 +166,6 @@ function buscaCnpj (formAtivo, cnpj) {
             $(".loading, #mask_main").show();
         },
         success: function(response) {
-            console.log(response);
             $("form#" + formAtivo).find("[type=submit]").text(response.buttonText);
             $("form#" + formAtivo + " [name=StatusAtivo]").attr("checked", false);
             if(response !== null) {
@@ -544,4 +326,217 @@ function saveAjaxData(data, act = "salvar") {
     }).always(function( data ) {
         $(".loading, #mask_main").hide();
     });
+}
+
+/** called by script-register */
+function scriptRegister() {
+    /** loading image adjust */
+    // if(typeof(page) !== "undefined" && page.toLowerCase() === "cliente") {
+    //     $(".loading").css("top","50%");
+    // }
+
+    /* general forms configuration */
+    var formAtivo = "pj";
+    var corBack = '#faffbd';
+    var ident;
+    if(typeof(identification) !== "undefined") {
+        ident = identification.split(' ');
+        cad = ident[ident.length-1];
+    }
+
+    /* fundo foco */
+    $("input").blur(function() {
+        $(this).css("background","white");
+    });
+
+    $("input").focus(function() {
+        $(this).css("background",corBack);
+    });
+
+    $('select#tipo').change(function() {
+        $("#pj, #pf").find("input").val("");
+        if($(this).val() === 'pf') {
+            $('#pf').show();
+            $('#pj').hide();
+            $('input[name=CPF]').focus();
+            formAtivo = "pf";
+        } else {
+            $('#pf').hide();
+            $('#pj').show();
+            $('input[name=CNPJ]').focus();
+            formAtivo = "pj";
+        }
+    });
+
+    $("#transp").on("change", function() {
+        hiddenFields($(this));
+    });
+
+    $("button[type=reset]").click(function() {
+        return $("form").find("input").val("");
+    });
+
+    /* Validação de CPF */
+    $('form input[name=CPF]').on("keyup", function(e) {
+        var cpf = validCPF( $(this).val() );
+
+        if( cpf.length === 14 ) {
+            buscaCpf(formAtivo, cpf);
+        }
+    });
+
+    $("input#cepBusca, input#cepBuscaPJ").on("keyup", function(e) {
+        if( $(this).val().length === 8 ) {
+            buscaCep(this, formAtivo);
+        }
+    });
+
+    $('#tel').on("keyup", function(e) {
+        var tel = $(this).val();
+        if(tel.length === 13) {
+            if($(this).val().length === 14 || $(this).val().length === 13) {
+                $('input#email').css('background',corBack).focus();
+            }
+        }
+    });
+
+    $('input[name=CNPJ').on("keyup", function() {
+        var cnpj = $(this).val();
+        if( cnpj.length  === 18 ) {
+            buscaCnpj(formAtivo, cnpj, cad);
+        }
+    });
+
+    $("form#pf button[type=submit], form#pj button[type=submit]").click( function() {
+        /** confirmar proposito */
+        if(this["id"] === "cad_pessoa") {
+            formAtivo = "acesso";
+        }
+
+        var campos = $("form[id=" + formAtivo + "] input[required=required]");
+        var ok = null;
+
+        campos.each(function() {
+            if($(this).val() === '') {
+                var cp = $(this).attr('name');
+
+                alertLatch("O campo <span style='color: red'>" + cp + "</span> é obrigatório.", "var(--cor-warning)");
+                ok = 0;
+                $(this).css("background",corBack).focus();
+                return false;
+            }
+        });
+
+        if(ok !== 0) {
+            var data = $("form[id=" + formAtivo + "]").serialize();
+            var actButton = $(this).text().toLowerCase();
+            saveAjaxData(data, actButton);
+        }
+    });
+
+    $(document).submit(function(e) {
+        if($('#tipo').val() === 'pj') {
+            var atividade = $('#Atividade').val().toLowerCase();
+
+            if(atividade.search(/comércio/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/comercio/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/fabricante/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/fabricacao/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/fabricação/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/importação/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/importacao/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/distribuição/) != -1) {
+                validaAtividade();
+            } else if(atividade.search(/distribuicao/) != -1) {
+                validaAtividade();
+            }
+
+            if($('#contato').val() == '') {
+                alertLatch("O campo contato está vazio. Favor preencher", "var(--cor-warning)");
+                $('#contato').focus();
+                return false;
+            }
+
+            if($('#Email').val() == '') {
+                alertLatch("O campo email está vazio ou preenchido incorretamente", "var(--cor-warning)");
+                $('#Email').focus();
+                return false;
+            }
+
+            if($('#telefone').val() == '') {
+                alertLatch("O campo telefone está vazio. Favor preencher", "var(--cor-warning)");
+                $('#telefone').focus();
+                return false;
+            }
+
+        } else if($('#tipo').val() === 'pf') {
+            if($('#cel').val() == '') {
+                alertLatch("Informar o número de celular", "var(--cor-warning)");
+                $('#cel').css("background",'#faffbd').focus();
+                return false;
+            }
+
+            if($('#nascimento').val().length !== 10) {
+                $('#nascimento').focus();
+                return false;
+            }
+        }
+    });
+
+    $("form").show();
+
+    $(".searchCpf").click(function() {
+        var cpf = $('form input[name=CPF]').val();
+
+        if( cpf !== "" ) {
+            buscaCpf(formAtivo, cpf);
+        } else {
+            $('form input[name=CPF]').focus();
+        }
+    });
+
+    $(".searchCnpj").click(function() {
+        var cnpj = $('input[name=CNPJ').val();
+
+        if( cnpj !== "" ) {
+            buscaCnpj(formAtivo, cnpj, cad);
+        } else {
+            $('input[name=CNPJ').focus();
+        }
+    });
+
+    $(".searchCep").click(function() {
+        var dom;
+
+        if( formAtivo === "pf" ) {
+            dom = $("input#cepBusca");
+        } else {
+            dom = $("input#cepBuscaPJ");
+        }
+
+        if( dom.val() !== "" ) {
+            buscaCep(dom, formAtivo);
+        } else {
+            dom.focus();
+        }
+    });
+    selectForm(formAtivo);
+
+    /** máscaras */
+    $("#nascimento").mask("00/00/0000");
+    $("#cpf").mask("000.000.000-00");
+    $('#tel').mask("(00)0000-0000");
+    $('#cnpj').mask('00.000.000/0000-00');
+    $('#cel').mask("(00)00000-0000");
+    $('#cep').mask('00000-000');
+    $('#cepPJ').mask('00000-000');
+    $('#telefonePJ').mask('(00)0000-0000');
+    $('#celularPJ').mask('(00)90000-0000');
 }

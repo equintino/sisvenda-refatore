@@ -1,6 +1,4 @@
-/**
- * Constantes
- */
+/** Constantes */
  const CONF_DATATABLE_ZERORECORDS = "Desculpe - Nada encontrado";
  const CONF_DATATABLE_INFOEMPTY =  "Nenhum dado disponível";
  const CONF_DATATABLE_SEARCH =  "Filtrar";
@@ -12,9 +10,7 @@
  const CONF_DATATABLE_DECIMAL = ",";
  const CONF_DATATABLE_THOUSANDS = ".";
 
-/**
- * Datatable default
- */
+/** Datatable default */
 $.extend( true, $.fn.dataTable.defaults, {
     searching: false,
     ordering: false,
@@ -22,9 +18,7 @@ $.extend( true, $.fn.dataTable.defaults, {
     paging: false
 });
 
-/**
- * variables
- */
+/** variables */
 var setTime = 500;
 
 $(function($) {

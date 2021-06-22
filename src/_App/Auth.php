@@ -12,6 +12,12 @@ class Auth extends Controller
         (new Web())->start();
     }
 
+    public function token()
+    {
+        return print(json_decode("estou aqui"));
+        //$this->view->setPath("Modals")->render("token");
+    }
+
     public function forget(): void
     {
 

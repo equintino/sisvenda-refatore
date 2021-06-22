@@ -441,8 +441,8 @@ main .form-signin {
 #boxe_main {
     position: fixed;
     width: 50%;
-    left: 50%;
-    margin: 80px -25%;
+    left: 25%;
+    margin-top: 75px;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;
@@ -460,12 +460,39 @@ main .form-signin {
     display: none;
 }
 
+@-webkit-keyframes fadeInDown {
+    0% {
+       opacity: 0;
+       -webkit-transform: translateY(-20px);
+    }
+    100% {
+       opacity: 1;
+       -webkit-transform: translateY(0);
+    }
+ }
+
+ @keyframes fadeInDown {
+    0% {
+       opacity: 0;
+       transform: translateY(-20px);
+    }
+    100% {
+       opacity: 1;
+       transform: translateY(0);
+    }
+ }
+
+ .fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+ }
+
 #boxe_main #title, #div_dialogue #title {
     background: var(--cor-primary);
     height: var(--title-height);
     border-radius: 5px 5px 0 0;
     color: white;
-    font-size: 1.1em;
+    font-size: .8em;
     padding: 3px 0 0 10px;
     text-transform: uppercase;
     font-weight: var(--title-weight);
@@ -473,6 +500,7 @@ main .form-signin {
 }
 
 #boxe_main #message {
+    font-size: .8em;
     font-weight: 400;
     margin-left: 10px;
     display: none;
@@ -516,14 +544,18 @@ main .form-signin {
     cursor: pointer;
 }
 
+#div_dialogue #buttons {
+    margin-bottom: -20px;
+}
+
 #boxe_main #button:hover {
     color: white;
 }
 
 #div_dialogue {
     position: fixed;
-    width: 35%;
-    margin: 17% 33%;
+    width: 50%;
+    margin: -5px 25%;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;
@@ -539,17 +571,13 @@ main .form-signin {
     transition: opacity 400ms ease-in;
     border-radius: 5px;
     display: none;
-    //overflow: scroll;
+    /* overflow: scroll; */
 }
 
 #div_dialogue #message {
-    padding: 20px 20px;
-    font-size: 1.3em;
+    padding: 15px 20px;
 }
 
-#div_dialogue #buttons {
-    margin-bottom: -20px;
-}
 
 /* button stylization */
 .button {

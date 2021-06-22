@@ -10,12 +10,13 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     </head>
     <body class="body">
-        <!-- <header> -->
+        <header>
             <div id="top">
                 <?php require __DIR__ . "/top.php"; ?>
             </div>
-        <!-- </header> -->
-        <div class="content">
+        </header>
+        <!-- <div class="content"> -->
+        <div class="header2">
             <section class="loading">
                 <img class="schedule" src="<?= $head["img"] ?>" alt="reading" height="50px"/>
                 <p class="text-loading">Texto da ação "loading"</p>
@@ -24,7 +25,7 @@
             <!-- Janelas -->
             <div id="mask_main"></div>
 
-            <section id="boxe_main" >
+            <section id="boxe_main" class="fadeInDown" >
                 <div id="title"></div>
                 <span id="button" class="close"><i class="fa fa-times-circle"></i></span>
                 <span id="message"></span>
@@ -48,7 +49,8 @@
 
             <span id="alert"></span>
 
-        </div><!-- content -->
+        </div><!-- header2 -->
+        <div class="content"></div>
         <script>var page = "<?= ($page ?? null) ?>";</script>
         <script type="text/javascript" src="<?= theme("assets/scripts.js") ?>" ></script>
     </body>

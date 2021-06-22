@@ -12,7 +12,7 @@ function checkGroup() {
     }
 }
 
-$(function($) {
+function scriptSecurity() {
     (typeof(page) !== "undefined" && page === "shield" ? checkGroup() : null);
     $(".btnAction").on("click", function() {
         var groupName = $(this).text();
@@ -101,4 +101,4 @@ $(function($) {
         $(".window form").remove();
     });
     $("#lendo, #mask").hide();
-});
+}

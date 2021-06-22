@@ -47,7 +47,9 @@ function exhibition(element) {
                         $("#boxe_main .close").trigger("click");
                         tr.remove();
                     }, setTime);
+                    modal.hide();
                 }
+                $("#mask_main").hide();
             });
         } else if(action === "Reseta") {
             modal.confirm({
@@ -65,6 +67,7 @@ function exhibition(element) {
                     if(saveData(url, data)) {}
                     modal.hide();
                 }
+                $("#mask_main").hide();
             });
         }
     });
@@ -87,7 +90,7 @@ function disabledTableLine(dom) {
     });
 }
 
-$(document).ready(function() {
+function scriptLogin() {
     if(typeof(companyId) !== "undefined") {
         disabledTableLine("#exhibition table tbody tr");
     }
@@ -99,9 +102,9 @@ $(document).ready(function() {
                 exhibition("#exhibition table#tabList tbody td");
                 disabledTableLine("#exhibition table tbody tr");
             });
-        } else {
-            window.location.reload();
-        }
+        } //else {
+        //     window.location.reload();
+        // }
     });
     $(".header button").on("click", function() {
         var btnAction = $(this).text();
@@ -144,4 +147,4 @@ $(document).ready(function() {
         }
     });
     exhibition("#exhibition table#tabList tbody td");
-});
+}

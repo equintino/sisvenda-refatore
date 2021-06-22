@@ -28,20 +28,15 @@ class Web extends Controller
             ]);
     }
 
-    public function init(): void
+    public function init()
     {
-        //echo "<script>var login='" . ucfirst($_SESSION["login"]->Logon) . "'</script>";
         $this->view->insertTheme();
-        //$this->view->render("home");
     }
 
     public function home(): void
     {
         $page = "home";
         echo "<script>var login='" . ucfirst($_SESSION["login"]->Logon) . "'</script>";
-        // $this->view->insertTheme([
-        //         compact("page")
-        //     ]);
         $this->view->render("home");
     }
 

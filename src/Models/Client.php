@@ -150,7 +150,7 @@ class Client extends Model implements Models
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
             $client = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
-            $this->setSafe("id,created_at,ID_PFISICA,ID_PJURIDICA,transpCompanyId,transpCnpj");
+            $this->setSafe("id,DataReg,created_at,ID_PFISICA,ID_PJURIDICA,transpCompanyId,transpCnpj");
             $this->data->IDEmpresa = $company->ID;
 
             $transport = $this->getTransport($this->data->transpCnpj ?? null, $company->ID);
@@ -164,10 +164,11 @@ class Client extends Model implements Models
                 $this->data->Vendedor = $saleman->ID_Vendedor;
             }
 
+
             if($client->fetch()) {
                 $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
             } else {
-                $this->data->DataReg = date("Y-m-d H:i:s");
+                $this->data->DataReg = date("d/m/Y H:i:s");
                 $this->setSafe("id,created_at,transpCompanyId,transpCnpj");
                 $cpfCnpj = (!empty($this->data->CPF) ? "ID_PFISICA" : "ID_PJURIDICA");
                 $this->data->$cpfCnpj = $this->lastId();

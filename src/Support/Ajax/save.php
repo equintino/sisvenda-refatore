@@ -10,7 +10,6 @@ function getPost($data) {
 }
 
 $params = (getPost($_POST));
-
 if($params["act"] === "login") {
     $class = new Models\User();
     echo (new Support\AjaxTransaction($class, $params))->saveData();

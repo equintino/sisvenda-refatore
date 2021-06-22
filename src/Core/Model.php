@@ -94,7 +94,7 @@ abstract class Model
             $columns = implode(", ", array_keys($data));
             $values = ":" . implode(", :", array_keys(removeAccentArray($data)));
             $stmt = Connect::getInstance($msgDb)->prepare("INSERT INTO {$entity} (" . $this->getAccentWorlds($columns) . ") VALUES ({$values})");
-            //var_dump($stmt,$data,$this->filter(removeAccentArray($data)));die;
+
             $stmt->execute($this->filter(removeAccentArray($data)));
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {

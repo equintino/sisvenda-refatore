@@ -44,7 +44,7 @@
             return this;
         },
         hide: function() {
-            $("#boxe_main").hide();
+            $("#boxe_main, #div_dialogue").hide();
         },
         confirm: function(params) {
             this.dialogue.find("#title").html(params.title).show();
@@ -55,7 +55,7 @@
             });
             $("#mask_main").css({
                 "z-index": "4"
-            });
+            }).show();
 
             return this.dialogue.find("button").on("click", function() {
                 if($(this).val() == 0) {

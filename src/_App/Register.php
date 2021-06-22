@@ -324,7 +324,7 @@ class Register extends Controller
     {
         $listIds = [];
         $transport = new Transport();
-        $cnpjTransport = $transport->load($data["id"])->Cnpj;
+        $cnpjTransport = ($transport->load($data["id"])->Cnpj ?? "");
         $transports = $transport->find($cnpjTransport);
         if($transports) {
             foreach($transports as $value) {

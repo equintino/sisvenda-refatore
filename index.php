@@ -11,17 +11,13 @@
     $router = new Router(url(), ":");
 
     if(!empty($_SESSION["login"])) {
-        /**
-         * Web Routes
-         */
+        /**  Web Routes */
         $router->namespace("_App");
         $router->get("/home", "Web:home");
         $router->get("/", "Web:init");
 
 
-        /**
-         * The Users' Screens
-         */
+        /**  The Users' Screens */
         $router->namespace("_App");
         $router->get("/login", "User:init");
         $router->get("/login/empresa/{companyId}", "User:init");
@@ -37,9 +33,7 @@
         $router->get("/vendas", "Management:sale");
 
 
-        /**
-         * The Groups' Screens
-         */
+        /** The Groups' Screens */
         $router->namespace("_App");
         //$router->get("/seguranca", "Group:list");
         $router->get("/shield", "Group:list");
@@ -50,9 +44,7 @@
         $router->post("/grupo/update", "Group:update");
 
 
-        /**
-         * The Config's Screens
-         */
+        /** The Config's Screens */
         $router->namespace("_App");
         //$router->get("/configuracao", "Config:list");
         $router->get("/config", "Config:list");
@@ -63,9 +55,7 @@
         $router->post("/configuracao/excluir/{connectionName}", "Config:delete");
 
 
-        /**
-         * The Register's Screens
-         */
+        /** The Register's Screens */
         $router->namespace("_App");
         //$router->get("/cadastro", "Register:init");
         $router->get("/cliente", "Register:init");
@@ -74,19 +64,23 @@
         $router->post("/cadastro/salvar", "Register:save");
         //$router->get("/cadastro/transportadora", "Register:transport");
         $router->get("/transportadora", "Register:transport");
-        $router->post("/cadastro/transportadora/{}", "Register:loadTransport");
-        $router->post("/cadastro/transportadora/atualizar", "Register:updateTransport");
-        $router->post("/cadastro/transportadora/salvar", "Register:saveTransport");
+        //$router->post("/cadastro/transportadora/{}", "Register:loadTransport");
+        $router->post("/transportadora/{}", "Register:loadTransport");
+        //$router->post("/cadastro/transportadora/atualizar", "Register:updateTransport");
+        $router->post("/transportadora/atualizar", "Register:updateTransport");
+        //$router->post("/cadastro/transportadora/salvar", "Register:saveTransport");
+        $router->post("/transportadora/salvar", "Register:saveTransport");
         //$router->get("/cadastro/fornecedor", "Register:supplier");
         $router->get("/fornecedor", "Register:supplier");
-        $router->post("/cadastro/fornecedor/{}", "Register:loadSupplier");
-        $router->post("/cadastro/fornecedor/atualizar", "Register:updateSupplier");
-        $router->post("/cadastro/fornecedor/salvar", "Register:saveSupplier");
+        //$router->post("/cadastro/fornecedor/{}", "Register:loadSupplier");
+        $router->post("/fornecedor/{}", "Register:loadSupplier");
+        //$router->post("/cadastro/fornecedor/atualizar", "Register:updateSupplier");
+        $router->post("/fornecedor/atualizar", "Register:updateSupplier");
+        //$router->post("/cadastro/fornecedor/salvar", "Register:saveSupplier");
+        $router->post("/fornecedor/salvar", "Register:saveSupplier");
 
 
-        /**
-         * Searching data
-         */
+        /** Searching data */
         $router->post("/transport/id/{}", "Register:getIdTransport");
         $router->post("/company", "Company:list");
         $router->post("/saleman", "Saleman:load");
@@ -95,58 +89,47 @@
         $router->post("/produto", "Product:load");
 
 
-        /**
-         * Images
-         */
+        /** Images */
         $router->get("/image/{img}", "Image:open");
         $router->post("/percent", "Image:percent");
         $router->post("/removeFile/file/{file}", "Image:removeFile");
 
 
-        /**
-         * Modals
-         */
+        /**  Modals */
         $router->get("/gerenciamento/image/{id}", "FileRegistration:init");
 
 
-        /**
-         * Enter
-         */
+        /** Enter */
         $router->namespace("_App");
         $router->get("/entrar", "Auth:login");
+        $router->post("/token/save", "Auth:token");
         $router->get("/recuperar", "Auth:forget");
         $router->get("/cadastrar", "Auth:register");
 
 
-        /**
-         * Logout
-         */
+        /** Logout */
         $router->get("/sair", function() {
             (new Session())->destroy();
             echo "<script>window.location.assign('" . url() . "')</script>";
         });
 
 
-        /**
-         * Error Routes
-         */
+        /** Error Routes */
         $router->namespace("_App")->group("/ops");
         $router->get("/{errcode}", "Web:error");
 
 
-        /**
-         * Routes
-         */
+        /** Routes */
         $router->dispatch();
 
 
-        /**
-         * Error Redirect
-         */
+        /**  Error Redirect */
         if($router->error()) {
             $router->redirect("../ops/{$router->error()}");
         }
+
     } else {
         (new Web())->start();
     }
+
     ob_end_flush();

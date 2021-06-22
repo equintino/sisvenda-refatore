@@ -46,7 +46,7 @@ function url(string $path = "/"): string
 
 function url_back(): string
 {
-    return $_SERVER["HTTP_REFERER"] ?? url();
+    return ($_SERVER["HTTP_REFERER"] ?? url("home"));
 }
 
 function theme(string $path)
