@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function scriptConfig() {
     /** Edition of the configuration */
     $("#config .buttons .button").on("click", function(e) {
         e.preventDefault();
@@ -9,7 +9,6 @@ $(document).ready(function() {
                 title: "Preencha os dados abaixo:",
                 content: content
             });
-
             saveForm("connection","add", "null", url);
         }
     });
@@ -66,9 +65,10 @@ $(document).ready(function() {
                             action: "delete"
                         };
                         if(saveData(link, data, "Excluindo")) {
-                            setTimeout(function() {
-                                window.location.reload();
-                            }, setTime);
+                            $(".content").load("config", function() {
+                                callScript("config");
+                                $("#boxe_main, #mask_main").hide();
+                            });
                         }
                     }
                 }
@@ -77,4 +77,4 @@ $(document).ready(function() {
             return false;
         }
     });
-});
+}

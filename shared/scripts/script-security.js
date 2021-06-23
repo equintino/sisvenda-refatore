@@ -1,8 +1,7 @@
 /** functions */
 function checkGroup() {
     var groupName = $(".group fieldset p.active").text();
-    $(".screen legend span").text("Grupo: " + groupName)
-        .css("float","right");
+    $(".screen legend span").text("Grupo: " + groupName).css("float","right");
 
     /** Mark accessible screens */
     var url = "grupo/" + groupName;
@@ -13,11 +12,11 @@ function checkGroup() {
 }
 
 function scriptSecurity() {
-    (typeof(page) !== "undefined" && page === "shield" ? checkGroup() : null);
+    //(typeof(page) !== "undefined" && page === "shield" ? checkGroup() : null);
+    checkGroup();
     $(".btnAction").on("click", function() {
         var groupName = $(this).text();
-        $(".screen legend span").text("Grupo: " + groupName)
-            .css("float","right");
+        $(".screen legend span").text("Grupo: " + groupName).css("float","right");
 
         $(".btnAction").removeClass("active");
         $(this).addClass("active");
@@ -32,7 +31,7 @@ function scriptSecurity() {
 
     var change;
     /* change check */
-    $(".screen span").click(function() {
+    $(".screen span").on("click", function() {
         if(!$(".btnAction").hasClass("active")) return;
         change = changeCheck($(this).find("i"), "fa fa-check", "fa fa-times");
     });
@@ -56,10 +55,10 @@ function scriptSecurity() {
                     name: groupName
                 };
                 if(saveData(url, data)) {
-                    setTimeout(function() {
-                        $("#mask_main").trigger("click");
-                        window.location.reload();
-                    }, 1000);
+                    $("#boxe_main").hide();
+                    $(".content").load("shield", function() {
+                        scriptSecurity();
+                    });
                 }
             });
         } else if(btnName === "Excluir Grupo") {
@@ -92,11 +91,10 @@ function scriptSecurity() {
             var groupName = $(".group .active").text();
             var security = getScreenAccess($(".screen span"), "fa fa-check", groupName);
             var url = "grupo/update";
-
             saveData(url, security);
         }
     });
-    $("#mask, .mask").click(function() {
+    $("#mask, .mask").on("click", function() {
         $(".window, #mask").hide();
         $(".window form").remove();
     });

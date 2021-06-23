@@ -22,7 +22,7 @@ class Group extends Controller
         $groupId = (new User())->find($_SESSION["login"]->Logon)->Group_id;
 
         $page = "shield";
-        echo "<script>var identification = 'GRUPO DE ACESSOS'</script>";
+        //echo "<script>var identification = 'GRUPO DE ACESSOS'</script>";
         //$this->view->insertTheme([ compact("page") ]);
         $this->view->render("shield", [ compact("groups","screens","groupId") ]);
     }

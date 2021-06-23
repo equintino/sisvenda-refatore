@@ -1,4 +1,4 @@
-<script>var identificacao = 'ACESSO ÀS TELAS';</script>
+<!-- <script>var identificacao = 'ACESSO ÀS TELAS';</script> -->
 <div class="shield">
     <h5 class="mt-4" align="center">SEGURANÇA</h5>
     <div>

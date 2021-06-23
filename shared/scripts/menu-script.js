@@ -12,11 +12,27 @@ function identif(page) {
     }
 }
 
+function callScript(name) {
+    var registerCall = ["cliente","fornecedor","transportadora"];
+    if(registerCall.indexOf(name) !== -1) {
+        scriptRegister();
+    }
+    switch(name) {
+        case "login":
+            scriptLogin();
+            break;
+        case "shield":
+            scriptSecurity();
+            break;
+        case "config":
+            scriptConfig();
+    }
+}
+
 $("#topHeader ul li a").on("click", function(e) {
     e.preventDefault();
     var name = $(this).attr("id");
     var li = $(this).closest("li");
-    var registerCall = ["cliente","fornecedor","transportadora"];
 
     $("nav#topHeader ul li").removeClass("active");
     li.addClass("active");
@@ -25,16 +41,8 @@ $("#topHeader ul li a").on("click", function(e) {
         $(".identification").text(identif(name));
 
         $(".content").load(name, function() {
+            callScript(name);
             $(".loading, #mask_main").hide();
-            if(registerCall.indexOf(name) !== -1) {
-                scriptRegister();
-            }
-            if(name === "login") {
-                scriptLogin();
-            }
-            if(name === "shield") {
-                scriptSecurity();
-            }
         });
     }
 });

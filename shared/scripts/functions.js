@@ -153,7 +153,7 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
         e.preventDefault();
         var success;
         var data = $("#boxe_main form").serialize();
-        var top = $("#top").height();
+        //var top = $("#top").height();
         $.ajax({
             url: url,
             type: "POST",
@@ -179,22 +179,19 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
                     success = false;
                 }
                 alertLatch(response, background);
-                setTimeout(function() {
-                    loading.hide();
-                    (success ? window.location.reload(): null);
-                }, setTime);
+                loading.hide();
+                if(success) {
+                    $(".content").load("config", function() {
+                        callScript("config");
+                        $("#boxe_main, #mask_main").hide();
+                    });
+                }
             },
             error: function(error) {
                 alertLatch(response, background);
-                setTimeout(function() {
-                    loading.hide();
-                    $("#mask_main").fadeOut();
-                }, setTime);
             },
             complete: function() {
-                setTimeout(function() {
-                    loading.hide();
-                }, 500);
+                loading.hide();
             }
         });
         return success;
@@ -230,7 +227,7 @@ var security = function(groupName, url = null ) {
 var insertCheck = function(screens, element, optionGreen, optionRed) {
     element.find("i").removeClass();
     element.each(function() {
-        console.log($(this).text().trim());
+        //console.log($(this).text().trim());
         if(screens == " *" || screens.indexOf($(this).text().trim()) !== -1) {
             $(this).find("i").addClass(optionGreen)
                 .css("color","green");
@@ -300,10 +297,9 @@ var saveData = function(link, data, msg = "Salvando") {
                 background = "var(--cor-warning";
             }
             alertLatch(response, background);
-            setTimeout(function() {
-                 loading.hide();
-                 $("#mask_main").hide();
-            }, setTime);
+            if(success)$("#mask_main").hide();
+            loading.hide();
+            $("#mask_main").hide();
         },
         error: function(error) {
             var top = $("#top").height();
