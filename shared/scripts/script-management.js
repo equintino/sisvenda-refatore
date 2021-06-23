@@ -262,9 +262,10 @@ var perc = function(interval) {
     countRepeated = (typeof(countRepeated) === "undefined" ? 0 : countRepeated);
 
     $.ajax({
-        url: "../src/public/percent_" + logon + ".txt",
-            type: "POST",
-            dataType: "text",
+        //url: "../src/public/percent_" + logon + ".txt",
+        url: "src/public/percent_" + logon + ".txt",
+        type: "POST",
+        dataType: "text",
         complete: function(response) {
             var d = response["responseText"].split(",");
             var totalRows = parseInt(d[0]);
@@ -381,7 +382,8 @@ function loadDataTable() {
             style: 'single'
         },
         ajax             : {
-                url      : "../sale",
+                //url      : "../sale",
+                url      : "sale",
                 enctype  : "multipart/form-data",
                 type     : "POST",
                 dataType : "JSON",
@@ -415,7 +417,8 @@ function loadDataTable() {
                     $("#mask_main").hide();
                     selectOnClick();
                     $.ajax({
-                        url: "../removeFile/file/percent_" + logon + ".txt",
+                        //url: "../removeFile/file/percent_" + logon + ".txt",
+                        url: "removeFile/file/percent_" + logon + ".txt",
                         type: "POST",
                         dataType: "JSON",
                         data: "percent.txt"
@@ -449,10 +452,11 @@ function loadDataTable() {
     return tabSale;
 }
 
-$(document).ready(function() {
+function scriptManagement() {
     if(typeof(page) !== "undefined" && page === "VENDAS") {
         $.ajax({
-            url: "../company",
+            //url: "../company",
+            url: "company",
             type: "POST",
             dataType: "JSON",
             success: function(response) {
@@ -469,7 +473,8 @@ $(document).ready(function() {
         };
         if(companyId !== "") {
             $.ajax({
-                url: "../saleman",
+                //url: "../saleman",
+                url: "saleman",
                 type: "POST",
                 dataType: "JSON",
                 data: data,
@@ -567,4 +572,4 @@ $(document).ready(function() {
             }
         }
     });
-});
+}

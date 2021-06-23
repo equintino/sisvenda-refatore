@@ -26,6 +26,9 @@ function callScript(name) {
             break;
         case "config":
             scriptConfig();
+            break;
+        case "vendas":
+            scriptManagement();
     }
 }
 
