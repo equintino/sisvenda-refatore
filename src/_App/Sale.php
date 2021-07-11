@@ -52,7 +52,8 @@ class Sale extends Controller
         return print($this->getJson($datas, $recordsTotal));
     }
 
-    public function getTotalRows($sql) {
+    public function getTotalRows($sql)
+    {
         $sale = new \Models\Sale();
         $sql = str_replace("*","1",$sql);
         $tRows = count($sale->readDataTable($sql)->fetchAll());
@@ -91,6 +92,7 @@ class Sale extends Controller
                 foreach($columnNames as $columnName) {
                     $d[$columnName] = $this->formatColumn($columnName, $dVenda->$columnName);
                 }
+                //$d["Arquivos"] = "<input type='file' name='anexo-" . $dVenda->Pedido . "[]' multiple />";
                 $d["Arquivos"] = "<input type='file' name='anexo-" . $dVenda->Pedido . "[]' multiple />";
                 $d["Documentos"] = $this->getImage($dVenda);
                 $d["Produto"] = $this->getProduct($dVenda);
@@ -106,7 +108,90 @@ class Sale extends Controller
         return $datas;
     }
 
-    private function whereDataTable($data) {
+    public function update()
+    {
+        $dataPost = json_decode(filter_input(INPUT_POST, "change", FILTER_DEFAULT));
+
+        //$search = criterioBusca();
+        //$search->setTabela("Venda");
+
+        //$columnNames = [ "Controle","NFNum","VencOrcamento","CustoVenda","DESATIVO","PAGO","Status","Situação","NUM_RASTREIOCORREIOS","OBS" ];
+
+        $dataSale = [];
+        $dataSave = [];
+        $saleDb = new \Models\Sale();
+
+        foreach($dataPost as $changeSale) {
+            $salesOrder = $changeSale->salesOrder;
+            $companyId = $changeSale->companyId;
+            if(!preg_match("/^[anexo]/", $changeSale->name)) {
+                $dataSale[$salesOrder][$companyId][$changeSale->name] = $changeSale->value;
+            } else {
+                // $rowFile = $_FILES[substr($changeSale->name,0,-2)];
+                // var_dump(
+                //     $_FILES,
+                //     $rowFile
+                // );die;
+
+                $fileData = $_FILES;
+                foreach($changeSale->value as $name) {
+                    $fileRegistration = new \Models\FileRegistration;
+                    $dataSale[$salesOrder][$companyId]["file"][] = $fileRegistration->fileSave($name, $fileData, $companyId, $salesOrder);
+
+                    // $indice = array_search($name,$_FILES[substr($changeSale->name,0,-2)]["name"]);
+                    // $tmp_name = $_FILES[substr($changeSale->name,0,-2)]["tmp_name"][$indice];
+                    // $type = $_FILES[substr($changeSale->name,0,-2)]["type"][$indice];
+                    // $size = $_FILES[substr($changeSale->name,0,-2)]["size"][$indice];
+
+                    // var_dump(
+                    //     $_FILES,
+                    //     $name,
+                    //     $tmp_name,
+                    //     $type,
+                    //     $size,
+                    //     $changeSale
+                    // );
+                }
+            }
+            $dataSale[$salesOrder][$companyId]["Pedido"] = $salesOrder;
+            $dataSale[$salesOrder][$companyId]["IDEMPRESA"] = $companyId;
+        }
+        $salesOrders = array_keys($dataSale);
+        for($x=0; $x < count($salesOrders); $x++) {
+            foreach($dataSale[$salesOrders[$x]] as $companyId => $values) {
+                /** search from database */
+                $where = [
+                    "IDEMPRESA" => $companyId,
+                    "Pedido" => $salesOrders[$x]
+                ];
+                $sale = $saleDb->search($where);
+                if(!empty($sale)) {
+                    $sale = $sale[0];
+                    foreach($values as $columnName => $value) {
+                        if($columnName === "CustoVenda") {
+                            $value = formatReal($value);
+                        }
+                        $sale->$columnName = $value;
+                    }
+                    $sale->save();
+                }
+            }
+        }
+        // if(preg_match("/^[anexo]/", $changeSale->name)) {
+        //     //$dataSale[$salesOrder]["file"] = $changeSale->value;
+        //     $fileRegistration = new \Models\FileRegistration;
+        //     foreach($_FILES as $k => $fileData) {
+        //         for($x=0; $x < count($fileData["name"]); $x++) {
+        //             $dataSale[$salesOrder]["file"] = $fileRegistration->fileSave($fileData, $companyId, $salesOrder);
+        //         }
+        //     }
+        // }
+        return print(json_encode($dataSale));
+
+    }
+
+    private function whereDataTable($data)
+    {
         $except = ["Documentos", "Arquivos", "Produto"];
         $where = " AND ";
         $search = $data["search"]["value"];
@@ -121,7 +206,8 @@ class Sale extends Controller
         return $where;
     }
 
-    public function searchArr($data) {
+    public function searchArr($data)
+    {
         $searchArr = [];
         $columnsDb = $this->getColumnsDb($data);
         $pago = filter_input(INPUT_POST, "pago");
@@ -239,7 +325,8 @@ class Sale extends Controller
         return isset($detProducts) ? $detProducts : null;
     }
 
-    private function formatColumn(string $columnName, $value) {
+    private function formatColumn(string $columnName, $value)
+    {
         // if(!isset($Status)) {
         //     $status = new Status();
         // }

@@ -95,6 +95,16 @@ abstract class Model
             $values = ":" . implode(", :", array_keys(removeAccentArray($data)));
             $stmt = Connect::getInstance($msgDb)->prepare("INSERT INTO {$entity} (" . $this->getAccentWorlds($columns) . ") VALUES ({$values})");
 
+            // foreach($data as $key => $value) {
+            //     $type = \PDO::PARAM_STR;
+            //     var_dump($value);
+            //     if(is_numeric($value)) {
+            //         $type = \PDO::PARAM_INT;
+            //         $value = (int) $value;
+            //     }
+            //     $stmt->bindValue(":{$key}", $value, $type);
+            // }
+
             $stmt->execute($this->filter(removeAccentArray($data)));
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {

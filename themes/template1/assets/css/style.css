@@ -492,18 +492,22 @@ main .form-signin {
     height: var(--title-height);
     border-radius: 5px 5px 0 0;
     color: white;
-    font-size: .8em;
+    font-size: var(--title-size);/*.8em;*/
     padding: 3px 0 0 10px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     font-weight: var(--title-weight);
     display: none;
 }
 
-#boxe_main #message {
-    font-size: .8em;
+#boxe_main #message, #div_dialogue #message {
+    font-size: 1.3em;
     font-weight: 400;
     margin-left: 10px;
     display: none;
+}
+
+#div_dialogue #message {
+    padding: 15px 20px;
 }
 
 #boxe_main #content {
@@ -572,10 +576,6 @@ main .form-signin {
     border-radius: 5px;
     display: none;
     /* overflow: scroll; */
-}
-
-#div_dialogue #message {
-    padding: 15px 20px;
 }
 
 

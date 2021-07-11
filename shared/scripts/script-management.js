@@ -16,13 +16,28 @@ function openDoc(nDoc, pedido) {
                 });
                 conf.on("click", function() {
                     if($(this).val() == 1) {
-                        alertLatch("<div class='success'>Anexo (" + nDoc + ") escluído com sucesso... Brincadeirinha</div>","var(--cor-success)");
+                        $.ajax({
+                            url: "image/delete/" + nDoc,
+                            type: "POST",
+                            dataType: "JSON",
+                            success: function(response) {
+                                alertLatch(response, "var(--cor-success)");
+                                deleteAnnexed(nDoc);
+                            },
+                            error: function(error) {
+                                alertLatch("Whops!!! Arquivo não encontrado", "var(--cor-danger)");
+                            }
+                        });
                         modal.close();
                     }
                 });
             });
         }
     });
+}
+
+function deleteAnnexed(nDoc) {
+    $("#tabSale tbody #" + nDoc).remove();
 }
 
 function getFormData(form) {
@@ -114,7 +129,8 @@ function productDetail(data) {
         table += "<th "+ align +" style='padding: 4px'>"+ titles[i]+ "</th>";
     }
     $.ajax({
-        url: "../produto",
+        //url: "../produto",
+        url: "produto",
         type: "POST",
         dataType: "JSON",
         data: data,
@@ -414,7 +430,7 @@ function loadDataTable() {
                     alertLatch("<span class=danger>Servidor demorou a responder, tente novamente</span>", "var(--cor-danger)");
                 },
                 complete: function(response) {
-                    $("#mask_main").hide();
+                    $(".loading, #mask_main").hide();
                     selectOnClick();
                     $.ajax({
                         //url: "../removeFile/file/percent_" + logon + ".txt",
@@ -425,7 +441,7 @@ function loadDataTable() {
                     });
                     //reorderCol(tabSale);
                     // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
-                    // $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
+                    $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
                 }
         },
         // initComplete: function() {
@@ -571,5 +587,165 @@ function scriptManagement() {
                  detailRows.push( tr.attr('id') );
             }
         }
+    });
+
+    /** Salvamento no banco de dados */
+    /** coletando dados para salvamento */
+    var change = [];
+    var salesOrder;
+    var companyId;
+    $("#tabSale tbody").on("change", "tr td", function() {
+        var tr  = $(this).closest("tr");
+        salesOrder = tr.find("[data-pedido]").text();
+        companyId = tr.find("[data-idEmpresa]").text();
+    });
+    $("#tabSale tbody").on("change", function(e) {
+        var name = e.target.name;
+        var value = e.target.value;
+        var files = [];
+        if(/^anexo/.exec(name)) {
+            /** attachment validation */
+            for(var count = 0; count < e.target.files.length; count++) {
+                var file = e.target.files[count];
+                var type = file["type"];
+                var size = file["size"];
+                if(type !== "image/jpeg" && type !== "image/png" && type !== "application/pdf") {
+                    alertLatch("Permitido somente arquivos de <font color=red>imagem</font> ou <font color=red>pdf</font>", "var(--cor-warning)");
+                    $("#altOrc tbody input[type=file]").each(function() {
+                        if($(this).attr("name") === "anexo-" + salesOrder + "[]") {
+                            $(this).val("");
+                        }
+                    });
+                    return;
+                }
+                if(size > 1024*2*1000) {
+                    alertLatch("Não é permitido arquivo acima de 2Mb", "var(--cor-warning)");
+                    $("#altOrc tbody input[type=file]").each(function() {
+                        if($(this).attr("name") === "anexo-" + salesOrder + "[]") {
+                            $(this).val("");
+                        }
+                    });
+                    return;
+                }
+                files.push(file["name"]);
+            }
+            change.push({
+                salesOrder: salesOrder,
+                companyId: companyId,
+                name: name,
+                value: files
+            });
+        } else if(e.target.name !== "OBS") {
+            (value = name === "DESATIVO" || name === "PAGO" ? e.target.checked : e.target.value);
+            change.push({
+                salesOrder: salesOrder,
+                companyId: companyId,
+                name: name,
+                value: value
+            });
+        }
+    });
+    $('#tabSale tbody').on( 'click', 'tr .details-control', function () {
+        $(".tabDetail").on("change", "textarea", function() {
+            var tr = $(this).closest("table").parents("tr").prev().children("td");
+            var idEmpresa = tr.find("[data-idEmpresa]").text();
+            var pedido = tr.find("[data-pedido]").text();
+            var observation = $(this).val();
+            change.push({
+                salesOrder: pedido,
+                companyId: idEmpresa,
+                name: "OBS",
+                value: observation
+            });
+        });
+    });
+    /** Save changes */
+    var tabAjax = $("#tabAjax").DataTable({
+        searching: false,
+        info: false,
+        paging: false,
+        ordering: true
+    });
+
+    $("#btnAlt").on("click", function(e) {
+        //tabAjax.rows().remove().draw();
+        if(change.length < 1) {
+            $("#ajax").css("display","none");
+            return alertLatch("Nenhum dado foi alterado", "var(--cor-warning");
+        }
+        var formData = new FormData($("form#altOrc")[0]);
+        /** enviando via formData campos alterados[change] */
+        formData.append("change", JSON.stringify(change));
+        /** limpar change */
+        tabSale.on("draw", function() {
+            change = [];
+        });
+        var link = "sale/update";
+        $.ajax({
+            type: "POST",
+            url: link,
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: "JSON",
+            beforeSend: function(xhr) {
+                $(".loading, #mask_main").show();
+                tabAjax.clear();
+            }
+        }).done(function(response) {
+            var dataSet = [];
+            var row = [];
+            for(var i in response) {
+                $("#tabSale tbody input[type=file]").each(function() {
+                    var companyId = $(this).closest("tr").find("td:eq(22)").text();
+                    var name = $(this).attr("name");
+                    for(var j in response[i]) {
+                        var html = "";
+                        if(name === "anexo-" + i + "[]" && response[i][j].IDEMPRESA === companyId) {
+                            $(this).val("");
+                            var valueOld = $(this).closest("td").next().html();
+
+                            for(var k in response[i][j]["file"]) {
+                                html += '<a id="' + response[i][j]["file"][k] + '" style="text-decoration: none; cursor: pointer; color: blue" onclick="openDoc(' + response[i][j]["file"][k] + ', ' + response[i][j].Pedido + ')"><i class="fa fa-file"></i>' + response[i][j]["file"][k] + '</a> ';
+                            }
+                            $(this).closest("td").next().html(valueOld + html);
+                        }
+                    }
+                });
+                var col;
+                var c;
+                var rows = [];
+                var addRow = ["Pedido", "Controle", "NFNum", /*"VencOrcamento",*/ "CustoVenda", "Situação", "DESATIVO", "PAGO", "Status", "NUM_RASTREIOCORREIOS", "OBS","IDEMPRESA"];
+                for(var j in response[i]) {
+                    var r = [];
+                    for(var x=0; x < addRow.length; x++) {
+                        col = (typeof(response[i][j][addRow[x]]) !== "undefined" ? response[i][j][addRow[x]] : null);
+                        switch(col) {
+                            case true:
+                                c = "SIM";
+                                break;
+                            case false:
+                                c = "NÂO";
+                                break;
+                            default:
+                                c = col;
+                        }
+                        r.push(c);
+                    }
+                    rows.push(r);
+                }
+                tabAjax.rows.add(rows).draw();
+            }
+            $("#tabAjax tbody tr td").attr("align","center");
+            var top = $("#ajax").show().offset().top;
+            $("html, body").animate({ scrollTop: top }, 50);
+            alertLatch("Dados alterados com sucesso", "var(--cor-success");
+            //$("[type=file]").val("");
+        }).fail(function() {
+            alertLatch("Falha ao gravar", "var(--cor-danger)");
+        }).always(function(data) {
+            $(".loading, #mask_main").hide();
+        });
     });
 }

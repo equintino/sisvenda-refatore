@@ -112,8 +112,12 @@ class Sale extends Model implements Models
 
     private function update_()
     {
-        if(!empty($this->Pedido)) {
-            $this->otherCompanies(["Pedido" => $this->Pedido]);
+        static::$safe = ['IDVenda_NEW','created_at','updated_at','file'];
+        if(!empty($this->IDVenda_NEW)) {
+            //$this->otherCompanies(["Pedido" => $this->Pedido]);
+            $terms = "IDVenda_NEW=:IDVenda_NEW";
+            $params = "IDVenda_NEW={$this->IDVenda_NEW}";
+            $this->update(self::$entity, $this->safe(), "{$terms}", "{$params}");
         }
 
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
@@ -162,7 +166,7 @@ class Sale extends Model implements Models
                 }
                 $id = $this->create(self::$entity, $this->safe());
             } else {
-                $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
+                $this->update(self::$entity, $this->safe(), "{$terms} AND IDEMPRESA={$company->ID}", "{$params}");
             }
         }
         return $id ?? null;

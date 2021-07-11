@@ -98,5 +98,10 @@ function removeAccentArray(array $array): array
 
 function filterNull($var)
 {
-    return $var != null;
+    return $var !== null;
+}
+
+function formatReal(string $value): float
+{
+    return str_replace(",",".",str_replace(".","",$value));
 }

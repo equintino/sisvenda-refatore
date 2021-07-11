@@ -19,7 +19,7 @@ class User extends Controller
     public function init(?array $data): void
     {
         $companyId = $data["companyId"] ?? null;//filter_input(INPUT_GET, "companyId", FILTER_SANITIZE_STRIPPED);
-        $companys = (new Company())->all();
+        $companys = (new Company())->ActiveAll();
         $groups = (new Group())->all();
         $users = (new \Models\User())->find(["IDEmpresa" => $companyId]);
         $params = [ compact("companys", "groups", "companyId", "users") ];

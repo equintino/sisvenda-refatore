@@ -45,9 +45,11 @@ class User extends Model implements Models
         $login = &$search;
         if(is_array($search)) {
             foreach($search as $columnName => $value) {
-                $params = "{$columnName}=:{$columnName}";
-                $terms = "{$columnName}={$value}";
+                $params[] = "{$columnName}=:{$columnName}";
+                $terms[] = "{$columnName}={$value}";
             }
+            $params = implode(" AND ", $params);
+            $terms = implode("&", $terms);
             $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params} AND Nome != 'Administrador' ", $terms, $msgDb);
         } elseif(filter_var($search, FILTER_VALIDATE_EMAIL)) {
             $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Email=:Email", "Email={$search}", $msgDb);

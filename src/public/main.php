@@ -15,8 +15,10 @@ $connectionName = filter_input(INPUT_POST, "connection-name", FILTER_SANITIZE_ST
 $confEnv = (new FileTransation(".env"))->setLocal($connectionName);
 
 if($confEnv->getLocal()) {
-    $user = (new User())->find($login, "*", true);
+    $search = ["Logon" => $login, "Visivel" => 1];
+    $user = (new User())->find($search, "*", true);
     if($user) {
+        $user = $user[0];
         /** password reseted */
         if(!empty($user->token)) {
             return print(json_encode(2));

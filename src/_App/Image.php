@@ -31,4 +31,5 @@ class Image extends Controller
 
         return print(json_encode($file));
     }
+
 }

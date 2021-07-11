@@ -4,7 +4,7 @@ namespace Core;
 
 abstract class Safety
 {
-    static $exceptions = [ "home.php", "error.php" ];
+    static $exceptions = [ "home.php", "error.php", "management.php" ];
     static $includes = [ "Transportadora", "Fornecedor"];
 
     public static function dataConnection(): ?string

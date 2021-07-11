@@ -102,9 +102,7 @@ function scriptLogin() {
                 exhibition("#exhibition table#tabList tbody td");
                 disabledTableLine("#exhibition table tbody tr");
             });
-        } //else {
-        //     window.location.reload();
-        // }
+        }
     });
     $(".header button").on("click", function() {
         var btnAction = $(this).text();

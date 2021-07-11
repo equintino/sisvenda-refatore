@@ -41,16 +41,17 @@
                 <div id="buttons" style="text-align: right"></div>
             </section>
 
-            <!-- bank report -->
-            <section id='ajax' style="display: none">
-                <div><h5>Relatório de Resposta do Banco de Dados</h5></div>
-                <table id='tabAjax' class='display'></table>
-            </section>
-
             <span id="alert"></span>
 
         </div><!-- header2 -->
         <div class="content"></div>
+
+        <!-- bank report -->
+        <!-- <section id='ajax' style="display: none">
+            <div><h5>Relatório de Resposta do Banco de Dados</h5></div>
+            <table id='tabAjax' class='display'></table>
+        </section> -->
+
         <script>var page = "<?= ($page ?? null) ?>";</script>
         <script type="text/javascript" src="<?= theme("assets/scripts.js") ?>" ></script>
     </body>

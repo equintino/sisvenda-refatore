@@ -85,18 +85,20 @@
         $router->post("/company", "Company:list");
         $router->post("/saleman", "Saleman:load");
         $router->post("/sale", "Sale:init");
-        $router->get("/gerenciamento/image/id/{id}", "FileRegistration:loadImage");
+        $router->post("/sale/update", "Sale:update");
         $router->post("/produto", "Product:load");
 
 
         /** Images */
-        $router->get("/image/{img}", "Image:open");
+        //$router->get("/image/{img}", "Image:open");
         $router->post("/percent", "Image:percent");
         $router->post("/removeFile/file/{file}", "Image:removeFile");
 
 
         /**  Modals */
-        $router->get("/gerenciamento/image/{id}", "FileRegistration:init");
+        $router->get("/image/{id}", "FileRegistration:init");
+        $router->get("/image/id/{id}", "FileRegistration:loadImage");
+        $router->post("/image/delete/{id}", "FileRegistration:delete");
 
 
         /** Enter */

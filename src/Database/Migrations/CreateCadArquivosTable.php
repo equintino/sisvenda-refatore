@@ -19,10 +19,10 @@ class CreateCadArquivosTable implements CreateTable
     public function up(string $entity): string
     {
         $schema = Schema::create($entity, $this->type, function(Blueprint $table) {
-            $table->increment("id");
-            $table->int("COD_ARQUIVO,IND_LOCAL,COD_EMPRESA,COD_DOCUMENTO");
+            $table->increment("COD_ARQUIVO");
+            $table->int("IND_LOCAL,COD_EMPRESA,COD_DOCUMENTO");
             $table->string("NOM_ARQUIVO");
-            $table->date("DAT_INCLUSAO");
+            $table->date("DAT_INCLUSAO")->nullable();
             $table->int('IND_TIPO');
             $table->string("MIRCR")->nullable();
             $table->varbinary("ARQ_01,ARQ_02")->nullable();
