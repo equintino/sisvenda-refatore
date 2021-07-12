@@ -91,7 +91,8 @@ $(function($) {
                 }
             },
             error: function(error) {
-                alertLatch(error["responseText"], "var(--cor-danger)");
+                window.location.assign("/sisvenda-refatore");
+                // alertLatch(error["responseText"], "var(--cor-danger)");
             },
             complete: function(response) {
                 setTimeout(function(){

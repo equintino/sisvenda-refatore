@@ -105,7 +105,7 @@ abstract class Model
             //     $stmt->bindValue(":{$key}", $value, $type);
             // }
 
-            $stmt->execute($this->filter(removeAccentArray($data)));
+            $stmt->execute(removeAccentArray($data));
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {
             var_dump($exception);

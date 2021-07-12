@@ -166,10 +166,11 @@ class Client extends Model implements Models
 
 
             if($client->fetch()) {
+                $this->setSafe("id,created_at,updated_at,DataReg,transpCompanyId,transpCnpj,Tipo");
                 $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");
             } else {
                 $this->data->DataReg = date("d/m/Y H:i:s");
-                $this->setSafe("id,created_at,transpCompanyId,transpCnpj");
+                $this->setSafe("id,created_at,updated_at,transpCompanyId,transpCnpj,Tipo,DataReg");
                 $cpfCnpj = (!empty($this->data->CPF) ? "ID_PFISICA" : "ID_PJURIDICA");
                 $this->data->$cpfCnpj = $this->lastId();
                 $this->create(self::$entity, $this->safe());

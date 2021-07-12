@@ -75,7 +75,6 @@ class Transport extends Model implements Models
 
     public function save()
     {
-        static::$safe = ["IDTransportadora","created_at","updated_at"];
         if(!$this->required()) {
             return null;
         }
@@ -109,9 +108,10 @@ class Transport extends Model implements Models
 
     public function create_()
     {
-        if(!empty($this->CNPJ) && $this->find($this->CNPJ)) {
-            $this->message = "<span class='warning'>Transporttadora informada já está cadastrada</span>";
-        } else {
+        // if(!empty($this->CNPJ) && $this->find($this->CNPJ)) {
+        //     $this->message = "<span class='warning'>Transporttadora informada já está cadastrada</span>";
+        // } else {
+
             /** increment false in LOJASCOM_N */
             $false = ($this->connectionDetails->local !== "lojascom" ?: false);
             $id = $this->otherCompanies(["Cnpj" => $this->CNPJ], $false);
@@ -122,7 +122,7 @@ class Transport extends Model implements Models
             $this->message = "<span class='success'>Cadastro realizado com sucesso</span>";
 
             $this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE IDTransportadora=:IDTransportadora", "IDTransportadora={$id}")->fetch();
-        }
+        // }
         return null;
     }
 
@@ -149,14 +149,14 @@ class Transport extends Model implements Models
         $terms = substr($terms, 0, -1);
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
-            static::$safe = ["IDTransportadora","created_at","updated_at"];
+            static::$safe = ["IDTransportadora","created_at","updated_at","transpCompanyId","transpCnpj","Tipo"];
             $transport = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
 
             $this->data->IDEmpresa = $company->ID;
 
             if(!$transport->fetch()) {
                 if(!$autoincrement) {
-                    static::$safe = ["created_at","updated_at"];
+                    static::$safe = array_diff(static::$safe, ["IDTransportadora"]);
                     $this->data->IDTransportadora = $this->lastId();
                 }
                 $id = $this->create(self::$entity, $this->safe());

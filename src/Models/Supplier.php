@@ -57,7 +57,6 @@ class Supplier extends Model implements Models
 
     public function save()
     {
-        static::$safe = ["ID","created_at","updated_at"];
         if(!$this->required()) {
             return null;
         }
@@ -115,7 +114,6 @@ class Supplier extends Model implements Models
     {
         $this->data->Cep = $this->data->CEP;
         unset($this->data->StatusAtivo, $this->data->CEP, $this->data->cep);
-        //InscEsdatual, Fax, Tel02, HomePage
 
         $companys = (new Company())->all();
         $keys = array_keys($where);
@@ -129,14 +127,14 @@ class Supplier extends Model implements Models
         $terms = substr($terms, 0, -1);
         $params = substr($params, 0, -1);
         foreach($companys as $company) {
-            static::$safe = ["ID","created_at","updated_at"];
+            static::$safe = ["ID","created_at","updated_at","IDTransportadora","transpCompanyId","transpCnpj","Tipo"];
             $supplier = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} AND IDEmpresa={$company->ID}", $params);
 
             $this->data->IDEmpresa = $company->ID;
 
             if(!$supplier->fetch()) {
                 if(!$autoincrement) {
-                    static::$safe = ["created_at","updated_at"];
+                    static::$safe = array_diff(static::$safe, ["ID"]);
                     $this->data->ID = $this->lastId();
                 }
                 $id = $this->create(self::$entity, $this->safe());
