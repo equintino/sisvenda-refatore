@@ -27,16 +27,26 @@ body {
     padding: 6px 0;
 }
 
+#tabFiltro tbody {
+    margin: 0 auto;
+}
+
 #filtroGerVenda {
     background: #007ce2;
-    padding-left: 20px;
 }
 
 #ajax {
-    margin-top: 50px;
     display: none;
-    width: 600px;
-    margin: 20px auto;
+    width: 90%;
+    margin: 15px auto;
+}
+
+#ajax table {
+    margin: 0 auto;
+}
+
+#ajax h6 {
+    text-align: center;
 }
 
 /* progress datatable */
@@ -314,7 +324,7 @@ form {
 </style>
     <div style="background: #007ce2">
         <form method="post" action="<?= url("gerenciamento/vendas") ?>" id="filtroGerVenda" class='topBack form-inline'>
-            <table class='table-responsive' id="tabFiltro" style="display: flex">
+            <table class='table-responsive' id="tabFiltro" style="display: flex;">
                 <tr>
                     <td><input type="radio" name="tBusca" value="Pedido" checked/></td>
                     <td>Nº Pedido</td>
@@ -416,28 +426,28 @@ form {
     <button id="btnAlt" style="float:right; margin-right: 10px; border-radius: 0 0 5px 5px" class="btn-md btn-dark">Gravar Alteração</button>
 
     <!-- Janelas Modais -->
-    <div id='ajax' style="width: 90%">
-        <div style="text-align: center">
-            <h5>Relatório de Resposta do Banco de Dados</h5>
-        </div>
-        <table id='tabAjax' class='display' >
-            <thead>
-                <tr>
-                    <th style="text-align:center">Pedido</th>
-                    <th style="text-align:center">Controle</th>
-                    <th style="text-align:center;white-space: nowrap;">Nº NF</th>
-                    <!-- <th style="text-align:center">Venc. Orcamento</th> -->
-                    <th style="text-align:center;white-space: nowrap;">Custo Venda</th>
-                    <th style="text-align:center">Situação</th>
-                    <th style="text-align:center">Desativado</th>
-                    <th style="text-align:center">Pago</th>
-                    <th style="text-align:center">Status</th>
-                    <th style="text-align:center;white-space: nowrap;">Código Correio</th>
-                    <th style="text-align:center;width:10%">Obs</th>
-                    <th style="text-align:center;">Loja</th>
-                </tr>
-            </thead>
-        </table>
+    <div id='ajax' >
+        <!-- <div style="text-align: center"> -->
+            <h6>Relatório de Resposta do Banco de Dados</h6>
+            <table id='tabAjax' class='display' >
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Pedido</th>
+                        <th style="text-align:center">Controle</th>
+                        <th style="text-align:center;white-space: nowrap;">Nº NF</th>
+                        <!-- <th style="text-align:center">Venc. Orcamento</th> -->
+                        <th style="text-align:center;white-space: nowrap;">Custo Venda</th>
+                        <th style="text-align:center">Situação</th>
+                        <th style="text-align:center">Desativado</th>
+                        <th style="text-align:center">Pago</th>
+                        <th style="text-align:center">Status</th>
+                        <th style="text-align:center;white-space: nowrap;">Código Correio</th>
+                        <th style="text-align:center;width:10%">Obs</th>
+                        <th style="text-align:center;">Loja</th>
+                    </tr>
+                </thead>
+            </table>
+        <!-- </div> -->
     </div>
 
     <div class="window"></div>
