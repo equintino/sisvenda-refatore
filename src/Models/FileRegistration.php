@@ -103,8 +103,6 @@ class FileRegistration extends Model implements Models
                 //"DAT_INCLUSAO" => $date->format("d/m/Y"),
                 "COD_EMPRESA" => $companyId,
                 "COD_DOCUMENTO" => $salesOrder,
-                //"ARQ_01" => base64_encode(file_get_contents($files["tmp_name"][$x])),
-                //"ARQ_01" => bin2hex(file_get_contents($files["tmp_name"][$x])),
                 "ARQ_01" => file_get_contents($file["tmp_name"][$index]),
                 "IND_TIPO" => $this->indType($file["type"][$index]),
                 "IND_LOCAL" => $indLocal,

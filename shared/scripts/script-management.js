@@ -668,18 +668,15 @@ function scriptManagement() {
     });
 
     $("#btnAlt").on("click", function(e) {
-        //tabAjax.rows().remove().draw();
         if(change.length < 1) {
             $("#ajax").css("display","none");
             return alertLatch("Nenhum dado foi alterado", "var(--cor-warning");
         }
         var formData = new FormData($("form#altOrc")[0]);
+
         /** enviando via formData campos alterados[change] */
         formData.append("change", JSON.stringify(change));
-        /** limpar change */
-        tabSale.on("draw", function() {
-            change = [];
-        });
+
         var link = "sale/update";
         $.ajax({
             type: "POST",
@@ -694,11 +691,15 @@ function scriptManagement() {
                 tabAjax.clear();
             }
         }).done(function(response) {
-            var dataSet = [];
-            var row = [];
-            for(var i in response) {
+            let companyId;
+            let dataSet = [];
+            let row = [];
+            let totalColumn = tabSale.columns().data().length;
+            for(let i in response) {
                 $("#tabSale tbody input[type=file]").each(function() {
-                    var companyId = $(this).closest("tr").find("td:eq(22)").text();
+                    $(this).parents("tr").find("td span").each(function() {
+                        companyId = $(this).attr("data-idEmpresa");
+                    });
                     var name = $(this).attr("name");
                     for(var j in response[i]) {
                         var html = "";
@@ -736,12 +737,12 @@ function scriptManagement() {
                     rows.push(r);
                 }
                 tabAjax.rows.add(rows).draw();
+                change = [];
             }
             $("#tabAjax tbody tr td").attr("align","center");
             var top = $("#ajax").show().offset().top;
             $("html, body").animate({ scrollTop: top }, 50);
             alertLatch("Dados alterados com sucesso", "var(--cor-success");
-            //$("[type=file]").val("");
         }).fail(function() {
             alertLatch("Falha ao gravar", "var(--cor-danger)");
         }).always(function(data) {
