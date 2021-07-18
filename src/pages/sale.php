@@ -427,27 +427,16 @@ form {
 
     <!-- Janelas Modais -->
     <div id='ajax' >
-        <!-- <div style="text-align: center"> -->
-            <h6>Relatório de Resposta do Banco de Dados</h6>
-            <table id='tabAjax' class='display' >
-                <thead>
-                    <tr>
-                        <th style="text-align:center">Pedido</th>
-                        <th style="text-align:center">Controle</th>
-                        <th style="text-align:center;white-space: nowrap;">Nº NF</th>
-                        <!-- <th style="text-align:center">Venc. Orcamento</th> -->
-                        <th style="text-align:center;white-space: nowrap;">Custo Venda</th>
-                        <th style="text-align:center">Situação</th>
-                        <th style="text-align:center">Desativado</th>
-                        <th style="text-align:center">Pago</th>
-                        <th style="text-align:center">Status</th>
-                        <th style="text-align:center;white-space: nowrap;">Código Correio</th>
-                        <th style="text-align:center;width:10%">Obs</th>
-                        <th style="text-align:center;">Loja</th>
-                    </tr>
-                </thead>
-            </table>
-        <!-- </div> -->
+        <h6>Relatório de Resposta do Banco de Dados</h6>
+        <table id='tabAjax' class='display' style="white-space: nowrap;" >
+            <thead>
+                <tr>
+                <?php foreach($titlesTableAjax as $title): ?>
+                    <th><?= $title ?></th>
+                <?php endforeach ?>
+                </tr>
+            </thead>
+        </table>
     </div>
 
     <div class="window"></div>

@@ -54,11 +54,23 @@ class Management extends Controller
                 22  => "Empresa",
                 23  => "OBS"
             ];
-
         $columns = explode(",", $fields);
+        $titlesTableAjax = [
+            "Pedido",
+            "Controle",
+            "Nº NF",
+            "Custo Venda",
+            "Situação",
+            "Desativado",
+            "Pago",
+            "Status",
+            "Código Correio",
+            "Obs",
+            "Loja"
+        ];
 
         $this->view->insertTheme([ compact("page", "loading") ]);
-        $this->view->render("sale", [ compact("sitList", "sts", "columns", "chTitles") ]);
+        $this->view->render("sale", [ compact("sitList", "sts", "columns", "chTitles","titlesTableAjax") ]);
     }
 
     // public function supplier(?array $data): void

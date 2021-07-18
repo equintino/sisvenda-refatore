@@ -28,9 +28,6 @@
         $router->post("/senha/reseta", "User:reset");
         $router->post("/usuario/update", "User:update");
         $router->post("/usuario/save", "User:save");
-        $router->get("/gerenciamento", "Management:init");
-        //$router->get("/gerenciamento/vendas", "Management:sale");
-        $router->get("/vendas", "Management:sale");
 
 
         /** The Groups' Screens */
@@ -80,6 +77,12 @@
         $router->post("/fornecedor/salvar", "Register:saveSupplier");
 
 
+        /** The Management's Screens */
+        $router->get("/gerenciamento", "Management:init");
+        //$router->get("/gerenciamento/vendas", "Management:sale");
+        $router->get("/vendas", "Management:sale");
+
+
         /** Searching data */
         $router->post("/transport/id/{}", "Register:getIdTransport");
         $router->post("/company", "Company:list");
@@ -90,7 +93,7 @@
 
 
         /** Images */
-        //$router->get("/image/{img}", "Image:open");
+        //$router->get("/image/open/{img}", "Image:open");
         $router->post("/percent", "Image:percent");
         $router->post("/removeFile/file/{file}", "Image:removeFile");
 
@@ -99,6 +102,9 @@
         $router->get("/image/{id}", "FileRegistration:init");
         $router->get("/image/id/{id}", "FileRegistration:loadImage");
         $router->post("/image/delete/{id}", "FileRegistration:delete");
+        //$router->get("/print/40", "PrintDoc:init40");
+        $router->post("/print/40", "PrintDoc:init40");
+        $router->post("/print/80", "PrintDoc:init80");
 
 
         /** Enter */

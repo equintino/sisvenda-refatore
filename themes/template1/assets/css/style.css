@@ -731,3 +731,30 @@ main .form-signin {
 #group-registration > div:last-child {
     text-align: right;
 }
+
+/** Printable */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .printable, .printable * {
+        visibility: visible;
+    }
+
+    .printable {
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+
+    .noprintable{
+        display: none;
+        visibility: hidden;
+    }
+
+    @page{
+        size: auto; /* auto is the initial value */
+        margin: 0mm; /* this affects the margin in the printer settings */
+    }
+}

@@ -397,52 +397,51 @@ function loadDataTable() {
         select          : {
             style: 'single'
         },
-        ajax             : {
-                //url      : "../sale",
-                url      : "sale",
-                enctype  : "multipart/form-data",
-                type     : "POST",
-                dataType : "JSON",
-                data     : getFormData(),
-                async    : true,
-                beforeSend: function(data) {
-                    $("#mask_main").show();
-                    $(".progress-bar").css({
-                        width: 0 + "%"
-                    }).text(0 + "%");
+        ajax            : {
+                    url      : "sale",
+                    enctype  : "multipart/form-data",
+                    type     : "POST",
+                    dataType : "JSON",
+                    data     : getFormData(),
+                    async    : true,
+                    beforeSend: function(data) {
+                        $("#mask_main").show();
+                        $(".progress-bar").css({
+                            width: 0 + "%"
+                        }).text(0 + "%");
 
 
-                    var count = 0;
-                    var percent = 0;
-                    var countRepeated = 0;
-                    var totalRows;
-                    var lastPage;
-                    var extreRows = null;
-                    logon = getCookie("login");
+                        var count = 0;
+                        var percent = 0;
+                        var countRepeated = 0;
+                        var totalRows;
+                        var lastPage;
+                        var extreRows = null;
+                        logon = getCookie("login");
 
-                    /** loop for progress bar */
-                    let interval = setInterval (function() {
-                            perc(interval);
-                        }, 50);
-                },
-                error: function(xhr, ajaxOption, thrownError) {
-                    console.log(thrownError);
-                    alertLatch("<span class=danger>Servidor demorou a responder, tente novamente</span>", "var(--cor-danger)");
-                },
-                complete: function(response) {
-                    $(".loading, #mask_main").hide();
-                    selectOnClick();
-                    $.ajax({
-                        //url: "../removeFile/file/percent_" + logon + ".txt",
-                        url: "removeFile/file/percent_" + logon + ".txt",
-                        type: "POST",
-                        dataType: "JSON",
-                        data: "percent.txt"
-                    });
-                    //reorderCol(tabSale);
-                    // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
-                    $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
-                }
+                        /** loop for progress bar */
+                        let interval = setInterval (function() {
+                                perc(interval);
+                            }, 50);
+                    },
+                    error: function(xhr, ajaxOption, thrownError) {
+                        console.log(thrownError);
+                        alertLatch("<span class=danger>Servidor demorou a responder, tente novamente</span>", "var(--cor-danger)");
+                    },
+                    complete: function(response) {
+                        $(".loading, #mask_main").hide();
+                        selectOnClick();
+                        $.ajax({
+                            //url: "../removeFile/file/percent_" + logon + ".txt",
+                            url: "removeFile/file/percent_" + logon + ".txt",
+                            type: "POST",
+                            dataType: "JSON",
+                            data: "percent.txt"
+                        });
+                        //reorderCol(tabSale);
+                        // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
+                        $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
+                    }
         },
         // initComplete: function() {
         //     setTimeout(function(){
@@ -471,7 +470,6 @@ function loadDataTable() {
 function scriptManagement() {
     if(typeof(page) !== "undefined" && page === "VENDAS") {
         $.ajax({
-            //url: "../company",
             url: "company",
             type: "POST",
             dataType: "JSON",
@@ -489,7 +487,6 @@ function scriptManagement() {
         };
         if(companyId !== "") {
             $.ajax({
-                //url: "../saleman",
                 url: "saleman",
                 type: "POST",
                 dataType: "JSON",
@@ -748,5 +745,50 @@ function scriptManagement() {
         }).always(function(data) {
             $(".loading, #mask_main").hide();
         });
+    });
+    $(".btnAction").on("click", function() {
+        let btnName = $(this).text();
+        let data = $("#tabSale tr.selected");
+        let companyId;
+        let salesOrder;
+        if(data.length < 1) {
+            return alertLatch("Nenhum Pedido foi selecionado", "var(--cor-warning)");
+        }
+        $(".loading, #mask_main").show();
+        data.find("span").each(function() {
+            if(typeof($(this).attr("data-idEmpresa")) !== "undefined") {
+                companyId = $(this).text();
+            }
+            if(typeof($(this).attr("data-Pedido")) !== "undefined") {
+                salesOrder = $(this).text();
+            }
+        });
+        if(btnName === "Imprimir") {
+            $("#imp40").load("print/40", { companyId:companyId, salesOrder:salesOrder }, function() {
+                //alert("completou");
+                $("#imp40, #mask_main").show();
+                $(".loading").hide();
+            });
+            //$('#imp40').appendTo('body').modal();
+
+
+
+
+
+            // $.ajax({
+            //     url: "print/40",
+            //     type: "POST",
+            //     //dataType: "JSON",
+            //     complete: function(response) {
+            //         console.log(response);
+            //         //$("#imp40").show();
+            //         //$('#imp40').appendTo('body').modal();
+            //     }
+            // });
+
+            // $("#lendo").show();
+            // $("#imp40").load("../paginas/imp40.php?IDEmpresa=" + IDEmpresa + "&pedido=" + pedido + "&origem=gerOrc&cnpjCpf=" + cnpjCpf );
+            // $('#imp40').appendTo('body').modal();
+        }
     });
 }
