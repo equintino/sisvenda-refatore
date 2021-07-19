@@ -230,8 +230,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">Total Itens...: <?= ($tItens ?? null) ?></div>
-            <div class="col">Peso Bruto: <?= ($grossWeight ?? null) ?> Kg</div>
+            <div class="col">Total Itens.........: <?= ($tItens ?? null) ?></div>
+            <div class="col">Peso Bruto...: <?= ($grossWeight ?? null) ?> Kg</div>
             <div class="col-3">Total Produtos..:</div>
             <div class="col-2" align="right">
                 <?= (number_format($tProd, 2, ',', '.') ?? null) ?>

@@ -134,7 +134,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-2" style="text-align: left">CNPJ/CPF:</div>
+        <div class="col-2" style="text-align: left">CNPJ/CPF..:</div>
         <div class="col ml-1" style="text-align: left">
             <span class='ml-3 mr-3'>
                 <?= ($pedido->CNPJeCPF ?? null) ?>
@@ -189,7 +189,7 @@
     </table>
     <div class="row">
         <div class="col-7" align="left">
-            Forma de Pag.: &nbsp<?= ($formPay ?? null) ?></div>
+            Forma de Pag.: &nbsp<?= ($formPayment ?? null) ?></div>
         <div class="col-2" align='right'>
             Subt.......:</div>
         <div class="col" align="right">

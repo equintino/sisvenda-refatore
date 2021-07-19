@@ -21,10 +21,12 @@ class PrintDoc extends Controller
             "Pedido" => $salesOrder
         ];
         $pedido = (new \Models\Sale())->search($where)[0];
-        $date = (!empty($pedido->DataEntrega) ? explode("-", explode(" ", $pedido->DataEntrega)[0]) : null);
-        $dataEntrega = (!empty($date) ? "{$date[2]}/{$date[1]}/{$date[0]}" : null);
-        $date = (!empty($pedido->DataVenda) ? explode("-",explode(" ",$pedido->DataVenda)[0]) : null);
-        $dataHoraVenda = (!empty($date) ? "{$date[2]}/{$date[1]}/{$date[0]}" . explode(" ",$pedido->HoraVenda)[1] : null);
+        $date = explode("-",explode(" ",$pedido->DataVenda)[0]);
+        $hour = substr(explode(" ",$pedido->HoraVenda)[1], 0,5);
+        $dataHoraVenda = "{$date[2]}/{$date[1]}/{$date[0]} {$hour}";
+        $date = explode("-", explode(" ", $pedido->DataEntrega)[0]);
+        $hour = substr(explode(" ",$pedido->HoraEntrega)[1], 0,5);
+        $dataEntrega = "{$date[2]}/{$date[1]}/{$date[0]} {$hour}";
 
         /** Company data */
         $company = (new \Models\Company())->load($companyId);
@@ -41,10 +43,10 @@ class PrintDoc extends Controller
         /** Product data */
         $products = (new \Models\Product())->search($where);
 
-        /** Pay form */
-        $formPay = $pedido->FormaPagamento;
+        /** Form payment */
+        $formPayment = ((new \Models\FormPayment())->load($pedido->FormaPagamento)->Descrição ?? null);
 
-        $this->view->setPath("Modals")->render("imp40", [ compact("pedido","dataHoraVenda","client","dataEntrega","saleman","transport","products","formPay","company") ]);
+        $this->view->setPath("Modals")->render("imp40", [ compact("pedido","dataHoraVenda","client","dataEntrega","saleman","transport","products","formPayment","company") ]);
     }
 
     public function init80($data): void
@@ -59,10 +61,12 @@ class PrintDoc extends Controller
             "Pedido" => $salesOrder
         ];
         $pedido = (new \Models\Sale())->search($where)[0];
-        $date = explode("-", explode(" ", $pedido->DataEntrega)[0]);
-        $dataEntrega = "{$date[2]}/{$date[1]}/{$date[0]}";
         $date = explode("-",explode(" ",$pedido->DataVenda)[0]);
-        $dataHoraVenda = $date[2] . "/" . $date[1] . "/" . $date[0] . " " . explode(" ",$pedido->HoraVenda)[1];
+        $hour = substr(explode(" ",$pedido->HoraVenda)[1], 0,5);
+        $dataHoraVenda = "{$date[2]}/{$date[1]}/{$date[0]} {$hour}";
+        $date = explode("-", explode(" ", $pedido->DataEntrega)[0]);
+        $hour = substr(explode(" ",$pedido->HoraEntrega)[1], 0,5);
+        $dataEntrega = "{$date[2]}/{$date[1]}/{$date[0]} {$hour}";
 
         /** Company data */
         $company = (new \Models\Company())->load($companyId);
@@ -83,11 +87,11 @@ class PrintDoc extends Controller
         $stock = new \Models\Stock();
         $grossWeight = 0;
         foreach($products as $product) {
-            $grossWeight += $stock->load($product->IDProduto)->PESOBRUTO;
+            $grossWeight += ($stock->load($product->IDProduto)->PESOBRUTO ?? 0);
         }
 
         /** Form payment */
-        $formPayment = (new \Models\FormPayment())->load($pedido->FormaPagamento)->Descrição;
+        $formPayment = ((new \Models\FormPayment())->load($pedido->FormaPagamento)->Descrição ?? null);
         $where = [
             "PEDIDO" => $salesOrder,
             "IDEmpresa" => $companyId

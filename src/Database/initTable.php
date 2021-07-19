@@ -16,7 +16,7 @@ $data = [
     "Nome" => "Administrador",
     "Logon" => "admin",
     "Senha" => "admin932",
-    "Email" => "edmquintino@gmail.com",
+    "Email" => "admin@gmail.com",
     "IDEmpresa" => 1,
     "Visivel" => 1,
     "USUARIO" => "admin",
@@ -54,9 +54,9 @@ echo "Dados_Empresa - " . $company->message() . "<br>";
 $client = new Models\Client();
 $client->createThisTable();
 $data = [
-    "Nome" => "Edmilson Messias Quintino",
-    "CPF" => "956.117.117-15",
-    "Email" => "edmquintino@gmail.com"
+    "Nome" => "Cliente Teste",
+    "CPF" => "111.111.111-11",
+    "Email" => "teste@gmail.com"
 ];
 $client->bootstrap($data);
 $client->save();
@@ -117,7 +117,24 @@ $sale = new Models\Sale();
 $sale->createThisTable();
 $data = [
     "Pedido" => "1",
+    "IDCliente" => 1,
+    "NomeCliente" => "Cliente Teste",
     "CNPJeCPF" => "111.111.111-11",
+    "TipoCliente" => "PFisica",
+    "TabVenda" => 1,
+    "DataVenda" => "2020-01-01 00:00:00.000",
+    "HoraVenda" => "2020-01-01 18:00:00.000",
+    "Vendedor" => 1,
+    "Valor" => 100.1000,
+    "FormaPagamento" => 1,
+    "TipoPagamento" => 1,
+    "TipoEntrega" => 1,
+    "Frete" => 10.10000,
+    "OBS" => "observação",
+    "Comprador" => "Eu mesmo",
+    "Transportadora" => 1,
+    "DataEntrega" => "2020-01-01 01:00:00.000",
+    "HoraEntrega" => "2020-01-01 00:00:00.000",
     "IDEmpresa" => "1",
     "Status" => "V"
 ];
@@ -154,7 +171,6 @@ $data = [
 $product->bootstrap($data);
 $product->save();
 echo "Produto - " . $product->message() . "<br>";die;
-
 
 
 /** init table Configs */
