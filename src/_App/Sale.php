@@ -52,7 +52,7 @@ class Sale extends Controller
         return print($this->getJson($datas, $recordsTotal));
     }
 
-    public function getTotalRows($sql)
+    public function getTotalRows($sql): int
     {
         $sale = new \Models\Sale();
         $sql = str_replace("*","1",$sql);
@@ -67,7 +67,7 @@ class Sale extends Controller
         return $this->tRows = $tRows;
     }
 
-    public function getData(string $sql, array $searchArr, array $columns=null)
+    public function getData(string $sql, array $searchArr, array $columns=null): array
     {
         $sale = new \Models\Sale();
         $dataDb = $sale->readDataTable($sql, $searchArr);
@@ -190,11 +190,23 @@ class Sale extends Controller
 
     }
 
-    private function whereDataTable($data)
+    public function delete($data): string
     {
-        $except = ["Documentos", "Arquivos", "Produto"];
-        $where = " AND ";
-        $search = $data["search"]["value"];
+        $companyId  = $data["companyId"];
+        $salesOrder = $data["salesOrder"];
+        $sale = (new \Models\Sale())->search([
+                                        "Pedido"    => $salesOrder,
+                                        "IDEmpresa" => $companyId
+                                    ])[0];
+        $sale->destroy();
+        return print(json_encode($sale->message()));
+    }
+
+    private function whereDataTable($data): string
+    {
+        $except  = ["Documentos", "Arquivos", "Produto"];
+        $where   = " AND ";
+        $search  = $data["search"]["value"];
         $columns = $data["columns"];
         for($x = 0; $x < count($columns); $x++) {
             if($columns[$x]["searchable"] != "false" && !in_array($columns[$x]["data"], $except)) {
@@ -206,11 +218,11 @@ class Sale extends Controller
         return $where;
     }
 
-    public function searchArr($data)
+    public function searchArr($data): array
     {
         $searchArr = [];
         $columnsDb = $this->getColumnsDb($data);
-        $pago = filter_input(INPUT_POST, "pago");
+        $pago      = filter_input(INPUT_POST, "pago");
         foreach($data as $key => $value) {
             if(array_key_exists($key, $columnsDb) && $value != "") {
                 $value = $key === "pg" ? $pago : $value;
@@ -265,7 +277,7 @@ class Sale extends Controller
         return json_encode($jsonData);
     }
 
-    public function getColumnsDb($data)
+    public function getColumnsDb($data): array
     {
         $typeSearch = $data["tBusca"] ?? null;
         return [

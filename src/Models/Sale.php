@@ -112,17 +112,34 @@ class Sale extends Model implements Models
 
     private function update_()
     {
-        static::$safe = ['IDVenda_NEW','created_at','updated_at','file'];
+        static::$safe = ['IDVenda_NEW','created_at','file'];
+        $this->data->updated_at = (new \DateTime())->format("d/m/Y H:i:s");
         if(!empty($this->IDVenda_NEW)) {
-            //$this->otherCompanies(["Pedido" => $this->Pedido]);
             $terms = "IDVenda_NEW=:IDVenda_NEW";
             $params = "IDVenda_NEW={$this->IDVenda_NEW}";
+            $this->cancelDate();
             $this->update(self::$entity, $this->safe(), "{$terms}", "{$params}");
         }
 
         ( $this->fail() ? $this->message = "<span class='danger'>Erro ao atualizar, verifique os dados</span>" : $this->message = "<span class='success'>Dados atualizados com sucesso</span>" );
         return null;
     }
+
+    // protected function update(string $entity, array $data, string $terms, string $params, bool $msgDb = false): ?int
+    // {
+    //     $data["updated_at"] = (new \DateTime())->format("d/m/Y H:i:s.000");
+    //     parse_str($params, $params);
+    //     foreach($data as $bind => $value) {
+    //         $dataSet[] = "{$bind} = :" . removeAccent($bind);
+    //         $params[$bind] = $value;
+    //     }
+    //     $dataSet = implode(", ", $dataSet);
+
+    //     $sql = "UPDATE {$entity} SET {$dataSet} WHERE {$terms}";
+
+    //     $this->execute($sql, $params);
+    //     return ($stmt->rowCount ?? 1);
+    // }
 
     public function create_()
     {
@@ -175,16 +192,47 @@ class Sale extends Model implements Models
     public function destroy()
     {
         if(!empty($this->IDVenda_NEW)) {
-            $this->delete(self::$entity, "IDVenda_NEW=:IDVenda_NEW", "IDVenda_NEW={$this->IDVenda_NEW}");
+            $this->cancelStatus();
+            $terms = "IDVenda_NEW=:IDVenda_NEW";
+            $params = "IDVenda_NEW={$this->IDVenda_NEW}";
+            static::$safe = ["id", "IDVenda_NEW", "created_at"];
+            $this->update(self::$entity, $this->safe(), "{$terms}", "{$params}");
         }
 
         if($this->fail()) {
-            $this->message = "Não foi possível remover pedido";
+            $this->message = "Não foi possível cancelar pedido";
             return null;
         }
-        $this->message = "Pedido removido com sucesso";
+        $this->message = "Pedido cancelado com sucesso";
         $this->data = null;
         return $this;
+    }
+
+    private function cancelStatus(): void
+    {
+        $status = $this->data->Status;
+        /*  V = Venda de Produto
+            S = Orçamento Simples
+            O = Orçamento com Reserva
+            C = Venda Cancelada
+           CO = Orçamento Cancelado */
+        $initials = [
+            "V" => "C",
+            "S" => "CO",
+            "O" => "CO"
+        ];
+        $this->data->Status = $initials[$status];
+        $this->cancelDate();
+    }
+
+    private function cancelDate(): void
+    {
+        $cancelInitials = ["C","CO"];
+        if(in_array($this->data->Status, $cancelInitials)) {
+            $this->data->DataCancelado = (new \DateTime())->format("d/m/Y H:i:s.000");
+        } else {
+            $this->data->DataCancelado = null;
+        }
     }
 
     private function lastId()
@@ -207,6 +255,20 @@ class Sale extends Model implements Models
             }
         }
         return true;
+    }
+
+    protected function safe(): ?array
+    {
+        $safe_ = (array) $this->data();
+        foreach(static::$safe as $unset) {
+            unset($safe_[$unset]);
+        }
+        foreach($safe_ as $k => $v) {
+            if($k === "DataCancelado" || $v !== null) {
+                $datas[$k] = $v;
+            }
+        }
+        return $datas;
     }
 
     public function createThisTable()

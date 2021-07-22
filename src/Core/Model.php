@@ -138,12 +138,13 @@ abstract class Model
 
     protected function update(string $entity, array $data, string $terms, string $params, bool $msgDb = false): ?int
     {
+        $data["updated_at"] = (new \DateTime())->format("d/m/Y H:i:s.000");
+        parse_str($params, $params);
         foreach($data as $bind => $value) {
-            //$dataSet[] = "{$bind} = :" . removeAccent($bind);
-            $dataSet[] = "{$bind} = '{$value}'";
+            $dataSet[] = "{$bind} = :" . removeAccent($bind);
+            $params[$bind] = $value;
         }
         $dataSet = implode(", ", $dataSet);
-        parse_str($params, $params);
 
         $sql = "UPDATE {$entity} SET {$dataSet} WHERE {$terms}";
 
@@ -196,11 +197,11 @@ abstract class Model
     {
         $filter = [];
         foreach($data as $key => $value) {
-            if(!in_array($key, $filtered) && $value != null) {
+            //if(!in_array($key, $filtered) && $value != null) {
+            if(!in_array($key, $filtered)) {
                 $filter[$key] = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
-
         return $filter;
     }
 
@@ -226,7 +227,7 @@ abstract class Model
         return $this->execute($sql);
     }
 
-    private function execute(string $sql, array $params = []): \PDOStatement
+    protected function execute(string $sql, array $params = []): \PDOStatement
     {
         $stmt = Connect::getInstance()->prepare($sql);
         try {
@@ -237,6 +238,8 @@ abstract class Model
                     if(is_numeric($value)) {
                         $type = \PDO::PARAM_INT;
                         $value = (int) $value;
+                    } elseif($value == null) {
+                        $type = \PDO::PARAM_NULL;
                     }
                     $stmt->bindValue(":{$key}", $value, $type);
                 }

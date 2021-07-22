@@ -276,15 +276,16 @@ var perc = function(interval) {
     var currentPage = parseInt(pageInfo.page) + 1;
     var showingPage = pageInfo.length;
     countRepeated = (typeof(countRepeated) === "undefined" ? 0 : countRepeated);
-
     $.ajax({
-        //url: "../src/public/percent_" + logon + ".txt",
         url: "src/public/percent_" + logon + ".txt",
         type: "POST",
         dataType: "text",
         complete: function(response) {
             var d = response["responseText"].split(",");
             var totalRows = parseInt(d[0]);
+            // if(totalRows === 0) {
+            //     clearInterval(interval);
+            // }
             var count = d.length - 1;
             if(d.length > 1) {
                 var extreRows = totalRows % showingPage;
@@ -299,7 +300,7 @@ var perc = function(interval) {
                 if(typeof(countOld) !== "undefined" && countOld == count) {
                     countRepeated++;
                 } else {
-                        countRepeated = 0;
+                    countRepeated = 0;
                 }
                 countOld = count;
                 $(".progress-bar").css({
@@ -308,9 +309,18 @@ var perc = function(interval) {
                 if(d.length > showing) {
                     clearInterval(interval);
                 }
+            } else {
+                if(totalRows === 0) {
+                    clearInterval(interval);
+                }
+                //clearInterval(interval);
             }
+        },
+        error: function(error) {
+            console.log(error);
+            clearIrterval(interval);
         }
-    });
+    }).always(function() {});
 };
 
 function loadDataTable() {
@@ -420,8 +430,12 @@ function loadDataTable() {
                         logon = getCookie("login");
 
                         /** loop for progress bar */
+                        let passed = 0;
                         let interval = setInterval (function() {
                                 perc(interval);
+                                // if(passed++ > 1000) {
+                                //     clearInterval(interval);
+                                // }
                             }, 50);
                     },
                     error: function(xhr, ajaxOption, thrownError) {
@@ -432,14 +446,11 @@ function loadDataTable() {
                         $(".loading, #mask_main").hide();
                         selectOnClick();
                         $.ajax({
-                            //url: "../removeFile/file/percent_" + logon + ".txt",
                             url: "removeFile/file/percent_" + logon + ".txt",
                             type: "POST",
                             dataType: "JSON",
                             data: "percent.txt"
                         });
-                        //reorderCol(tabSale);
-                        // $("#lendo, .dataTables_processing, div#reading, #mask_main").hide();
                         $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
                     }
         },
@@ -748,14 +759,14 @@ function scriptManagement() {
     });
     $(".btnAction").on("click", function() {
         let btnName = $(this).text();
-        let data = $("#tabSale tr.selected");
+        let row = $("#tabSale tr.selected");
         let companyId;
         let salesOrder;
-        if(data.length < 1) {
+        if(row.length < 1) {
             return alertLatch("Nenhum Pedido foi selecionado", "var(--cor-warning)");
         }
         $(".loading, #mask_main").show();
-        data.find("span").each(function() {
+        row.find("span").each(function() {
             if(typeof($(this).attr("data-idEmpresa")) !== "undefined") {
                 companyId = $(this).text();
             }
@@ -765,30 +776,31 @@ function scriptManagement() {
         });
         if(btnName === "Imprimir") {
             $("#imp40").load("print/40", { companyId:companyId, salesOrder:salesOrder }, function() {
-                //alert("completou");
                 $("#imp40, #mask_main").show();
                 $(".loading").hide();
             });
-            //$('#imp40').appendTo('body').modal();
-
-
-
-
-
-            // $.ajax({
-            //     url: "print/40",
-            //     type: "POST",
-            //     //dataType: "JSON",
-            //     complete: function(response) {
-            //         console.log(response);
-            //         //$("#imp40").show();
-            //         //$('#imp40').appendTo('body').modal();
-            //     }
-            // });
-
-            // $("#lendo").show();
-            // $("#imp40").load("../paginas/imp40.php?IDEmpresa=" + IDEmpresa + "&pedido=" + pedido + "&origem=gerOrc&cnpjCpf=" + cnpjCpf );
-            // $('#imp40').appendTo('body').modal();
+        } else if(btnName === "Cancelar") {
+            $.ajax({
+                url: "sale/delete",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    companyId: companyId,
+                    salesOrder: salesOrder
+                },
+                complete: function(response) {
+                    if(response["responseJSON"]) {
+                        alertLatch(response["responseJSON"], "var(--cor-success)");
+                        row.remove();
+                    } else {
+                        alertLatch("Pedido não encontrado", "var(--cor-warning)");
+                    }
+                },
+                fail: function() {
+                    alertLatch("Whops! Ocorreu algum erro", "var(--cor-danger)");
+                }
+            });
+            $(".loading, #mask_main").hide();
         }
     });
 }

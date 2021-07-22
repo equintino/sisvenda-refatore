@@ -32,7 +32,6 @@
 
         /** The Groups' Screens */
         $router->namespace("_App");
-        //$router->get("/seguranca", "Group:list");
         $router->get("/shield", "Group:list");
         $router->get("/grupo/cadastro", "Group:add");
         $router->post("/grupo/{name}", "Group:load");
@@ -43,7 +42,6 @@
 
         /** The Config's Screens */
         $router->namespace("_App");
-        //$router->get("/configuracao", "Config:list");
         $router->get("/config", "Config:list");
         $router->get("/configuracao/cadastro", "Config:add");
         $router->get("/configuracao/editar/{connectionName}", "Config:edit");
@@ -54,32 +52,22 @@
 
         /** The Register's Screens */
         $router->namespace("_App");
-        //$router->get("/cadastro", "Register:init");
         $router->get("/cliente", "Register:init");
         $router->post("/cadastro/{}", "Register:load");
         $router->post("/cadastro/atualizar", "Register:update");
         $router->post("/cadastro/salvar", "Register:save");
-        //$router->get("/cadastro/transportadora", "Register:transport");
         $router->get("/transportadora", "Register:transport");
-        //$router->post("/cadastro/transportadora/{}", "Register:loadTransport");
         $router->post("/transportadora/{}", "Register:loadTransport");
-        //$router->post("/cadastro/transportadora/atualizar", "Register:updateTransport");
         $router->post("/transportadora/atualizar", "Register:updateTransport");
-        //$router->post("/cadastro/transportadora/salvar", "Register:saveTransport");
         $router->post("/transportadora/salvar", "Register:saveTransport");
-        //$router->get("/cadastro/fornecedor", "Register:supplier");
         $router->get("/fornecedor", "Register:supplier");
-        //$router->post("/cadastro/fornecedor/{}", "Register:loadSupplier");
         $router->post("/fornecedor/{}", "Register:loadSupplier");
-        //$router->post("/cadastro/fornecedor/atualizar", "Register:updateSupplier");
         $router->post("/fornecedor/atualizar", "Register:updateSupplier");
-        //$router->post("/cadastro/fornecedor/salvar", "Register:saveSupplier");
         $router->post("/fornecedor/salvar", "Register:saveSupplier");
 
 
         /** The Management's Screens */
         $router->get("/gerenciamento", "Management:init");
-        //$router->get("/gerenciamento/vendas", "Management:sale");
         $router->get("/vendas", "Management:sale");
 
 
@@ -89,11 +77,11 @@
         $router->post("/saleman", "Saleman:load");
         $router->post("/sale", "Sale:init");
         $router->post("/sale/update", "Sale:update");
+        $router->post("/sale/delete", "Sale:delete");
         $router->post("/produto", "Product:load");
 
 
         /** Images */
-        //$router->get("/image/open/{img}", "Image:open");
         $router->post("/percent", "Image:percent");
         $router->post("/removeFile/file/{file}", "Image:removeFile");
 
@@ -102,7 +90,6 @@
         $router->get("/image/{id}", "FileRegistration:init");
         $router->get("/image/id/{id}", "FileRegistration:loadImage");
         $router->post("/image/delete/{id}", "FileRegistration:delete");
-        //$router->get("/print/40", "PrintDoc:init40");
         $router->post("/print/40", "PrintDoc:init40");
         $router->post("/print/80", "PrintDoc:init80");
 

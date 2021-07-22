@@ -101,26 +101,4 @@ class PrintDoc extends Controller
         $this->view->setPath("Modals")->render("imp80", [ compact("pedido","dataHoraVenda","client","dataEntrega","saleman","transport","products","company","grossWeight","formPayment","salePayments") ]);
     }
 
-    // public function loadImage($data): void
-    // {
-    //     $fileRegistration = new \Models\FileRegistration();
-    //     if( isset( $data["id"] ) ) {
-    //         $document = $fileRegistration->showImage($data["id"]);
-    //         if(!$document) {
-    //             echo "<div style='color: red'><blink>Desculpe! Parece que o anexo foi excluído.</blink></div>";
-    //         }
-    //         echo $document;
-    //     } else {
-    //         echo "Nenhum arquivo encontrado!";
-    //     }
-    // }
-
-    // public function delete(array $data)
-    // {
-    //     $fileRegistration = new \Models\FileRegistration();
-    //     $file = $fileRegistration->load($data["id"]);
-    //     $file->destroy();
-    //     return print(json_encode($file->message()));
-    // }
-
 }
