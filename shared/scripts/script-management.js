@@ -283,9 +283,6 @@ var perc = function(interval) {
         complete: function(response) {
             var d = response["responseText"].split(",");
             var totalRows = parseInt(d[0]);
-            // if(totalRows === 0) {
-            //     clearInterval(interval);
-            // }
             var count = d.length - 1;
             if(d.length > 1) {
                 var extreRows = totalRows % showingPage;
@@ -313,7 +310,6 @@ var perc = function(interval) {
                 if(totalRows === 0) {
                     clearInterval(interval);
                 }
-                //clearInterval(interval);
             }
         },
         error: function(error) {

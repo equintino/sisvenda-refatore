@@ -100,7 +100,7 @@ class FileRegistration extends Model implements Models
             $index = array_search($name, $file["name"]);
             $data = [
                 "NOM_ARQUIVO" => $file["name"][$index],
-                //"DAT_INCLUSAO" => $date->format("d/m/Y"),
+                "DAT_INCLUSAO" => date("d/m/Y H:i:s"),
                 "COD_EMPRESA" => $companyId,
                 "COD_DOCUMENTO" => $salesOrder,
                 "ARQ_01" => file_get_contents($file["tmp_name"][$index]),
@@ -174,13 +174,11 @@ class FileRegistration extends Model implements Models
             $this->message = "<span class='warning'>Arquivo informado já está cadastrado</span>";
         } else {
             $id = $this->create(self::$entity, $this->safe());
-            //$this->otherCompanies(["COD_ARQUIVO" => $this->COD_ARQUIVO]);
             if($this->fail()) {
                 $this->message = "<span class='danger'>Erro ao cadastrar, verifique os dados</span>";
                 return null;
             }
             $this->message = "<span class='success'>Arquivo salvo com sucesso</span>";
-            //$this->data = $this->read("SELECT * FROM " . self::$entity . " WHERE COD_ARQUIVO=:COD_ARQUIVO", "COD_ARQUIVO={$COD_ARQUIVO}")->fetch();
         }
         return $id;
     }
@@ -234,12 +232,12 @@ class FileRegistration extends Model implements Models
             $stmt->bindParam(':COD_EMPRESA', $COD_EMPRESA, \PDO::PARAM_INT);
             $stmt->bindParam(':COD_DOCUMENTO', $COD_DOCUMENTO, \PDO::PARAM_INT);
             $stmt->bindParam(':NOM_ARQUIVO', $NOM_ARQUIVO, \PDO::PARAM_STR);
+            $stmt->bindParam(':DAT_INCLUSAO', $DAT_INCLUSAO, \PDO::PARAM_STR);
 
             if($stmt->execute()) {
                 return \Core\Connect::getInstance($msgDb)->lastInsertId();
             }
         } catch(\PDOException $exception) {
-            //var_dump($exception);
             $this->fail = $exception;
             return null;
         }
