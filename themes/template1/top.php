@@ -64,7 +64,7 @@
                 </div>
             </li>
             <li style="text-align: center">
-                <a id="pedido" class="nav-link" href="pedido" >Pedidos & Orçamentos</a>
+                <a id="orcamento" class="nav-link" href="<?= url("orcamento") ?>" >Pedidos & Orçamentos</a>
             </li>
         </ul>
         <div class="navbar navbar-right config">

@@ -30,6 +30,7 @@ abstract class Model
     /**  */
     protected $accentWorlds;
 
+
     public function __construct()
     {
         $this->connectionDetails = new Config();

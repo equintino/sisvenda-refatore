@@ -50,7 +50,8 @@ class User extends Model implements Models
             }
             $params = implode(" AND ", $params);
             $terms = implode("&", $terms);
-            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params} AND Nome != 'Administrador' ", $terms, $msgDb);
+            //$find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params} AND Nome != 'Administrador' ", $terms, $msgDb);
+            $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE {$params} ", $terms, $msgDb);
         } elseif(filter_var($search, FILTER_VALIDATE_EMAIL)) {
             $find = $this->read("SELECT {$columns} FROM " . self::$entity . " WHERE Email=:Email", "Email={$search}", $msgDb);
         } elseif(filter_var($login, FILTER_SANITIZE_STRIPPED)) {

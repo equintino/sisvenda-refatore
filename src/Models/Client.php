@@ -23,6 +23,21 @@ class Client extends Model implements Models
         return $load->fetchObject(__CLASS__);
     }
 
+    public function search(array $where)
+    {
+        $terms  = "";
+        $params = "";
+        foreach(array_filter($where) as $k => $v) {
+            $signal = (strpos($v, "%") ? "LIKE" : "=");
+            $terms  .= " {$k} {$signal} :{$k} AND";
+            $params .= "{$k}={$v}&";
+        }
+        $terms = substr($terms, 0, -3);
+        $params = substr($params, 0, -1);
+        $data = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} ", $params);
+        return $data->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
     public function find(string $search, string $columns = "*")
     {
         if(filter_var($search, FILTER_SANITIZE_STRIPPED)) {

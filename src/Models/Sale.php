@@ -125,22 +125,6 @@ class Sale extends Model implements Models
         return null;
     }
 
-    // protected function update(string $entity, array $data, string $terms, string $params, bool $msgDb = false): ?int
-    // {
-    //     $data["updated_at"] = (new \DateTime())->format("d/m/Y H:i:s.000");
-    //     parse_str($params, $params);
-    //     foreach($data as $bind => $value) {
-    //         $dataSet[] = "{$bind} = :" . removeAccent($bind);
-    //         $params[$bind] = $value;
-    //     }
-    //     $dataSet = implode(", ", $dataSet);
-
-    //     $sql = "UPDATE {$entity} SET {$dataSet} WHERE {$terms}";
-
-    //     $this->execute($sql, $params);
-    //     return ($stmt->rowCount ?? 1);
-    // }
-
     public function create_()
     {
         if(!empty($this->IDVenda_NEW) && $this->find($this->IDVenda_NEW)) {

@@ -39,6 +39,20 @@ class Transport extends Model implements Models
         //return $find->fetchObject(__CLASS__);
     }
 
+    public function search(array $where)
+    {
+        $terms = "";
+        $params = "";
+        foreach($where as $k => $v) {
+            $terms .= " {$k}=:{$k} AND";
+            $params .= "{$k}={$v}&";
+        }
+        $terms = substr($terms, 0, -3);
+        $params = substr($params, 0, -1);
+        $data = $this->read("SELECT * FROM " . self::$entity . " WHERE {$terms} ORDER BY RasSocial ", $params);
+        return $data->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "RasSocial"): ?array
     {
         $sql = "SELECT {$columns} FROM  " . self::$entity . " WHERE 1=1 " . $this->order($order);

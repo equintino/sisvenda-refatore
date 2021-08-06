@@ -66,6 +66,11 @@
         $router->post("/fornecedor/salvar", "Register:saveSupplier");
 
 
+        /** The Budget's Screens */
+        $router->namespace("_App");
+        $router->get("/orcamento", "Budget:init");
+
+
         /** The Management's Screens */
         $router->get("/gerenciamento", "Management:init");
         $router->get("/vendas", "Management:sale");
@@ -79,6 +84,8 @@
         $router->post("/sale/update", "Sale:update");
         $router->post("/sale/delete", "Sale:delete");
         $router->post("/produto", "Product:load");
+        $router->post("/transport", "Transport:list");
+        $router->post("/client/{}", "Client:list");
 
 
         /** Images */
@@ -92,6 +99,7 @@
         $router->post("/image/delete/{id}", "FileRegistration:delete");
         $router->post("/print/40", "PrintDoc:init40");
         $router->post("/print/80", "PrintDoc:init80");
+        $router->post("/client", "Client:init");
 
 
         /** Enter */

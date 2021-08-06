@@ -129,7 +129,6 @@ function productDetail(data) {
         table += "<th "+ align +" style='padding: 4px'>"+ titles[i]+ "</th>";
     }
     $.ajax({
-        //url: "../produto",
         url: "produto",
         type: "POST",
         dataType: "JSON",
@@ -792,7 +791,7 @@ function scriptManagement() {
                         alertLatch("Pedido não encontrado", "var(--cor-warning)");
                     }
                 },
-                fail: function() {
+                error: function() {
                     alertLatch("Whops! Ocorreu algum erro", "var(--cor-danger)");
                 }
             });

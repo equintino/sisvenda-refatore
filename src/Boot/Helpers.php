@@ -105,3 +105,11 @@ function formatReal(string $value): float
 {
     return str_replace(",",".",str_replace(".","",$value));
 }
+
+function getPost(array $post)
+{
+    foreach($post as $k => $v) {
+        $requestData[$$k] = filter_input(INPUT_POST, $k, FILTER_SANITIZE_STRIPPED);
+    }
+    return $requestData;
+}
