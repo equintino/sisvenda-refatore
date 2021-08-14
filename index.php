@@ -85,7 +85,8 @@
         $router->post("/sale/delete", "Sale:delete");
         $router->post("/produto", "Product:load");
         $router->post("/transport", "Transport:list");
-        $router->post("/client/{}", "Client:list");
+        $router->post("/client/{}", "Client:getClient");
+        $router->post("/clients", "Client:list");
 
 
         /** Images */
@@ -100,6 +101,7 @@
         $router->post("/print/40", "PrintDoc:init40");
         $router->post("/print/80", "PrintDoc:init80");
         $router->post("/client", "Client:init");
+        $router->post("/clientes", "Client:view");
 
 
         /** Enter */

@@ -104,7 +104,7 @@ $(function($) {
     $(document).on("keyup", function(e) {
         e.preventDefault();
         if(e.keyCode === 27) {
-            $("#boxe_main, #mask_main, #div_dialogue").hide();
+            $("#boxe_main, #mask_main, #div_dialogue, #boxe2_main, #mask2_main").hide();
             $("#mask_main").css("z-index","2");
         }
     });

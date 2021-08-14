@@ -58,6 +58,11 @@ class Client extends Model implements Models
         return $find->fetchObject(__CLASS__);
     }
 
+    public function readDataTable(string $sql)
+    {
+        return $this->read($sql);
+    }
+
     public function all(int $limit=30, int $offset=0, string $columns = "*", string $order = "id"): ?array
     {
         $all = $this->read("SELECT {$columns} FROM  "

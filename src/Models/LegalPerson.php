@@ -12,6 +12,11 @@ class LegalPerson extends Client
         static::$entity = "PJuridica";
     }
 
+    public function readDataTable(string $sql)
+    {
+        return $this->read($sql);
+    }
+
     public function search(array $where)
     {
         $terms  = "";

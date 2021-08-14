@@ -1,4 +1,4 @@
-<?php if($act === "edit"): ?>
+<?php if(!empty($act) && $act === "edit"): ?>
 <div id="edit" >
     <form id="login-register" action="#" method="POST" class="form-horizontal">
         <fieldset class="fieldset">
@@ -54,7 +54,7 @@
     </form>
 </div><!-- edit -->
 
-<?php elseif($act === "list"): ?>
+<?php elseif(!empty($act) && $act === "list"): ?>
     <fieldset class="fieldset p-3" >
         <legend>LISTA DE USUÁRIOS</legend>
         <table id="tabList" class="my-table" width="100%" >

@@ -30,7 +30,7 @@
 <script>
 	/** functions */
 	/** @var data object */
-	function searchClient(data) {
+	function searchClient(data, elem=null) {
 		$.ajax({
 			url : "client/search",
 			type: "POST",
@@ -38,8 +38,15 @@
 			data: data,
 			beforeSend: function() {
 				$(".loading").show();
+				//(tabClient.destroy() ?? null);
 			},
 			success: function(response) {
+				if(Number.isInteger(response)) {
+					//if(elem !== null) {
+						//openDatas(data);
+					//}
+					return openBoxe(data);
+				}
 				for(let i in response) {
 					let value = (i === "Crédito" ? moeda(response[i]) : response[i]);
 					$("#boxe_main [name=" + i + "]").val(value);
@@ -53,6 +60,198 @@
 			}
 		});
 	}
+
+	function openBoxe(data) {
+		$("#boxe2_main").load("clientes", { data }, function() {
+			$(".loading").hide();
+			$("#mask2_main").show();
+			$(this).find("button").on("click", function() {
+				if($(this).text() === "Selecionar") {
+					let rowSelected = $("#boxe2_main tr.selected");
+					if(rowSelected.length < 1) {
+						return alertLatch("Nenhum cliente foi selecionado", "var(--cor-warning)");
+					}
+					let clientSelected = $("#boxe2_main tr.selected input").serializeArray();
+					for(let i in clientSelected) {
+						let obj = clientSelected[i];
+						switch(obj.name) {
+							case "ID_PJURIDICA":
+								data.ID_PJURIDICA = obj.value;
+								break;
+							case "RasSocial":
+								data.RasSocial = obj.value;
+								break;
+							case "CNPJ":
+								data.CNPJ = obj.value;
+								break;
+						}
+					}
+					searchClient(data);
+					$("#boxe2_main, #mask2_main").hide();
+						// $.ajax({
+						// 	url: "client/search",
+						// 	type: "POST",
+						// 	dataType: "JSON",
+						// 	data: clientSelected,
+						// 	beforeSend: function() {
+						// 		$(".loading").show();
+						// 	},
+						// 	success: function(response) {
+						// 		console.log(response);
+						// 	},
+						// 	error: function(error) {
+						// 		console.log(error);
+						// 	},
+						// 	complete: function() {
+						// 		$(".loading").hide();
+						// 	}
+						// });
+				}
+			});
+		}).show();
+	}
+
+	/** open DataTable DB */
+	function openDatas(array) {
+		let obj = setObj(array);
+		let columns = [];
+		for(let i in array) {
+			columns.push(
+				{ data: i }
+			);
+		}
+		// let columns = [
+		// 	//{ data: "IDCliente"             },
+		// 	{ data: "ID_PJURIDICA"             },
+		// 	//{ data: "NomeCliente"           },
+		// 	{ data: "RasSocial"           },
+		// 	//{ data: "CNPJeCPF"              },
+		// 	{ data: "CNPJ"              },
+		// 	//{ data: "TipoCliente"           },
+		// 	//{ data: "IDEMPRESA"             },
+		// 	{ data: "IDEmpresa"             },
+		// ];
+		loadDataTable(columns, obj);
+	}
+
+	function setObj(array) {
+		list = [];
+		for(let i in array) {
+			list.push({
+				"name": i,
+				"value": array[i]
+			});
+		};
+		return list;
+		// return {
+		// 	NomeCliente, CNPJeCPF
+		// };
+	}
+
+	function loadDataTable(columns, obj, elem) {
+		return tabClient = $("#tabClient").DataTable({
+			processing      : true,
+			serverSide      : true,
+			paging          : true,
+			searching       : true,
+			ordering        : true,
+			// colReorder      : {
+			// 		fixedColumnsLeft: 2,
+			// 		fixedColumnsRight: 5,
+			// 		reorderCallback: function() {
+			// 			hideColumns();
+			// 		},
+			// 		realtime: true
+			// },
+			stateSave       : true,
+			info            : true,
+			lengthChange    : true,
+			// aLengthMenu     : [
+			// 	[ 25, 50, 100, 200, 300, 400, 500 ],
+			// 	[ 25, 50, 100, 200, 300, 400, 500 ]
+			// ],
+			iDisplayLength  : 25,
+			scrollCollapse  : true,
+			scrollY         : 350,
+			scrollX         : true,
+			select          : {
+				style: 'single'
+			},
+			ajax            : {
+						url      : "clients",
+						//enctype  : "multipart/form-data",
+						type     : "POST",
+						dataType : "JSON",
+						data     : obj,
+						async    : true,
+						beforeSend: function() {
+							// $("#mask_main").show();
+							// $(".progress-bar").css({
+							// 	width: 0 + "%"
+							// }).text(0 + "%");
+
+
+							// var count = 0;
+							// var percent = 0;
+							// var countRepeated = 0;
+							// var totalRows;
+							// var lastPage;
+							// var extreRows = null;
+							// logon = getCookie("login");
+
+							// /** loop for progress bar */
+							// let passed = 0;
+							// let interval = setInterval (function() {
+							// 		perc(interval);
+							// 		// if(passed++ > 1000) {
+							// 		//     clearInterval(interval);
+							// 		// }
+							// 	}, 50);
+						},
+						error: function(xhr, ajaxOption, thrownError) {
+							// console.log(thrownError);
+							// alertLatch("<span class=danger>Servidor demorou a responder, tente novamente</span>", "var(--cor-danger)");
+						},
+						complete: function(response) {
+							// $(".loading, #mask_main").hide();
+							// selectOnClick();
+							// $.ajax({
+							// 	url: "removeFile/file/percent_" + logon + ".txt",
+							// 	type: "POST",
+							// 	dataType: "JSON",
+							// 	data: "percent.txt"
+							// });
+							// $("[name=CustoVenda]").mask("#.#00,00",{ reverse: true });
+						}
+			},
+			// initComplete: function() {
+			//     setTimeout(function(){
+			//       $('.loading-overlay').remove();
+			//     }, 1500);
+			// },
+			columns: columns,
+			order: [[ 1, "desc" ]],
+			language: {
+					zeroRecords     : CONF_DATATABLE_ZERORECORDS,
+					infoEmpty       : CONF_DATATABLE_INFOEMPTY,
+					sSearch         : CONF_DATATABLE_SEARCH,
+					sProcessing     : CONF_DATATABLE_PROCESSING,
+					infoFiltered    : CONF_DATATABLE_INFOFILTERED,
+					info            : CONF_DATATABLE_INFO,
+					sLengthMenu     : CONF_DATATABLE_SLENGTHMENU,
+					paginate        : {'previous': 'Anterior','next': 'Próximo'}
+			},
+			// footerCallback: function ( tfoot,row, data, start, end, display ) {
+			// 	footerTotal(tabSale);
+			// }
+		});
+	}
+
+
+
+
+
+
 	$(document).ready(function() {
 		if(table === "PFisica") {
 			$("#pf").show();
@@ -84,20 +283,54 @@
 		});
 		$(".s-name").on("click", function() {
 			let Nome = $(this).closest("div").find("input").val();
-			searchClient({Nome, IDEmpresa});
+			let data = {
+				ID_PFISICA: "",
+				Nome,
+				CPF: "",
+				IDEmpresa
+			};
+			searchClient(data);
 		});
 		$(".s-cpf").on("click", function() {
 			let CPF = $(this).closest("div").find("input").val();
-			searchClient({CPF, IDEmpresa});
+			let data = {
+				ID_PFISICA: "",
+				Nome: "",
+				CPF,
+				IDEmpresa
+			};
+			searchClient(data);
 		});
 		$(".s-rs").on("click", function() {
+			$(".loading").show();
 			let RasSocial = $(this).closest("div").find("input").val();
-			searchClient({RasSocial, IDEmpresa});
+			let data = {
+				ID_PJURIDICA: "",
+				RasSocial,
+				CNPJ: "",
+				IDEmpresa
+			};
+			searchClient(data);
 		});
 		$(".s-cnpj").on("click", function() {
 			let CNPJ = $(this).closest("div").find("input").val();
-			searchClient({CNPJ, IDEmpresa});
+			let data = {
+				ID_PJURIDICA: "",
+				RasSocial: "",
+				CNPJ,
+				IDEmpresa
+			};
+			searchClient(data);
 		});
+		$("#edit").on("click", function() {
+			alert("transformar formulário para cadastro");
+		});
+		let data = {
+			ID_PJURIDICA: "",
+			RasSocial: "ro%",
+			CNPJ: "",
+			IDEmpresa
+		};
 	});
 </script>
 
@@ -121,7 +354,7 @@
     <!-- <div class="msg" ><?= $msg ?></div> -->
     <div id="box-client" class="row">
 		<div class="col-md-12 col-sx">
-			<label>DADOS DO CLIENTE<span id="tp-form"><?= (!empty($table) && $table === 'PFisica' ? '(Pessoa Física)' : '(Pessoa Jurídica)') ?></span> <i id="cadastro" class="fa fa-plus-circle icon" title="Cadastar Novo Cliente"></i> <i id="edita" class="fa fa-pencil icon" title="Editar dados"></i></label>
+			<label>DADOS DO CLIENTE<span id="tp-form">(Pessoa Jurídica)</span> <!--<i id="register" class="fa fa-plus-circle icon" title="Cadastar Novo Cliente"></i>--> <i id="edit" class="fa fa-edit icon" title="Editar dados" style="width: 10px"></i></label>
 			<div class="col-sx" id="btn-Form">
 				<button id="limpa" class="btn-sm btn-outline-info ml-1" >LIMPA BUSCA</button><button id="btn-PJPF" class="btn-sm btn-outline-danger" ><?= (!empty($table) && $table ==='PFisica'?'MUDAR PARA PJ':'MUDAR PARA PF') ?></button>
 			</div>
@@ -303,3 +536,15 @@
 
 <!-- área oculta -->
 <div id="add"></div>
+
+<!-- <table id="tabClient" class="table-striped compact display nowrap" width="100%" >
+	<thead>
+		<tr>
+			<th>IDCliente</th>
+			<th>NomeCliente</th>
+			<th>CNPJeCPF</th>
+			<!-- <th>TipoCliente</th> -->
+			<!--<th>IDEMPRESA</td>
+		</tr>
+	</thead>
+</table> -->

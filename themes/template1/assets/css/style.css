@@ -424,7 +424,7 @@ main .form-signin {
 }
 
 /** modal */
-#mask_main {
+#mask_main, #mask2_main {
     position: fixed;
     top: 0;
     left: 0;
@@ -438,7 +438,7 @@ main .form-signin {
     background-image: linear-gradient(to bottom, #000, #fff);
 }
 
-#boxe_main {
+#boxe_main, #boxe2_main {
     position: fixed;
     width: 50%;
     left: 25%;
@@ -458,6 +458,17 @@ main .form-signin {
     transition: opacity 400ms ease-in;
     border-radius: 5px;
     display: none;
+}
+
+#boxe2_main {
+    padding: 5px 10px;
+    font-size: .8em;
+    color: var(--cor-primary);
+    z-index: 4;
+}
+
+#mask2_main {
+    z-index: 4;
 }
 
 @-webkit-keyframes fadeInDown {
