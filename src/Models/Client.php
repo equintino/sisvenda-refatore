@@ -184,7 +184,6 @@ class Client extends Model implements Models
                 $this->data->Vendedor = $saleman->ID_Vendedor;
             }
 
-
             if($client->fetch()) {
                 $this->setSafe("id,created_at,updated_at,DataReg,transpCompanyId,transpCnpj,Tipo");
                 $this->update(self::$entity, $this->safe(), "{$terms} AND IDEmpresa={$company->ID}", "{$params}");

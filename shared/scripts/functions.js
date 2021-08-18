@@ -153,7 +153,6 @@ var saveForm = function(act, action, connectionName = null, url = "../Suporte/aj
         e.preventDefault();
         var success;
         var data = $("#boxe_main form").serialize();
-        //var top = $("#top").height();
         $.ajax({
             url: url,
             type: "POST",

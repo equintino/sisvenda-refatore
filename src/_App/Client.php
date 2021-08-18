@@ -23,6 +23,7 @@ class Client extends Controller
         $table = filter_input(INPUT_POST, "table", FILTER_SANITIZE_STRIPPED);
         $companyId = filter_input(INPUT_POST, "companyId", FILTER_SANITIZE_STRIPPED);
         $cnpjCpf = filter_input(INPUT_POST, "cnpjCpf", FILTER_SANITIZE_STRIPPED);
+        echo "<script>var IDEmpresa = '{$companyId}'</script>";
 
         if($table === "PFisica") {
             $dClients = (new \Models\Client())->search([
@@ -46,16 +47,17 @@ class Client extends Controller
         } else {
             $client = (new \Models\Client())->search($data);
         }
+        $dataFound = count($client);
         $fields = ["Nome", "CPF", "DataNasc", "TelResid", "Celular", "Email", "Rua", "Num", "Complemento", "Bairro", "Cidade", "UF", "CEP", "RasSocial", "CNPJ", "InscEstadual", "ID_PFISICA", "ID_PJURIDICA", "Tel01", "Tel02", "Bloqueio", "Crédito"];
-        if(count($client) < 2) {
+        if($dataFound < 2) {
+            if($dataFound === 0) {
+                return print(json_encode("Nenhum registro foi encontrado"));
+            }
             foreach($fields as $v) {
                 $dataClient[$v] = ($client[0]->$v ?? null);
             }
         } else {
-            return print(json_encode(count($client)));
-            // foreach($fields as $v) {
-            //     $dataClient[][$v] = ($client[0]->$v ?? null);
-            // }
+            return (print(json_encode($dataFound)));
         }
         return print(json_encode($dataClient));
     }

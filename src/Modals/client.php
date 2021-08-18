@@ -26,6 +26,10 @@
 		padding: 0 10px;
 		border-radius: 0 0 5px 5px;
 	}
+
+	#pf {
+		display: none;
+	}
 </style>
 <script>
 	/** functions */
@@ -41,10 +45,10 @@
 				//(tabClient.destroy() ?? null);
 			},
 			success: function(response) {
+				if(typeof(response) === "string") {
+					alertLatch(response, "var(--cor-warning)");
+				};
 				if(Number.isInteger(response)) {
-					//if(elem !== null) {
-						//openDatas(data);
-					//}
 					return openBoxe(data);
 				}
 				for(let i in response) {
@@ -109,6 +113,16 @@
 				}
 			});
 		}).show();
+	}
+
+	/** Validate data from customer registration form */
+	function custRegForm(dataForm) {
+		for(let x=0; x < dataForm.length; x++) {
+			if(dataForm[x].name === "Crédito") {
+				dataForm[x].value = valReal(dataForm[x].value);
+			}
+		}
+		return dataForm;
 	}
 
 	/** open DataTable DB */
@@ -253,16 +267,18 @@
 
 
 	$(document).ready(function() {
-		if(table === "PFisica") {
-			$("#pf").show();
-			$("#pj").hide();
-		} else {
-			$("#pj").show();
-			$("#pf").hide();
-		}
-		$("#box-client #btn-PJPF").on("click", function() {
-			let typeForm = $(this).text();
-			switch(typeForm) {
+		// if(table === "PFisica") {
+		// 	$("#pf").show();
+		// 	$("#pj").hide();
+		// } else {
+		// 	$("#pj").show();
+		// 	$("#pf").hide();
+		// }
+		//$("#box-client #btn-PJPF").on("click", function() {
+		$("#boxe_main button").on("click", function(e) {
+			e.preventDefault();
+			let btnName = $(this).text();
+			switch(btnName) {
 				case "MUDAR PARA PF":
 					$("#pf").show();
 					$("#pj").hide();
@@ -278,6 +294,36 @@
 					$("#tp-form").text("(Pessoa Jurídica)");
 					$("#btn-PJPF").text("MUDAR PARA PF");
 					$("input").val("");
+					break;
+            	case "Cancelar":
+                	$("#boxe_main, #mask_main").hide();
+                	break;
+				case "Salvar":
+					let formActive = ($("#pf").css("display") !== "none" ? "#pf" : "#pj");
+					let dataClient = $("#boxe_main " + formActive + " input").serializeArray();
+					$.ajax({
+						url: "cadastro/atualizar",
+						type: "POST",
+						dataType: "JSON",
+						data: custRegForm(dataClient),
+						beforeSend: function() {
+							$(".loading").show();
+						},
+						success: function(response) {
+							alertLatch(response, "var(--cor-success)");
+						},
+						error: function(error) {
+							console.log(error);
+						},
+						complete: function() {
+							$(".loading").hide();
+						}
+					});
+					//alert("Salvar alteração de cliente");
+					break;
+				case "Sair do modo de edição":
+					$(".btn-search-client #seleciona").text("Selecionar");
+					$(".btn-search-client #cancela").text("Cancelar");
 					break;
 			}
 		});
@@ -323,25 +369,28 @@
 			searchClient(data);
 		});
 		$("#edit").on("click", function() {
-			alert("transformar formulário para cadastro");
+			$(".btn-search-client").children("button").each(function() {
+				switch($(this).text()) {
+					case "Selecionar":
+						$(this).text("Salvar");
+						break;
+					case "Cancelar":
+						$(this).text("Sair do modo de edição");
+						break;
+				}
+			});
 		});
-		let data = {
-			ID_PJURIDICA: "",
-			RasSocial: "ro%",
-			CNPJ: "",
-			IDEmpresa
-		};
 	});
 </script>
 
 <?php
 	$companyId = filter_input(INPUT_POST, "companyId", FILTER_SANITIZE_STRIPPED);
 	$cnpjCpf = filter_input(INPUT_POST, "cnpjCpf", FILTER_SANITIZE_STRIPPED);
-	$table = filter_input(INPUT_POST, "table", FILTER_SANITIZE_STRIPPED);
+	//$table = filter_input(INPUT_POST, "table", FILTER_SANITIZE_STRIPPED);
 ?>
 <script>
-	let table = '<?= $table ?>';
-	let IDEmpresa = '<?= $companyId ?>';
+	//let table = '<?= $table ?>';
+	//let IDEmpresa = '<?= $companyId ?>';
 </script>
 <?php
 
@@ -366,7 +415,7 @@
 <div id="pf">
 	<div class="p-3" id="cliente">
 		<input type="hidden" name="ID_PFISICA" value="<?= isset($cDados)?$cDados['ID_PFISICA']:null ?>" />
-		<input type="hidden" name="tipoC" value="P. Física" />
+		<!-- <input type="hidden" name="tipoC" value="P. Física" /> -->
 		<input type="hidden" name="Bloqueio" value="<?= isset($cDados)?$cDados['Bloqueio']:null ?>" />
 		<input type="hidden" name="Crédito" value="<?= isset($cDados)?number_format($cDados['Crédito'],2,',','.'):null ?>" />
 		<div class="row">
@@ -447,7 +496,7 @@
 <div id="pj">
     <div class="p-3" id="cliente2">
 	<input type="hidden" name="ID_PJURIDICA" value="<?= isset($cDados)?$cDados['ID_PJURIDICA']:null ?>" />
-	<input type="hidden" name="tipoC" value="P. Juridica" />
+	<!-- <input type="hidden" name="tipoC" value="P. Juridica" /> -->
 	<input type="hidden" name="Bloqueio" value="<?= isset($cDados)?$cDados['Bloqueio']:null ?>" />
 	<input type="hidden" name="Crédito" value="<?= isset($cDados)?number_format($cDados['Crédito'],2,',','.'):null ?>" />
 	<div class="row">
@@ -529,7 +578,7 @@
 
 <?php //endif ?>
 
-<div class="hidden">
+<div class="hidden btn-search-client">
     <button class="btn-mx btn-success ml-1" id="seleciona">Selecionar</button>
     <button class="btn-mx btn-default" id="cancela">Cancelar</button>
 </div>

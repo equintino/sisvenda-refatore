@@ -85,6 +85,7 @@
         $router->post("/sale/delete", "Sale:delete");
         $router->post("/produto", "Product:load");
         $router->post("/transport", "Transport:list");
+        /** client/search */
         $router->post("/client/{}", "Client:getClient");
         $router->post("/clients", "Client:list");
 

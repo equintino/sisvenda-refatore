@@ -18,8 +18,8 @@ class Budget extends Controller
         $loading = $this->loading;
         $salemanData = $_SESSION["login"];
         $companys = (new \Models\Company())->activeAll();
-        $vencOrcamento = date('Y-m-d', strtotime("+10 days"));
+        $budgetDue = date('Y-m-d', strtotime("+10 days"));
 
-        $this->view->render("budget", [ compact("page","loading","salemanData","companys","vencOrcamento") ]);
+        $this->view->render("budget", [ compact("page","loading","salemanData","companys","budgetDue") ]);
     }
 }

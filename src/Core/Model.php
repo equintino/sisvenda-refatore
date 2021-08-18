@@ -94,22 +94,26 @@ abstract class Model
         try {
             $columns = implode(", ", array_keys($data));
             $values = ":" . implode(", :", array_keys(removeAccentArray($data)));
-            $stmt = Connect::getInstance($msgDb)->prepare("INSERT INTO {$entity} (" . $this->getAccentWorlds($columns) . ") VALUES ({$values})");
+            $sql = "INSERT INTO {$entity} (" . $this->getAccentWorlds($columns) . ") VALUES ({$values})";
+            $stmt = Connect::getInstance($msgDb)->prepare($sql);
 
             // foreach($data as $key => $value) {
             //     $type = \PDO::PARAM_STR;
-            //     var_dump($value);
+            //     //var_dump($value);
             //     if(is_numeric($value)) {
             //         $type = \PDO::PARAM_INT;
             //         $value = (int) $value;
+            //     } elseif($value == null) {
+            //         $type = \PDO::PARAM_NULL;
             //     }
             //     $stmt->bindValue(":{$key}", $value, $type);
             // }
 
-            $stmt->execute(removeAccentArray($data));
+            //$stmt->execute(removeAccentArray($data));
+            $this->execute($sql, removeAccentArray($data));
             return Connect::getInstance($msgDb)->lastInsertId();
         } catch(\PDOException $exception) {
-            var_dump($exception);
+            //var_dump($exception);
             $this->fail = $exception;
             return null;
         }
@@ -139,11 +143,10 @@ abstract class Model
 
     protected function update(string $entity, array $data, string $terms, string $params, bool $msgDb = false): ?int
     {
-        $data["updated_at"] = (new \DateTime())->format("d/m/Y H:i:s.000");
+        $data["updated_at"] = (new \DateTime())->format("d/m/Y H:i:s");
         parse_str($params, $params);
         foreach($data as $bind => $value) {
-            $dataSet[] = "{$bind} = :" . removeAccent($bind);
-            $params[$bind] = $value;
+            $dataSet[] = "{$bind} = '{$value}'";
         }
         $dataSet = implode(", ", $dataSet);
 

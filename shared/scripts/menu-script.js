@@ -29,6 +29,10 @@ function callScript(name) {
             break;
         case "vendas":
             scriptManagement();
+            break;
+        case "orcamento":
+            scriptBudged();
+            break;
     }
 }
 
